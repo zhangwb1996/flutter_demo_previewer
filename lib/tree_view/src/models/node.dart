@@ -46,7 +46,10 @@ class Node<T> {
   /// having children node.
   final bool parent;
 
-  const Node({
+  /// SubView
+  Widget? subview;
+
+  Node({
     required this.key,
     required this.label,
     this.children = const [],
@@ -56,6 +59,7 @@ class Node<T> {
     this.iconColor,
     this.selectedIconColor,
     this.data,
+    this.subview,
   });
 
   /// Creates a [Node] from a string value. It generates a unique key.

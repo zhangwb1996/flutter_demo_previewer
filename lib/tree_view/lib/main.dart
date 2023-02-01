@@ -37,7 +37,7 @@ class TreeViewPreview extends StatefulWidget {
 class TreeViewPreviewState extends State<TreeViewPreview> {
   String? _selectedNode;
   late List<Node> _nodes;
-  late List<Node> _nodes1;
+  late List<Node> _nodes1 = [];
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
     selectedKey: null,
@@ -68,7 +68,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
         ModContainer(ExpanderModifier.squareOutlined),
   };
   ExpanderPosition _expanderPosition = ExpanderPosition.start;
-  ExpanderType _expanderType = ExpanderType.arrow;
+  ExpanderType _expanderType = ExpanderType.caret;
   ExpanderModifier _expanderModifier = ExpanderModifier.none;
   bool _allowParentSelect = false;
   bool _supportParentDoubleTap = false;
@@ -87,12 +87,73 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     currentDir: '',
   );
 
-  late String _nodeKeys;
   final Map<String, List<Node<dynamic>>> _dirChildren = {};
   // List<Node<dynamic>> _dirChildren = [];
 
   @override
   void initState() {
+    _nodes = [
+      Node(
+        label: 'documents',
+        key: 'docs',
+        expanded: docsOpen,
+        icon: docsOpen ? Icons.folder_open : Icons.folder,
+        children: [
+          Node(
+            label: 'personal',
+            key: 'd3',
+            icon: Icons.input,
+            iconColor: Colors.red,
+            children: [
+              Node(
+                label: 'Poems.docx',
+                key: 'pd1',
+                icon: Icons.insert_drive_file,
+              ),
+              Node(
+                label: 'Job Hunt',
+                key: 'jh1',
+                icon: Icons.input,
+                children: [
+                  Node(
+                    label: 'Resume.docx',
+                    key: 'jh1a',
+                    icon: Icons.insert_drive_file,
+                  ),
+                  Node(
+                    label: 'Cover Letter.docx',
+                    key: 'jh1b',
+                    icon: Icons.insert_drive_file,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Node(
+            label: 'Inspection.docx',
+            key: 'd1',
+//          icon: Icons.insert_drive_file),
+          ),
+          Node(label: 'Invoice.docx', key: 'd2', icon: Icons.insert_drive_file),
+        ],
+      ),
+      Node(
+          label: 'MeetingReport.xls',
+          key: 'mrxls',
+          icon: Icons.insert_drive_file),
+      Node(
+          label: 'MeetingReport.pdf',
+          key: 'mrpdf',
+          iconColor: Colors.green.shade300,
+          selectedIconColor: Colors.white,
+          icon: Icons.insert_drive_file),
+      Node(label: 'Demo.zip', key: 'demo', icon: Icons.archive),
+      Node(
+        label: 'empty folder',
+        key: 'empty',
+        parent: true,
+      ),
+    ];
     super.initState();
   }
 
@@ -200,18 +261,18 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                 height: double.infinity,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 160,
-                      child: Column(
-                        children: <Widget>[
-                          _makeExpanderPosition(),
-                          _makeExpanderType(),
-                          _makeExpanderModifier(),
-                          //_makeAllowParentSelect(),
-                          //_makeSupportParentDoubleTap(),
-                        ],
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 200,
+                    //   child: Column(
+                    //     children: <Widget>[
+                    //       _makeExpanderPosition(),
+                    //       _makeExpanderType(),
+                    //       _makeExpanderModifier(),
+                    //       _makeAllowParentSelect(),
+                    //       _makeSupportParentDoubleTap(),
+                    //     ],
+                    //   ),
+                    // ),
                     Expanded(
                       child: Row(
                         children: [
@@ -224,11 +285,12 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
 
                             /// builder
                             child: Builder(builder: (context) {
+                              // if (_nodes1.isEmpty) {
                               _nodes1 = [
                                 /// dirs
                                 ...dl.currentStrDirs.map((dir) {
                                   debugPrint(
-                                      "init nodeKey: ${dl.absolutelyCurrentPath}$dir/");
+                                      "init nodeKey: ${dl.absolutelyCurrentPath}$dir");
                                   return Node(
                                     label: dir,
                                     key: "${dl.absolutelyCurrentPath}$dir",
@@ -241,6 +303,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                             "${dl.absolutelyCurrentPath}$dir"] ??
                                         [],
                                     // children: _nodes,
+                                    // children: [],
                                     parent: true,
                                   );
                                 }).toList(),
@@ -249,14 +312,18 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                 ...dl.currentFiles!.map(
                                   (file) {
                                     return Node(
-                                        label: file,
-                                        key: "${dl.absolutelyCurrentPath}$file",
-                                        iconColor: Colors.green.shade300,
-                                        selectedIconColor: Colors.white,
-                                        icon: Icons.insert_drive_file);
+                                      label: file,
+                                      key: "${dl.absolutelyCurrentPath}$file",
+                                      iconColor: Colors.green.shade300,
+                                      selectedIconColor: Colors.white,
+                                      icon: Icons.insert_drive_file,
+                                      subview: const Text(
+                                          "this is preview of widget"),
+                                    );
                                   },
                                 ).toList()
                               ];
+                              // }
 
                               /// init TreeViewController
                               _treeViewController = TreeViewController(
@@ -297,7 +364,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                 controller: _treeViewController,
                                 allowParentSelect: _allowParentSelect,
                                 supportParentDoubleTap: _supportParentDoubleTap,
-                                onExpansionChanged: (key, expanded) async {
+                                onExpansionChanged: (key, expanded) {
                                   debugPrint('Selected key: $key');
 
                                   /// get children
@@ -306,85 +373,61 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                     currentDir: '',
                                   );
 
-                                  await dlChildren
+                                  dlChildren
                                       .getDirStrList(dlChildren)
                                       .then((value) {
-                                    debugPrint(
-                                      "_dirChildren[$key] != null=>${_dirChildren[key] != null}",
-                                    );
-                                    debugPrint(
-                                      "_dirChildren[$key] = ${_dirChildren[key]}",
-                                    );
-
-                                    // if (_dirChildren[key] != null) {
-                                    //   return;
-                                    // }
-
-                                    debugPrint(
-                                      "dlChildren.currentStrDirs: ${dlChildren.currentStrDirs.toString()}",
-                                    );
-                                    debugPrint(
-                                      "dlChildren.currentFiles: ${dlChildren.currentFiles.toString()}",
-                                    );
-                                    debugPrint(
-                                      "dlChildren.absolutelyCurrentPath: ${dlChildren.absolutelyCurrentPath.toString()}",
-                                    );
-
-                                    setState(() {
-                                      _dirChildren.addEntries({
-                                        dlChildren.absolutelyCurrentPath: [
-                                          ...dlChildren.currentStrDirs
-                                              .map((dir) {
+                                    // setState(() {
+                                    _dirChildren.addEntries({
+                                      dlChildren.absolutelyCurrentPath: [
+                                        ...dlChildren.currentStrDirs.map((dir) {
+                                          return Node(
+                                            label: dir,
+                                            key:
+                                                "${dlChildren.absolutelyCurrentPath}/$dir",
+                                            expanded: docsOpen,
+                                            icon: docsOpen
+                                                ? Icons.folder_open
+                                                : Icons.folder,
+                                            // children: _dirChildren[dlChildren
+                                            //         .absolutelyCurrentPath] ??
+                                            //     [],
+                                            children: [],
+                                            // children: _nodes,
+                                            parent: true,
+                                          );
+                                        }).toList(),
+                                        ...dlChildren.currentFiles!.map(
+                                          (file) {
                                             return Node(
-                                              label: dir,
+                                              label: file,
                                               key:
-                                                  "${dlChildren.absolutelyCurrentPath}/$dir",
-                                              expanded: docsOpen,
-                                              icon: docsOpen
-                                                  ? Icons.folder_open
-                                                  : Icons.folder,
-                                              // children: _dirChildren[dlChildren
-                                              //     .absolutelyCurrentPath]!,
-                                              children: [],
-                                              // children: _nodes,
-                                              parent: true,
+                                                  "${dlChildren.absolutelyCurrentPath}$file",
+                                              iconColor: Colors.green.shade300,
+                                              selectedIconColor: Colors.white,
+                                              icon: Icons.insert_drive_file,
+                                              subview: const Text(
+                                                  "this is preview of widget"),
                                             );
-                                          }).toList(),
-                                          ...dlChildren.currentFiles!.map(
-                                            (file) {
-                                              return Node(
-                                                  label: file,
-                                                  key:
-                                                      "${dlChildren.absolutelyCurrentPath}$file",
-                                                  iconColor:
-                                                      Colors.green.shade300,
-                                                  selectedIconColor:
-                                                      Colors.white,
-                                                  icon:
-                                                      Icons.insert_drive_file);
-                                            },
-                                          ).toList()
-                                        ]
-                                      }.entries);
-                                    });
+                                          },
+                                        ).toList()
+                                      ]
+                                    }.entries);
 
-                                    // debugPrint(
-                                    //     'Map_dirChildren: $_dirChildren');
-                                    // debugPrint(
-                                    //   '_treeViewController: ${_treeViewController.children}',
-                                    // );
-
-                                    /// List _dirChildren
-                                    // _dirChildren = [
+                                    /// addnode
+                                    // debugPrint(key);
+                                    // _addNode(key, [
                                     //   ...dlChildren.currentStrDirs.map((dir) {
                                     //     return Node(
                                     //       label: dir,
                                     //       key:
-                                    //           "${dlChildren.currentStrDirs.indexOf(dir)} ${dlChildren.absolutelyCurrentPath}*$dir",
+                                    //           "${dlChildren.absolutelyCurrentPath}/$dir",
                                     //       expanded: docsOpen,
                                     //       icon: docsOpen
                                     //           ? Icons.folder_open
                                     //           : Icons.folder,
+                                    //       // children: _dirChildren[dlChildren
+                                    //       //         .absolutelyCurrentPath] ??
+                                    //       //     [],
                                     //       children: [],
                                     //       // children: _nodes,
                                     //       parent: true,
@@ -395,16 +438,15 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                     //       return Node(
                                     //           label: file,
                                     //           key:
-                                    //               "${dlChildren.currentFiles!.indexOf(file)} ${dlChildren.absolutelyCurrentPath}*$file",
-                                    //           iconColor: Colors.green.shade300,
+                                    //               "${dlChildren.absolutelyCurrentPath}/$file",
+                                    //           iconColor:
+                                    //               Colors.green.shade300,
                                     //           selectedIconColor: Colors.white,
                                     //           icon: Icons.insert_drive_file);
                                     //     },
                                     //   ).toList()
-                                    // ];
-                                    // debugPrint(
-                                    //   '_dirChildren: ${_dirChildren.toString()}',
-                                    // );
+                                    // ]);
+                                    // });
                                   });
 
                                   /// update expand
@@ -456,13 +498,20 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                               child: Container(
                                 padding: const EdgeInsets.only(top: 20),
                                 alignment: Alignment.center,
-                                child: Text(_treeViewController
+                                child: _treeViewController
                                             .getNode(_selectedNode) ==
                                         null
-                                    ? ''
+                                    ? null
                                     : _treeViewController
                                         .getNode(_selectedNode)!
-                                        .label),
+                                        .subview,
+                                // child: Text(_treeViewController
+                                //             .getNode(_selectedNode) ==
+                                //         null
+                                //     ? ''
+                                //     : _treeViewController
+                                //         .getNode(_selectedNode)!
+                                //         .label),
                               ),
                             ),
                           ),
@@ -600,6 +649,40 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       _treeViewController = _treeViewController.copyWith(children: updated);
     });
   }
+
+  // _addNode(String key, List<Node> children) {
+  //   debugPrint("_addNode: $key 's children :$children");
+
+  //   for (var element in children) {
+  //     debugPrint("children 's key: ${element.key}");
+  //     Node? node = _treeViewController.getNode(key);
+  //     List<Node> added;
+  //     added = _treeViewController.addNode(
+  //       element.key,
+  //       element,
+  //       parent: node,
+  //       mode: InsertMode.insert,
+  //     );
+  //     debugPrint("added children: $added");
+  //     debugPrint("added _nodes1: $_nodes1");
+
+  //     setState(() {
+  //       _treeViewController = _treeViewController.copyWith(children: _nodes1);
+  //       // _treeViewController = _treeViewController.withAddNode(
+  //       //   key,
+  //       //   element,
+  //       //   // parent: _treeViewController.getNode(key),
+  //       // );
+  //       // _nodes = [
+  //       //   const Node(
+  //       //     label: 'empty folder',
+  //       //     key: 'empty',
+  //       //     parent: true,
+  //       //   )
+  //       // ];
+  //     });
+  //   }
+  // }
 }
 
 class ModContainer extends StatelessWidget {
