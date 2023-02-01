@@ -77,7 +77,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
 
   var dl = DirLevel(
-    parentDir: "",
     currentDir:
         r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/',
   );
@@ -92,74 +91,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
 
   @override
   void initState() {
-//     _nodes = [
-//       Node(
-//         label: 'documents',
-//         key: 'docs',
-//         expanded: docsOpen,
-//         icon: docsOpen ? Icons.folder_open : Icons.folder,
-//         children: [
-//           const Node(
-//             label: 'personal',
-//             key: 'd3',
-//             icon: Icons.input,
-//             iconColor: Colors.red,
-//             children: [
-//               Node(
-//                 label: 'Poems.docx',
-//                 key: 'pd1',
-//                 icon: Icons.insert_drive_file,
-//               ),
-//               Node(
-//                 label: 'Job Hunt',
-//                 key: 'jh1',
-//                 icon: Icons.input,
-//                 children: [
-//                   Node(
-//                     label: 'Resume.docx',
-//                     key: 'jh1a',
-//                     icon: Icons.insert_drive_file,
-//                   ),
-//                   Node(
-//                     label: 'Cover Letter.docx',
-//                     key: 'jh1b',
-//                     icon: Icons.insert_drive_file,
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//           const Node(
-//             label: 'Inspection.docx',
-//             key: 'd1',
-// //          icon: Icons.insert_drive_file),
-//           ),
-//           const Node(
-//               label: 'Invoice.docx', key: 'd2', icon: Icons.insert_drive_file),
-//         ],
-//       ),
-//       const Node(
-//           label: 'MeetingReport.xls',
-//           key: 'mrxls',
-//           icon: Icons.insert_drive_file),
-//       Node(
-//           label: 'MeetingReport.pdf',
-//           key: 'mrpdf',
-//           iconColor: Colors.green.shade300,
-//           selectedIconColor: Colors.white,
-//           icon: Icons.insert_drive_file),
-//       const Node(label: 'Demo.zip', key: 'demo', icon: Icons.archive),
-//       const Node(
-//         label: 'empty folder',
-//         key: 'empty',
-//         parent: true,
-//       ),
-//     ];
-
-    // _treeViewController = TreeViewController(
-    //   children: _nodes1,
-    //   selectedKey: _selectedNode,
-    // );
     super.initState();
   }
 
@@ -274,8 +205,8 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           _makeExpanderPosition(),
                           _makeExpanderType(),
                           _makeExpanderModifier(),
-                          //                    _makeAllowParentSelect(),
-                          //                    _makeSupportParentDoubleTap(),
+                          //_makeAllowParentSelect(),
+                          //_makeSupportParentDoubleTap(),
                         ],
                       ),
                     ),
@@ -555,195 +486,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                             }),
                           ),
 
-                          /// FutureBuilder
-                          //   child: FutureBuilder(
-                          //       future: dl.getDirStrList(dl),
-                          //       builder: (context, snapshot) {
-                          //         /// init node
-                          //         _nodes1 = [
-                          //           ...dl.currentDirs!.map((dir) {
-                          //             return Node(
-                          //               label: dir.text,
-                          //               key: dl.currentDirs!
-                          //                       .indexOf(dir)
-                          //                       .toString() +
-                          //                   dir.text,
-                          //               expanded: docsOpen,
-                          //               icon: docsOpen
-                          //                   ? Icons.folder_open
-                          //                   : Icons.folder,
-                          //               children: [],
-                          //             );
-                          //           }).toList(),
-                          //           ...dl.currentFiles!.map(
-                          //             (file) {
-                          //               return Node(
-                          //                   label: file,
-                          //                   key: dl.currentFiles!
-                          //                           .indexOf(file)
-                          //                           .toString() +
-                          //                       file,
-                          //                   iconColor: Colors.green.shade300,
-                          //                   selectedIconColor: Colors.white,
-                          //                   icon: Icons.insert_drive_file);
-                          //             },
-                          //           ).toList()
-                          //         ];
-
-                          //         /// init TreeViewController
-                          //         _treeViewController = TreeViewController(
-                          //           children: _nodes1,
-                          //           selectedKey: _selectedNode,
-                          //         );
-
-                          //         /// Theme
-                          //         treeViewTheme = TreeViewTheme(
-                          //           expanderTheme: ExpanderThemeData(
-                          //               type: _expanderType,
-                          //               modifier: _expanderModifier,
-                          //               position: _expanderPosition,
-                          //               // color: Colors.grey.shade800,
-                          //               size: 20,
-                          //               color: Colors.blue),
-                          //           labelStyle: const TextStyle(
-                          //             fontSize: 16,
-                          //             letterSpacing: 0.3,
-                          //           ),
-                          //           parentLabelStyle: TextStyle(
-                          //             fontSize: 16,
-                          //             letterSpacing: 0.1,
-                          //             fontWeight: FontWeight.w800,
-                          //             color: Colors.blue.shade700,
-                          //           ),
-                          //           iconTheme: IconThemeData(
-                          //             size: 18,
-                          //             color: Colors.grey.shade800,
-                          //           ),
-                          //           colorScheme: Theme.of(context).colorScheme,
-                          //         );
-
-                          //         /// return
-                          //         return Builder(builder: (context) {
-                          //           return TreeView(
-                          //             controller: _treeViewController,
-                          //             allowParentSelect: _allowParentSelect,
-                          //             supportParentDoubleTap:
-                          //                 _supportParentDoubleTap,
-                          //             onExpansionChanged: (key, expanded) =>
-                          //                 _expandNode(key, expanded,
-                          //                     _treeViewController),
-                          //             onNodeTap: (key) {
-                          //               debugPrint('Selected: $key');
-                          //               setState(() {
-                          //                 _selectedNode = key;
-                          //                 _treeViewController =
-                          //                     _treeViewController.copyWith(
-                          //                         selectedKey: key);
-                          //               });
-                          //             },
-                          //             theme: treeViewTheme,
-                          //           );
-                          //         });
-                          //       }),
-                          // ),
-
-                          /// StreamBuilder
-                          //   child: StreamBuilder<Object>(
-                          //     // stream:()=>() {await dl.getDirStrList(dl).then((value) => () {}),},
-                          //     stream: (() {
-                          //       late final StreamController<int> controller;
-                          //       controller = StreamController<int>(
-                          //         onListen: () async {
-                          //           await dl.getDirStrList(dl);
-                          //         },
-                          //       );
-                          //       return controller.stream;
-                          //     })(),
-                          //     builder: (context, snapshot) {
-                          //       /// init node
-                          //       _nodes1 = [
-                          //         ...dl.currentDirs!.map((dir) {
-                          //           return Node(
-                          //             label: dir.text,
-                          //             key: dl.currentDirs!.indexOf(dir).toString() +
-                          //                 dir.text,
-                          //             expanded: docsOpen,
-                          //             icon:
-                          //                 docsOpen ? Icons.folder_open : Icons.folder,
-                          //             children: [],
-                          //           );
-                          //         }).toList(),
-                          //         ...dl.currentFiles!.map(
-                          //           (file) {
-                          //             return Node(
-                          //                 label: file,
-                          //                 key: dl.currentFiles!
-                          //                         .indexOf(file)
-                          //                         .toString() +
-                          //                     file,
-                          //                 iconColor: Colors.green.shade300,
-                          //                 selectedIconColor: Colors.white,
-                          //                 icon: Icons.insert_drive_file);
-                          //           },
-                          //         ).toList()
-                          //       ];
-
-                          //       /// init TreeViewController
-                          //       _treeViewController = TreeViewController(
-                          //         children: _nodes1,
-                          //         selectedKey: _selectedNode,
-                          //       );
-
-                          //       /// Theme
-                          //       treeViewTheme = TreeViewTheme(
-                          //         expanderTheme: ExpanderThemeData(
-                          //             type: _expanderType,
-                          //             modifier: _expanderModifier,
-                          //             position: _expanderPosition,
-                          //             // color: Colors.grey.shade800,
-                          //             size: 20,
-                          //             color: Colors.blue),
-                          //         labelStyle: const TextStyle(
-                          //           fontSize: 16,
-                          //           letterSpacing: 0.3,
-                          //         ),
-                          //         parentLabelStyle: TextStyle(
-                          //           fontSize: 16,
-                          //           letterSpacing: 0.1,
-                          //           fontWeight: FontWeight.w800,
-                          //           color: Colors.blue.shade700,
-                          //         ),
-                          //         iconTheme: IconThemeData(
-                          //           size: 18,
-                          //           color: Colors.grey.shade800,
-                          //         ),
-                          //         colorScheme: Theme.of(context).colorScheme,
-                          //       );
-
-                          //       /// builder
-                          //       return Builder(builder: (context) {
-                          //         return TreeView(
-                          //           controller: _treeViewController,
-                          //           allowParentSelect: _allowParentSelect,
-                          //           supportParentDoubleTap: _supportParentDoubleTap,
-                          //           onExpansionChanged: (key, expanded) =>
-                          //               _expandNode(
-                          //                   key, expanded, _treeViewController),
-                          //           onNodeTap: (key) {
-                          //             debugPrint('Selected: $key');
-                          //             setState(() {
-                          //               _selectedNode = key;
-                          //               _treeViewController = _treeViewController
-                          //                   .copyWith(selectedKey: key);
-                          //             });
-                          //           },
-                          //           theme: treeViewTheme,
-                          //         );
-                          //       });
-                          //     },
-                          //   ),
-                          // ),
-
                           /// origin
                           //   child: TreeView(
                           //     controller: _treeViewController,
@@ -814,18 +556,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                 });
               },
             ),
-//            CupertinoButton(
-//              child: Text('Toggle'),
-//              onPressed: _treeViewController.selectedNode != null &&
-//                      _treeViewController.selectedNode.isParent
-//                  ? () {
-//                      setState(() {
-//                        _treeViewController = _treeViewController
-//                            .withToggleNode(_treeViewController.selectedKey);
-//                      });
-//                    }
-//                  : null,
-//            ),
             CupertinoButton(
               child: const Text('Deep'),
               onPressed: () {
