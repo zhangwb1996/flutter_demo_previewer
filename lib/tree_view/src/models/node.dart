@@ -82,6 +82,7 @@ class Node<T> {
     String label = map['label'];
     var data = map['data'];
     List<Node> children = [];
+    Widget? subview = map['subview'];
     key ??= Utilities.generateRandom();
     // if (map['icon'] != null) {
     // int _iconData = int.parse(map['icon']);
@@ -107,6 +108,7 @@ class Node<T> {
       expanded: Utilities.truthful(map['expanded']),
       parent: Utilities.truthful(map['parent']),
       children: children,
+      subview: subview,
     );
   }
 
@@ -122,6 +124,7 @@ class Node<T> {
     Color? iconColor,
     Color? selectedIconColor,
     T? data,
+    Widget? subview,
   }) =>
       Node<T>(
         key: key ?? this.key,
@@ -133,6 +136,7 @@ class Node<T> {
         parent: parent ?? this.parent,
         children: children ?? this.children,
         data: data ?? this.data,
+        subview: subview ?? this.subview,
       );
 
   /// Whether this object has children [Node].
@@ -156,6 +160,7 @@ class Node<T> {
       "expanded": expanded,
       "parent": parent,
       "children": children.map((Node child) => child.asMap).toList(),
+      // "subview": subview,
     };
     if (data != null) {
       map['data'] = data as T;

@@ -90,40 +90,53 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
   final Map<String, List<Node<dynamic>>> _dirChildren = {};
   // List<Node<dynamic>> _dirChildren = [];
 
+  final Map<String, List<Node<dynamic>>> _workspace = {};
+
   @override
   void initState() {
     dl.getDirStrList(dl).then((value) {
       _nodes1 = [
-        /// dirs
-        ...dl.currentStrDirs.map((dir) {
-          debugPrint("init nodeKey: ${dl.absolutelyCurrentPath}$dir");
-          return Node(
-            label: dir,
-            key: "${dl.absolutelyCurrentPath}$dir",
-            expanded: docsOpen,
-            icon: docsOpen ? Icons.folder_open : Icons.folder,
-            // children: _dirChildren,
-            children: _dirChildren["${dl.absolutelyCurrentPath}$dir"] ?? [],
-            // children: _nodes,
-            // children: [],
-            parent: true,
-          );
-        }).toList(),
+        Node(
+            label: str,
+            key: str,
+            expanded: !docsOpen,
+            icon: !docsOpen ? Icons.folder_open : Icons.folder,
+            children: [
+              /// dirs
+              ...dl.currentStrDirs.map((dir) {
+                debugPrint("init nodeKey: ${dl.absolutelyCurrentPath}$dir");
+                return Node(
+                  label: dir,
+                  key: "${dl.absolutelyCurrentPath}$dir",
+                  expanded: docsOpen,
+                  icon: docsOpen ? Icons.folder_open : Icons.folder,
+                  // children: _dirChildren,
+                  // children:
+                  //     _dirChildren["${dl.absolutelyCurrentPath}$dir"] ?? [],
+                  // children: _nodes,
+                  children: [],
+                  parent: true,
+                );
+              }).toList(),
 
-        /// files
-        ...dl.currentFiles!.map(
-          (file) {
-            return Node(
-              label: file,
-              key: "${dl.absolutelyCurrentPath}$file",
-              iconColor: Colors.green.shade300,
-              selectedIconColor: Colors.white,
-              icon: Icons.insert_drive_file,
-              subview: const Text("this is preview of widget"),
-            );
-          },
-        ).toList()
+              /// files
+              ...dl.currentFiles!.map(
+                (file) {
+                  return Node(
+                    label: file,
+                    key: "${dl.absolutelyCurrentPath}/$file",
+                    iconColor: Colors.green.shade300,
+                    selectedIconColor: Colors.white,
+                    icon: Icons.insert_drive_file,
+                    subview: const Text("this is preview of widget"),
+                  );
+                },
+              ).toList()
+            ])
       ];
+
+      /// open different path in one tree
+      _workspace.addEntries({_nodes1[0].label: _nodes1}.entries);
 
       /// init TreeViewController
       _treeViewController = TreeViewController(
@@ -279,6 +292,8 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     debugPrint(
         "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
     var treeViewTheme = TreeViewTheme(
+      labelOverflow: TextOverflow.clip,
+      parentLabelOverflow: TextOverflow.fade,
       expanderTheme: ExpanderThemeData(
         type: _expanderType,
         modifier: _expanderModifier,
@@ -317,18 +332,18 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
           height: double.infinity,
           child: Column(
             children: <Widget>[
-              SizedBox(
-                height: 200,
-                child: Column(
-                  children: <Widget>[
-                    _makeExpanderPosition(),
-                    _makeExpanderType(),
-                    _makeExpanderModifier(),
-                    _makeAllowParentSelect(),
-                    _makeSupportParentDoubleTap(),
-                  ],
-                ),
-              ),
+              // SizedBox(
+              //   height: 200,
+              //   child: Column(
+              //     children: <Widget>[
+              //       _makeExpanderPosition(),
+              //       _makeExpanderType(),
+              //       _makeExpanderModifier(),
+              //       _makeAllowParentSelect(),
+              //       _makeSupportParentDoubleTap(),
+              //     ],
+              //   ),
+              // ),
               Expanded(
                 child: Row(
                   children: [
@@ -338,8 +353,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.all(10),
-
-                        /// builder
                         child: TreeView(
                           controller: _treeViewController,
                           allowParentSelect: _allowParentSelect,
@@ -347,14 +360,13 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           onExpansionChanged: (key, expanded) {
                             debugPrint('Selected key: $key');
 
+                            /// add children into node and update
                             _addChildrenNode(key);
 
                             /// update expand
                             _expandNode(
                               key,
                               expanded,
-                              // false,
-                              // _treeViewController,
                             );
                           },
                           onNodeTap: (key) {
@@ -548,7 +560,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
               (file) {
                 return Node(
                   label: file,
-                  key: "${dlChildren.absolutelyCurrentPath}$file",
+                  key: "${dlChildren.absolutelyCurrentPath}/$file",
                   iconColor: Colors.green.shade300,
                   selectedIconColor: Colors.white,
                   icon: Icons.insert_drive_file,
