@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import 'dir_level.dart';
 import 'states.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,6 +94,47 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
 
   @override
   void initState() {
+    dl.getDirStrList(dl).then((value) {
+      _nodes1 = [
+        /// dirs
+        ...dl.currentStrDirs.map((dir) {
+          debugPrint("init nodeKey: ${dl.absolutelyCurrentPath}$dir");
+          return Node(
+            label: dir,
+            key: "${dl.absolutelyCurrentPath}$dir",
+            expanded: docsOpen,
+            icon: docsOpen ? Icons.folder_open : Icons.folder,
+            // children: _dirChildren,
+            children: _dirChildren["${dl.absolutelyCurrentPath}$dir"] ?? [],
+            // children: _nodes,
+            // children: [],
+            parent: true,
+          );
+        }).toList(),
+
+        /// files
+        ...dl.currentFiles!.map(
+          (file) {
+            return Node(
+              label: file,
+              key: "${dl.absolutelyCurrentPath}$file",
+              iconColor: Colors.green.shade300,
+              selectedIconColor: Colors.white,
+              icon: Icons.insert_drive_file,
+              subview: const Text("this is preview of widget"),
+            );
+          },
+        ).toList()
+      ];
+
+      /// init TreeViewController
+      _treeViewController = TreeViewController(
+        children: _nodes1,
+        selectedKey: _selectedNode,
+      );
+      setState(() {});
+    });
+
     _nodes = [
       Node(
         label: 'documents',
@@ -234,295 +277,142 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
 
   @override
   Widget build(BuildContext context) {
+    /// Theme
+    debugPrint(
+        "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
+    var treeViewTheme = TreeViewTheme(
+      expanderTheme: ExpanderThemeData(
+        type: _expanderType,
+        modifier: _expanderModifier,
+        position: _expanderPosition,
+        size: 20,
+        color: Colors.blue,
+      ),
+      labelStyle: const TextStyle(
+        fontSize: 16,
+        letterSpacing: 0.3,
+      ),
+      parentLabelStyle: TextStyle(
+        fontSize: 16,
+        letterSpacing: 0.1,
+        fontWeight: FontWeight.w800,
+        color: Colors.blue.shade700,
+      ),
+      iconTheme: IconThemeData(
+        size: 18,
+        color: Colors.grey.shade800,
+      ),
+      colorScheme: Theme.of(context).colorScheme,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         elevation: 0,
       ),
-      body: FutureBuilder(
-          future: dl.getDirStrList(dl),
-          // body: StreamBuilder(stream: (() {
-          //   late final StreamController<int> controller;
-          //   controller = StreamController<int>(
-          //     onListen: () async {
-          //       await dl.getDirStrList(dl);
-          //       await dlChildren.getDirStrList(dlChildren);
-          //     },
-          //   );
-          //   return controller.stream;
-          // })(),
-          builder: (context, snapshot) {
-            return GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                height: double.infinity,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          height: double.infinity,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 200,
                 child: Column(
                   children: <Widget>[
-                    // SizedBox(
-                    //   height: 200,
-                    //   child: Column(
-                    //     children: <Widget>[
-                    //       _makeExpanderPosition(),
-                    //       _makeExpanderType(),
-                    //       _makeExpanderModifier(),
-                    //       _makeAllowParentSelect(),
-                    //       _makeSupportParentDoubleTap(),
-                    //     ],
+                    _makeExpanderPosition(),
+                    _makeExpanderType(),
+                    _makeExpanderModifier(),
+                    _makeAllowParentSelect(),
+                    _makeSupportParentDoubleTap(),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                        width: 250,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.all(10),
+
+                        /// builder
+                        child: TreeView(
+                          controller: _treeViewController,
+                          allowParentSelect: _allowParentSelect,
+                          supportParentDoubleTap: _supportParentDoubleTap,
+                          onExpansionChanged: (key, expanded) {
+                            debugPrint('Selected key: $key');
+
+                            _addChildrenNode(key);
+
+                            /// update expand
+                            _expandNode(
+                              key,
+                              expanded,
+                              // false,
+                              // _treeViewController,
+                            );
+                          },
+                          onNodeTap: (key) {
+                            debugPrint('Selected: $key');
+                            setState(() {
+                              // _dirChildren=
+                              _selectedNode = key;
+                              _treeViewController = _treeViewController
+                                  .copyWith(selectedKey: key);
+                            });
+                          },
+                          theme: treeViewTheme,
+                        )),
+
+                    /// origin
+                    //   child: TreeView(
+                    //     controller: _treeViewController,
+                    //     allowParentSelect: _allowParentSelect,
+                    //     supportParentDoubleTap: _supportParentDoubleTap,
+                    //     onExpansionChanged: (key, expanded) =>
+                    //         _expandNode(key, expanded, _treeViewController),
+                    //     onNodeTap: (key) {
+                    //       debugPrint('Selected: $key');
+                    //       setState(() {
+                    //         _selectedNode = key;
+                    //         _treeViewController =
+                    //             _treeViewController.copyWith(selectedKey: key);
+                    //       });
+                    //     },
+                    //     theme: treeViewTheme,
                     //   ),
                     // ),
                     Expanded(
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 250,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.all(10),
-
-                            /// builder
-                            child: Builder(builder: (context) {
-                              // if (_nodes1.isEmpty) {
-                              _nodes1 = [
-                                /// dirs
-                                ...dl.currentStrDirs.map((dir) {
-                                  debugPrint(
-                                      "init nodeKey: ${dl.absolutelyCurrentPath}$dir");
-                                  return Node(
-                                    label: dir,
-                                    key: "${dl.absolutelyCurrentPath}$dir",
-                                    expanded: docsOpen,
-                                    icon: docsOpen
-                                        ? Icons.folder_open
-                                        : Icons.folder,
-                                    // children: _dirChildren,
-                                    children: _dirChildren[
-                                            "${dl.absolutelyCurrentPath}$dir"] ??
-                                        [],
-                                    // children: _nodes,
-                                    // children: [],
-                                    parent: true,
-                                  );
-                                }).toList(),
-
-                                /// files
-                                ...dl.currentFiles!.map(
-                                  (file) {
-                                    return Node(
-                                      label: file,
-                                      key: "${dl.absolutelyCurrentPath}$file",
-                                      iconColor: Colors.green.shade300,
-                                      selectedIconColor: Colors.white,
-                                      icon: Icons.insert_drive_file,
-                                      subview: const Text(
-                                          "this is preview of widget"),
-                                    );
-                                  },
-                                ).toList()
-                              ];
-                              // }
-
-                              /// init TreeViewController
-                              _treeViewController = TreeViewController(
-                                children: _nodes1,
-                                selectedKey: _selectedNode,
-                              );
-
-                              /// Theme
-                              debugPrint(
-                                  "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
-                              var treeViewTheme = TreeViewTheme(
-                                expanderTheme: ExpanderThemeData(
-                                  type: _expanderType,
-                                  modifier: _expanderModifier,
-                                  position: _expanderPosition,
-                                  size: 20,
-                                  color: Colors.blue,
-                                ),
-                                labelStyle: const TextStyle(
-                                  fontSize: 16,
-                                  letterSpacing: 0.3,
-                                ),
-                                parentLabelStyle: TextStyle(
-                                  fontSize: 16,
-                                  letterSpacing: 0.1,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.blue.shade700,
-                                ),
-                                iconTheme: IconThemeData(
-                                  size: 18,
-                                  color: Colors.grey.shade800,
-                                ),
-                                colorScheme: Theme.of(context).colorScheme,
-                              );
-
-                              /// return
-                              return TreeView(
-                                controller: _treeViewController,
-                                allowParentSelect: _allowParentSelect,
-                                supportParentDoubleTap: _supportParentDoubleTap,
-                                onExpansionChanged: (key, expanded) {
-                                  debugPrint('Selected key: $key');
-
-                                  /// get children
-                                  dlChildren = DirLevel(
-                                    parentDir: key,
-                                    currentDir: '',
-                                  );
-
-                                  dlChildren
-                                      .getDirStrList(dlChildren)
-                                      .then((value) {
-                                    // setState(() {
-                                    _dirChildren.addEntries({
-                                      dlChildren.absolutelyCurrentPath: [
-                                        ...dlChildren.currentStrDirs.map((dir) {
-                                          return Node(
-                                            label: dir,
-                                            key:
-                                                "${dlChildren.absolutelyCurrentPath}/$dir",
-                                            expanded: docsOpen,
-                                            icon: docsOpen
-                                                ? Icons.folder_open
-                                                : Icons.folder,
-                                            // children: _dirChildren[dlChildren
-                                            //         .absolutelyCurrentPath] ??
-                                            //     [],
-                                            children: [],
-                                            // children: _nodes,
-                                            parent: true,
-                                          );
-                                        }).toList(),
-                                        ...dlChildren.currentFiles!.map(
-                                          (file) {
-                                            return Node(
-                                              label: file,
-                                              key:
-                                                  "${dlChildren.absolutelyCurrentPath}$file",
-                                              iconColor: Colors.green.shade300,
-                                              selectedIconColor: Colors.white,
-                                              icon: Icons.insert_drive_file,
-                                              subview: const Text(
-                                                  "this is preview of widget"),
-                                            );
-                                          },
-                                        ).toList()
-                                      ]
-                                    }.entries);
-
-                                    /// addnode
-                                    // debugPrint(key);
-                                    // _addNode(key, [
-                                    //   ...dlChildren.currentStrDirs.map((dir) {
-                                    //     return Node(
-                                    //       label: dir,
-                                    //       key:
-                                    //           "${dlChildren.absolutelyCurrentPath}/$dir",
-                                    //       expanded: docsOpen,
-                                    //       icon: docsOpen
-                                    //           ? Icons.folder_open
-                                    //           : Icons.folder,
-                                    //       // children: _dirChildren[dlChildren
-                                    //       //         .absolutelyCurrentPath] ??
-                                    //       //     [],
-                                    //       children: [],
-                                    //       // children: _nodes,
-                                    //       parent: true,
-                                    //     );
-                                    //   }).toList(),
-                                    //   ...dlChildren.currentFiles!.map(
-                                    //     (file) {
-                                    //       return Node(
-                                    //           label: file,
-                                    //           key:
-                                    //               "${dlChildren.absolutelyCurrentPath}/$file",
-                                    //           iconColor:
-                                    //               Colors.green.shade300,
-                                    //           selectedIconColor: Colors.white,
-                                    //           icon: Icons.insert_drive_file);
-                                    //     },
-                                    //   ).toList()
-                                    // ]);
-                                    // });
-                                  });
-
-                                  /// update expand
-                                  _expandNode(
-                                    key,
-                                    expanded,
-                                    // false,
-                                    // _treeViewController,
-                                  );
-                                },
-                                onNodeTap: (key) {
-                                  debugPrint('Selected: $key');
-                                  setState(() {
-                                    // _dirChildren=
-                                    _selectedNode = key;
-                                    _treeViewController = _treeViewController
-                                        .copyWith(selectedKey: key);
-                                  });
-                                },
-                                theme: treeViewTheme,
-                              );
-                            }),
-                          ),
-
-                          /// origin
-                          //   child: TreeView(
-                          //     controller: _treeViewController,
-                          //     allowParentSelect: _allowParentSelect,
-                          //     supportParentDoubleTap: _supportParentDoubleTap,
-                          //     onExpansionChanged: (key, expanded) =>
-                          //         _expandNode(key, expanded, _treeViewController),
-                          //     onNodeTap: (key) {
-                          //       debugPrint('Selected: $key');
-                          //       setState(() {
-                          //         _selectedNode = key;
-                          //         _treeViewController =
-                          //             _treeViewController.copyWith(selectedKey: key);
-                          //       });
-                          //     },
-                          //     theme: treeViewTheme,
-                          //   ),
-                          // ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                debugPrint('Close Keyboard');
-                                FocusScope.of(context).unfocus();
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.only(top: 20),
-                                alignment: Alignment.center,
-                                child: _treeViewController
-                                            .getNode(_selectedNode) ==
-                                        null
-                                    ? null
-                                    : _treeViewController
-                                        .getNode(_selectedNode)!
-                                        .subview,
-                                // child: Text(_treeViewController
-                                //             .getNode(_selectedNode) ==
-                                //         null
-                                //     ? ''
-                                //     : _treeViewController
-                                //         .getNode(_selectedNode)!
-                                //         .label),
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: GestureDetector(
+                        onTap: () {
+                          debugPrint('Close Keyboard');
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 20),
+                          alignment: Alignment.center,
+                          child:
+                              _treeViewController.getNode(_selectedNode) == null
+                                  ? null
+                                  : _treeViewController
+                                      .getNode(_selectedNode)!
+                                      .subview,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-            );
-          }),
+            ],
+          ),
+        ),
+      ),
       bottomNavigationBar: SafeArea(
         top: false,
         child: ButtonBar(
@@ -650,39 +540,71 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     });
   }
 
-  // _addNode(String key, List<Node> children) {
-  //   debugPrint("_addNode: $key 's children :$children");
+  _addChildrenNode(String key) {
+    debugPrint("_addNode: $key ");
 
-  //   for (var element in children) {
-  //     debugPrint("children 's key: ${element.key}");
-  //     Node? node = _treeViewController.getNode(key);
-  //     List<Node> added;
-  //     added = _treeViewController.addNode(
-  //       element.key,
-  //       element,
-  //       parent: node,
-  //       mode: InsertMode.insert,
-  //     );
-  //     debugPrint("added children: $added");
-  //     debugPrint("added _nodes1: $_nodes1");
+    /// get children
+    dlChildren = DirLevel(
+      parentDir: key,
+      currentDir: '',
+    );
 
-  //     setState(() {
-  //       _treeViewController = _treeViewController.copyWith(children: _nodes1);
-  //       // _treeViewController = _treeViewController.withAddNode(
-  //       //   key,
-  //       //   element,
-  //       //   // parent: _treeViewController.getNode(key),
-  //       // );
-  //       // _nodes = [
-  //       //   const Node(
-  //       //     label: 'empty folder',
-  //       //     key: 'empty',
-  //       //     parent: true,
-  //       //   )
-  //       // ];
-  //     });
-  //   }
-  // }
+    dlChildren.getDirStrList(dlChildren).then((value) {
+      // setState(() {
+      _dirChildren.addEntries(
+        {
+          dlChildren.absolutelyCurrentPath: [
+            ...dlChildren.currentStrDirs.map((dir) {
+              return Node(
+                label: dir,
+                key: "${dlChildren.absolutelyCurrentPath}/$dir",
+                expanded: docsOpen,
+                icon: docsOpen ? Icons.folder_open : Icons.folder,
+                children: [],
+                parent: true,
+              );
+            }).toList(),
+            ...dlChildren.currentFiles!.map(
+              (file) {
+                return Node(
+                  label: file,
+                  key: "${dlChildren.absolutelyCurrentPath}$file",
+                  iconColor: Colors.green.shade300,
+                  selectedIconColor: Colors.white,
+                  icon: Icons.insert_drive_file,
+                  subview: const Text("this is preview of widget"),
+                );
+              },
+            ).toList()
+          ]
+        }.entries,
+      );
+      debugPrint("_dirChildren[$key]: ${_dirChildren[key]}");
+
+      if (kDebugMode) {
+        for (var element in _dirChildren[key]!) {
+          debugPrint("children 's key: ${element.key}");
+        }
+      }
+
+      Node? node = _treeViewController.getNode(key);
+      node!.children = _dirChildren[key] ?? [];
+      debugPrint("_addNode().node: $node");
+
+      List<Node> added;
+
+      added = _treeViewController.updateNode(
+        key,
+        node.copyWith(),
+      );
+      debugPrint("added children: $added");
+      // debugPrint("added _nodes1: $_nodes1");
+
+      setState(() {
+        _treeViewController = _treeViewController.copyWith(children: added);
+      });
+    });
+  }
 }
 
 class ModContainer extends StatelessWidget {

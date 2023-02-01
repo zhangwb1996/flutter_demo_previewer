@@ -40,7 +40,7 @@ class Node<T> {
   final T? data;
 
   /// The sub [Node]s of this object.
-  final List<Node> children;
+  late List<Node> children;
 
   /// Force the node to be a parent so that node can show expander without
   /// having children node.
@@ -180,6 +180,7 @@ class Node<T> {
       expanded,
       parent,
       children,
+      subview,
     );
   }
 
@@ -196,6 +197,7 @@ class Node<T> {
         other.expanded == expanded &&
         other.parent == parent &&
         other.data.runtimeType == T &&
-        other.children.length == children.length;
+        other.children.length == children.length &&
+        other.subview == subview;
   }
 }
