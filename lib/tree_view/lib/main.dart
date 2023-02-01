@@ -77,11 +77,13 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
 
   var dl = DirLevel(
+    parentDir: '',
     currentDir:
         r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/',
   );
 
   var dlChildren = DirLevel(
+    parentDir: '',
     currentDir: '',
   );
 
@@ -222,89 +224,11 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
 
                             /// builder
                             child: Builder(builder: (context) {
-                              /// _nodes
-                              for (int i = 0;
-                                  i < dl.currentStrDirs.length;
-                                  i++) {
-                                _nodes = [
-                                  Node(
-                                    label: 'documents',
-                                    key: 'docs$i${dl.currentStrDirs[i]}',
-                                    expanded: docsOpen,
-                                    icon: docsOpen
-                                        ? Icons.folder_open
-                                        : Icons.folder,
-                                    children: [
-                                      Node(
-                                        label: 'personal',
-                                        key: 'd3$i${dl.currentStrDirs[i]}',
-                                        icon: Icons.input,
-                                        iconColor: Colors.red,
-                                        children: [
-                                          Node(
-                                            label: 'Poems.docx',
-                                            key: 'pd1$i${dl.currentStrDirs[i]}',
-                                            icon: Icons.insert_drive_file,
-                                          ),
-                                          Node(
-                                            label: 'Job Hunt',
-                                            key: 'jh1$i${dl.currentStrDirs[i]}',
-                                            icon: Icons.input,
-                                            children: [
-                                              Node(
-                                                label: 'Resume.docx',
-                                                key:
-                                                    'jh1a$i${dl.currentStrDirs[i]}',
-                                                icon: Icons.insert_drive_file,
-                                              ),
-                                              Node(
-                                                label: 'Cover Letter.docx',
-                                                key:
-                                                    'jh1b$i${dl.currentStrDirs[i]}',
-                                                icon: Icons.insert_drive_file,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const Node(
-                                        label: 'Inspection.docx',
-                                        key: 'd1',
-                                        //icon: Icons.insert_drive_file),
-                                      ),
-                                      const Node(
-                                          label: 'Invoice.docx',
-                                          key: 'd2',
-                                          icon: Icons.insert_drive_file),
-                                    ],
-                                  ),
-                                  const Node(
-                                      label: 'MeetingReport.xls',
-                                      key: 'mrxls',
-                                      icon: Icons.insert_drive_file),
-                                  Node(
-                                      label: 'MeetingReport.pdf',
-                                      key: 'mrpdf',
-                                      iconColor: Colors.green.shade300,
-                                      selectedIconColor: Colors.white,
-                                      icon: Icons.insert_drive_file),
-                                  const Node(
-                                      label: 'Demo.zip',
-                                      key: 'demo',
-                                      icon: Icons.archive),
-                                  const Node(
-                                    label: 'empty folder',
-                                    key: 'empty',
-                                    parent: true,
-                                  ),
-                                ];
-                              }
-
                               _nodes1 = [
                                 /// dirs
                                 ...dl.currentStrDirs.map((dir) {
                                   debugPrint(
-                                      "init nodeKey: ${dl.absolutelyCurrentPath}$dir");
+                                      "init nodeKey: ${dl.absolutelyCurrentPath}$dir/");
                                   return Node(
                                     label: dir,
                                     key: "${dl.absolutelyCurrentPath}$dir",
@@ -345,9 +269,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                   "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
                               var treeViewTheme = TreeViewTheme(
                                 expanderTheme: ExpanderThemeData(
-                                  // type: ExpanderType.arrow,
-                                  // modifier: ExpanderModifier.none,
-                                  // position: ExpanderPosition.start,
                                   type: _expanderType,
                                   modifier: _expanderModifier,
                                   position: _expanderPosition,
@@ -377,60 +298,81 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                 allowParentSelect: _allowParentSelect,
                                 supportParentDoubleTap: _supportParentDoubleTap,
                                 onExpansionChanged: (key, expanded) async {
+                                  debugPrint('Selected key: $key');
+
                                   /// get children
-                                  debugPrint(
-                                      'sub of Collapsed: ${key.substring(key.lastIndexOf(r'/|\') + 1)}');
-                                  debugPrint(
-                                      'sub of dl.childrensParentDir: ${dl.absolutelyCurrentPath!.substring(dl.absolutelyCurrentPath!.lastIndexOf(r'/|\') + 1)}');
-                                  debugPrint(
-                                      'dl.parentDir: ${dl.parentDir}; $key');
                                   dlChildren = DirLevel(
-                                    parentDir: dl.parentDir,
-                                    currentDir: key,
+                                    parentDir: key,
+                                    currentDir: '',
                                   );
 
                                   await dlChildren
                                       .getDirStrList(dlChildren)
                                       .then((value) {
                                     debugPrint(
-                                      "_dirChildren.isNotEmpty =>${_dirChildren.isNotEmpty}",
+                                      "_dirChildren[$key] != null=>${_dirChildren[key] != null}",
+                                    );
+                                    debugPrint(
+                                      "_dirChildren[$key] = ${_dirChildren[key]}",
                                     );
 
-                                    if (_dirChildren.isNotEmpty) {
-                                      return;
-                                    }
+                                    // if (_dirChildren[key] != null) {
+                                    //   return;
+                                    // }
 
-                                    /// Map _dirChildren
-                                    _dirChildren.addEntries({
-                                      dl.absolutelyCurrentPath!: [
-                                        ...dlChildren.currentStrDirs.map((dir) {
-                                          return Node(
-                                            label: dir,
-                                            key:
-                                                "${dlChildren.absolutelyCurrentPath}$dir",
-                                            expanded: docsOpen,
-                                            icon: docsOpen
-                                                ? Icons.folder_open
-                                                : Icons.folder,
-                                            children: [],
-                                            // children: _nodes,
-                                            parent: true,
-                                          );
-                                        }).toList(),
-                                        ...dlChildren.currentFiles!.map(
-                                          (file) {
+                                    debugPrint(
+                                      "dlChildren.currentStrDirs: ${dlChildren.currentStrDirs.toString()}",
+                                    );
+                                    debugPrint(
+                                      "dlChildren.currentFiles: ${dlChildren.currentFiles.toString()}",
+                                    );
+                                    debugPrint(
+                                      "dlChildren.absolutelyCurrentPath: ${dlChildren.absolutelyCurrentPath.toString()}",
+                                    );
+
+                                    setState(() {
+                                      _dirChildren.addEntries({
+                                        dlChildren.absolutelyCurrentPath: [
+                                          ...dlChildren.currentStrDirs
+                                              .map((dir) {
                                             return Node(
-                                                label: file,
-                                                key:
-                                                    "${dlChildren.absolutelyCurrentPath}$file",
-                                                iconColor:
-                                                    Colors.green.shade300,
-                                                selectedIconColor: Colors.white,
-                                                icon: Icons.insert_drive_file);
-                                          },
-                                        ).toList()
-                                      ]
-                                    }.entries);
+                                              label: dir,
+                                              key:
+                                                  "${dlChildren.absolutelyCurrentPath}/$dir",
+                                              expanded: docsOpen,
+                                              icon: docsOpen
+                                                  ? Icons.folder_open
+                                                  : Icons.folder,
+                                              // children: _dirChildren[dlChildren
+                                              //     .absolutelyCurrentPath]!,
+                                              children: [],
+                                              // children: _nodes,
+                                              parent: true,
+                                            );
+                                          }).toList(),
+                                          ...dlChildren.currentFiles!.map(
+                                            (file) {
+                                              return Node(
+                                                  label: file,
+                                                  key:
+                                                      "${dlChildren.absolutelyCurrentPath}$file",
+                                                  iconColor:
+                                                      Colors.green.shade300,
+                                                  selectedIconColor:
+                                                      Colors.white,
+                                                  icon:
+                                                      Icons.insert_drive_file);
+                                            },
+                                          ).toList()
+                                        ]
+                                      }.entries);
+                                    });
+
+                                    // debugPrint(
+                                    //     'Map_dirChildren: $_dirChildren');
+                                    // debugPrint(
+                                    //   '_treeViewController: ${_treeViewController.children}',
+                                    // );
 
                                     /// List _dirChildren
                                     // _dirChildren = [
@@ -469,6 +411,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                   _expandNode(
                                     key,
                                     expanded,
+                                    // false,
                                     // _treeViewController,
                                   );
                                 },
@@ -643,7 +586,13 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
           ));
     } else {
       updated = _treeViewController.updateNode(
-          key, node.copyWith(expanded: expanded));
+          key,
+          node.copyWith(
+            expanded: expanded,
+            icon: expanded ? Icons.folder_open : Icons.folder,
+          ));
+      // key,
+      // node.copyWith());
     }
     setState(() {
       if (key == 'docs') docsOpen = expanded;

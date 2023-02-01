@@ -3,11 +3,10 @@ import 'dart:io';
 // import 'package:flutter/material.dart';
 
 class DirLevel {
-  final String parentDir;
+  String parentDir;
   final String currentDir;
 
-  String? absolutelyCurrentPath;
-  String? childrensCurrentDir;
+  String absolutelyCurrentPath;
 
   late List<String>? currentFiles = [];
   late List<String> currentStrDirs = [];
@@ -16,24 +15,27 @@ class DirLevel {
 
   DirLevel({
     required this.currentDir,
-    parentDir,
-  }) : parentDir = currentDir;
+    required this.parentDir,
+  })
+  // : parentDir = currentDir;
+  : absolutelyCurrentPath =
+            parentDir == '' ? currentDir : "$parentDir$currentDir";
 
   Future<List<String>> dir(DirLevel dirLevel) async {
-    absolutelyCurrentPath = "$parentDir$currentDir";
-    print('absolutelyCurrentPath: ' + "$parentDir$currentDir");
+    parentDir = absolutelyCurrentPath;
+    print('absolutelyCurrentPath: ' "$absolutelyCurrentPath");
     var path = "";
     var subPath = "";
     List<String> listPathChdrn = [];
     List<String> uniqueListPathChdrn = [];
 
-    await for (var entity in Directory("$parentDir$currentDir")
+    await for (var entity in Directory(absolutelyCurrentPath)
         // in Directory(dirLevel.childrensParentDir)
         .list(recursive: false, followLinks: true)) {
       path = entity.path.toString();
 
-      subPath = path.substring(path.lastIndexOf("$parentDir$currentDir") +
-          "$parentDir$currentDir".length);
+      subPath = path.substring(path.lastIndexOf(absolutelyCurrentPath) +
+          absolutelyCurrentPath.length);
       listPathChdrn.addAll(subPath.split(RegExp(r'\\|/')));
 
       // print("dir_level.dir(): $path");
