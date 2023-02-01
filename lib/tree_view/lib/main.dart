@@ -46,7 +46,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     children: [],
     selectedKey: null,
   );
-  bool docsOpen = true;
+  bool docsOpen = false;
   bool deepExpanded = true;
   final Map<ExpanderPosition, Widget> expansionPositionOptions = const {
     ExpanderPosition.start: Text('Start'),
