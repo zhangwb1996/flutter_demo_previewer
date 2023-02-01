@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../flutter_treeview.dart';
 
+String str =
+    r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -75,13 +77,9 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
   bool _allowParentSelect = false;
   bool _supportParentDoubleTap = false;
 
-  String str =
-      r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
-
   var dl = DirLevel(
     parentDir: '',
-    currentDir:
-        r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/',
+    currentDir: str,
   );
 
   var dlChildren = DirLevel(
@@ -304,6 +302,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       ),
       colorScheme: Theme.of(context).colorScheme,
     );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -369,25 +368,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           },
                           theme: treeViewTheme,
                         )),
-
-                    /// origin
-                    //   child: TreeView(
-                    //     controller: _treeViewController,
-                    //     allowParentSelect: _allowParentSelect,
-                    //     supportParentDoubleTap: _supportParentDoubleTap,
-                    //     onExpansionChanged: (key, expanded) =>
-                    //         _expandNode(key, expanded, _treeViewController),
-                    //     onNodeTap: (key) {
-                    //       debugPrint('Selected: $key');
-                    //       setState(() {
-                    //         _selectedNode = key;
-                    //         _treeViewController =
-                    //             _treeViewController.copyWith(selectedKey: key);
-                    //       });
-                    //     },
-                    //     theme: treeViewTheme,
-                    //   ),
-                    // ),
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
