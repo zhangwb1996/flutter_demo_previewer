@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
+import 'tools/dir/dir_entry.dart';
 
 String str =
     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
@@ -39,11 +40,34 @@ class TreeViewPreview extends StatefulWidget {
 
 class TreeViewPreviewState extends State<TreeViewPreview> {
   String? _selectedNode;
+
   late List<Node> _nodes;
+
+  late List<Node> _nodesFromPath = [];
+
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
     selectedKey: null,
   );
+
+  /// initial data of node
+  final DirEntry _dirEntry = DirEntry(
+    parentPath: '',
+    currentPath: str,
+  );
+
+  /// data of node's children
+  DirEntry _dirEntryChildren = DirEntry(
+    parentPath: '',
+    currentPath: '',
+  );
+
+  /// data of children
+  final Map<String, List<Node<dynamic>>> _dirChildren = {};
+
+  /// TODO workspace
+  final Map<String, List<Node<dynamic>>> _workspace = {};
+
   bool docsOpen = false;
   bool deepExpanded = true;
   final Map<ExpanderPosition, Widget> expansionPositionOptions = const {
@@ -69,6 +93,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     ExpanderModifier.squareOutlined:
         ModContainer(ExpanderModifier.squareOutlined),
   };
+
   ExpanderPosition _expanderPosition = ExpanderPosition.start;
   ExpanderType _expanderType = ExpanderType.caret;
   ExpanderModifier _expanderModifier = ExpanderModifier.none;
@@ -153,7 +178,55 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     _treeViewController = _treeViewController.loadJSON(json: US_STATES_JSON);
 
     /// data from map
+    /// init tree node
+    _dirEntry.getDirStrList(_dirEntry).then((value) {
+      _nodesFromPath = [
+        Node(
+            label: str,
+            key: str,
+            expanded: !docsOpen,
+            icon: !docsOpen ? Icons.folder_open : Icons.folder,
+            children: [
+              /// dirs
+              ..._dirEntry.listStrNameCurrentDirs.map((dir) {
+                debugPrint(
+                    "init nodeKey: ${_dirEntry.absolutelyCurrentPath}$dir");
+                return Node(
+                  label: dir,
+                  key: "${_dirEntry.absolutelyCurrentPath}$dir",
+                  expanded: docsOpen,
+                  icon: docsOpen ? Icons.folder_open : Icons.folder,
+                  children: [],
+                  parent: true,
+                );
+              }).toList(),
 
+              /// files
+              ..._dirEntry.listStrNameCurrentFiles!.map(
+                (file) {
+                  return Node(
+                    label: file,
+                    key: "${_dirEntry.absolutelyCurrentPath}/$file",
+                    iconColor: Colors.green.shade300,
+                    selectedIconColor: Colors.white,
+                    icon: Icons.insert_drive_file,
+                    subview: const Text("this is preview of widget"),
+                  );
+                },
+              ).toList()
+            ])
+      ];
+
+      /// TODO open different path in one tree
+      _workspace.addEntries({_nodesFromPath[0].label: _nodesFromPath}.entries);
+
+      /// init TreeViewController
+      _treeViewController = TreeViewController(
+        children: _nodesFromPath,
+        selectedKey: _selectedNode,
+      );
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -306,6 +379,9 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           onExpansionChanged: (key, expanded) {
                             debugPrint('Selected key: $key');
 
+                            /// add Children to current Node
+                            _addChildrenNode(key);
+
                             /// update expand
                             _expandNode(
                               key,
@@ -315,7 +391,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           onNodeTap: (key) {
                             debugPrint('Selected: $key');
                             setState(() {
-                              // _dirChildren=
                               _selectedNode = key;
                               _treeViewController = _treeViewController
                                   .copyWith(selectedKey: key);
@@ -384,6 +459,16 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
         child: ButtonBar(
           alignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            CupertinoButton(
+              child: const Text('Path'),
+              onPressed: () {
+                setState(() {
+                  _treeViewController = _treeViewController.copyWith(
+                    children: _nodesFromPath,
+                  );
+                });
+              },
+            ),
             CupertinoButton(
               child: const Text('Node'),
               onPressed: () {
@@ -502,6 +587,71 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       if (key == 'docs') docsOpen = expanded;
 
       _treeViewController = _treeViewController.copyWith(children: updated);
+    });
+  }
+
+  _addChildrenNode(String key) {
+    debugPrint("_addNode: $key ");
+
+    _dirEntryChildren = DirEntry(
+      parentPath: key,
+      currentPath: '',
+    );
+
+    /// get data of children
+    _dirEntryChildren.getDirStrList(_dirEntryChildren).then((value) {
+      _dirChildren.addEntries(
+        {
+          _dirEntryChildren.absolutelyCurrentPath: [
+            ..._dirEntryChildren.listStrNameCurrentDirs.map((dir) {
+              return Node(
+                label: dir,
+                key: "${_dirEntryChildren.absolutelyCurrentPath}/$dir",
+                expanded: docsOpen,
+                icon: docsOpen ? Icons.folder_open : Icons.folder,
+                children: [],
+                parent: true,
+              );
+            }).toList(),
+            ..._dirEntryChildren.listStrNameCurrentFiles!.map(
+              (file) {
+                return Node(
+                  label: file,
+                  key: "${_dirEntryChildren.absolutelyCurrentPath}/$file",
+                  iconColor: Colors.green.shade300,
+                  selectedIconColor: Colors.white,
+                  icon: Icons.insert_drive_file,
+                  subview: const Text("this is preview of widget"),
+                );
+              },
+            ).toList()
+          ]
+        }.entries,
+      );
+      debugPrint("_dirChildren[$key]: ${_dirChildren[key]}");
+
+      if (kDebugMode) {
+        for (var element in _dirChildren[key]!) {
+          debugPrint("children 's key: ${element.key}");
+        }
+      }
+
+      Node? node = _treeViewController.getNode(key);
+      node!.children = _dirChildren[key] ?? [];
+      debugPrint("_addNode().node: $node");
+
+      List<Node> added;
+
+      added = _treeViewController.updateNode(
+        key,
+        node.copyWith(),
+      );
+      debugPrint("added children: $added");
+      // debugPrint("added _nodesFromPath: $_nodesFromPath");
+
+      setState(() {
+        _treeViewController = _treeViewController.copyWith(children: added);
+      });
     });
   }
 }
