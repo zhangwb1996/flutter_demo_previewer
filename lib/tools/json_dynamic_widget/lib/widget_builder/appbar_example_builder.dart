@@ -8,7 +8,7 @@ class AppBarExampleBuilder extends JsonWidgetBuilder {
     super.numSupportedChildren = 0,
   });
 
-  static const type = 'AppBarExample';
+  static const type = 'appbar.dart';
 
   static AppBarExampleBuilder fromDynamic(
     dynamic map, {

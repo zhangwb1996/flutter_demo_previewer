@@ -9,7 +9,7 @@ class BottomNavigationBarExampleBuilder extends JsonWidgetBuilder {
     super.numSupportedChildren = 0,
   });
 
-  static const type = 'BottomNavigationBarExample';
+  static const type = 'bottom_navigation_bar.dart';
 
   static BottomNavigationBarExampleBuilder fromDynamic(
     dynamic map, {

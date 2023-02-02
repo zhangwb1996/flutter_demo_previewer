@@ -48,7 +48,9 @@ class Node<T> {
 
   /// SubView
   Widget? subview;
-  String? strSubview;
+
+  /// nameSubview
+  String? nameSubview;
 
   Node({
     required this.key,
@@ -61,6 +63,7 @@ class Node<T> {
     this.selectedIconColor,
     this.data,
     this.subview,
+    this.nameSubview,
   });
 
   /// Creates a [Node] from a string value. It generates a unique key.
@@ -84,6 +87,7 @@ class Node<T> {
     var data = map['data'];
     List<Node> children = [];
     Widget? subview = map['subview'];
+    String nameSubview = map['nameSubview'];
     key ??= Utilities.generateRandom();
     // if (map['icon'] != null) {
     // int _iconData = int.parse(map['icon']);
@@ -110,6 +114,7 @@ class Node<T> {
       parent: Utilities.truthful(map['parent']),
       children: children,
       subview: subview,
+      nameSubview: nameSubview,
     );
   }
 
@@ -126,6 +131,7 @@ class Node<T> {
     Color? selectedIconColor,
     T? data,
     Widget? subview,
+    String? nameSubview,
   }) =>
       Node<T>(
         key: key ?? this.key,
@@ -138,6 +144,7 @@ class Node<T> {
         children: children ?? this.children,
         data: data ?? this.data,
         subview: subview ?? this.subview,
+        nameSubview: nameSubview ?? this.nameSubview,
       );
 
   /// Whether this object has children [Node].
@@ -162,6 +169,7 @@ class Node<T> {
       "parent": parent,
       "children": children.map((Node child) => child.asMap).toList(),
       // "subview": subview,
+      "nameSubview": nameSubview,
     };
     if (data != null) {
       map['data'] = data as T;
@@ -187,6 +195,7 @@ class Node<T> {
       parent,
       children,
       subview,
+      nameSubview,
     );
   }
 
@@ -204,6 +213,7 @@ class Node<T> {
         other.parent == parent &&
         other.data.runtimeType == T &&
         other.children.length == children.length &&
-        other.subview == subview;
+        other.subview == subview &&
+        other.nameSubview == nameSubview;
   }
 }

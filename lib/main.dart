@@ -5,8 +5,10 @@ import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
 
-String str =
-    r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
+// String str =
+//     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
+
+String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/';
 void main() {
   register();
   runApp(const MyApp());
@@ -62,7 +64,14 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     currentPath: '',
   );
 
-  /// data of children
+  ///
+  /// used when node expanded
+  ///
+  /// all data of children
+  ///
+  /// key: current path of this node
+  ///
+  /// List: children of this node
   final Map<String, List<Node<dynamic>>> _dirChildren = {};
 
   /// TODO workspace
@@ -104,62 +113,31 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
   void initState() {
     _nodes = [
       Node(
-        label: 'documents',
-        key: 'docs',
-        expanded: docsOpen,
-        icon: docsOpen ? Icons.folder_open : Icons.folder,
-        subview: const Text("documents"),
-        children: [
-          Node(
-            label: 'personal',
-            key: 'd3',
-            icon: Icons.input,
-            iconColor: Colors.red,
-            children: [
-              Node(
-                label: 'Poems.docx',
-                key: 'pd1',
-                icon: Icons.insert_drive_file,
-              ),
-              Node(
-                label: 'Job Hunt',
-                key: 'jh1',
-                icon: Icons.input,
-                children: [
-                  Node(
-                    label: 'Resume.docx',
-                    key: 'jh1a',
-                    icon: Icons.insert_drive_file,
-                  ),
-                  Node(
-                    label: 'Cover Letter.docx',
-                    key: 'jh1b',
-                    icon: Icons.insert_drive_file,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Node(
-            label: 'Inspection.docx',
-            key: 'd1',
-//          icon: Icons.insert_drive_file),
-          ),
-          Node(label: 'Invoice.docx', key: 'd2', icon: Icons.insert_drive_file),
-        ],
-      ),
-      Node(
-        label: 'MeetingReport.xls',
+        label: 'appbar.dart',
         key: 'mrxls',
         icon: Icons.insert_drive_file,
-        subview: const Text("MeetingReport.xls"),
+        subview: const Scaffold(
+          body: Json2Widget(
+            jsonData: {
+              "type": "appbar.dart",
+            },
+          ),
+        ),
       ),
       Node(
-          label: 'MeetingReport.pdf',
-          key: 'mrpdf',
-          iconColor: Colors.green.shade300,
-          selectedIconColor: Colors.white,
-          icon: Icons.insert_drive_file),
+        label: 'bottom_navigation_bar.dart',
+        key: 'mrpdf',
+        iconColor: Colors.green.shade300,
+        selectedIconColor: Colors.white,
+        icon: Icons.insert_drive_file,
+        subview: const Scaffold(
+          body: Json2Widget(
+            jsonData: {
+              "type": "bottom_navigation_bar.dart",
+            },
+          ),
+        ),
+      ),
       Node(label: 'Demo.zip', key: 'demo', icon: Icons.archive),
       Node(
         label: 'empty folder',
@@ -168,17 +146,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       ),
     ];
 
-    /// data from node
-    _treeViewController = TreeViewController(
-      children: _nodes,
-      selectedKey: _selectedNode,
-    );
-
-    /// data from json
-    _treeViewController = _treeViewController.loadJSON(json: US_STATES_JSON);
-
-    /// data from map
-    /// init tree node
+    /// data from path
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       _nodesFromPath = [
         Node(
@@ -210,7 +178,13 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                     iconColor: Colors.green.shade300,
                     selectedIconColor: Colors.white,
                     icon: Icons.insert_drive_file,
-                    subview: const Text("this is preview of widget"),
+                    // nameSubview: file,
+                    subview: Json2Widget(
+                      key: Key("${_dirEntry.absolutelyCurrentPath}/$file"),
+                      jsonData: {
+                        "type": file,
+                      },
+                    ),
                   );
                 },
               ).toList()
@@ -390,6 +364,9 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           },
                           onNodeTap: (key) {
                             debugPrint('Selected: $key');
+                            debugPrint(
+                                'nameSubview: ${_treeViewController.getNode(key)!.nameSubview}');
+
                             setState(() {
                               _selectedNode = key;
                               _treeViewController = _treeViewController
@@ -407,43 +384,46 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                         child: Container(
                           padding: const EdgeInsets.only(top: 20),
                           alignment: Alignment.center,
+
+                          child: Builder(builder: (context) {
+                            debugPrint(
+                                'node.subview: ${_treeViewController.getNode(_selectedNode)?.subview?.key}');
+                            return _treeViewController.getNode(_selectedNode) ==
+                                    null
+                                ? const Text("data")
+                                : _treeViewController
+                                        .getNode(_selectedNode)!
+                                        .subview ??
+                                    const Text("data");
+                          }),
+
                           // child:
                           //     _treeViewController.getNode(_selectedNode) == null
                           //         ? null
-                          //         : _treeViewController
+                          //         : Scaffold(
+                          //             body: Json2Widget(
+                          //               jsonData: {
+                          //                 "type": _treeViewController
+                          //                     .getNode(_selectedNode)!
+                          //                     .nameSubview,
+                          //               },
+                          //             ),
+                          //           ),
+
+                          // child: const Scaffold(
+                          //   body: Json2Widget(
+                          //     jsonData: {
+                          //       "type": "BottomNavigationBarExample",
+                          //     },
+                          //   ),
+                          // ),
+
+                          // child:
+                          //     _treeViewController.getNode(_selectedNode) == null
+                          //         ? null
+                          //         : Text(_treeViewController
                           //             .getNode(_selectedNode)!
-                          //             .subview,
-
-                          // child: Json2Widget(
-                          //   jsonData: {
-                          //     // "type": "appbarexample",
-                          //     "type": _treeViewController
-                          //             .getNode(_selectedNode)
-                          //             ?.label ??
-                          //         "container"
-                          //   },
-                          // ),
-
-                          child: const Scaffold(
-                            body: Json2Widget(
-                              jsonData: {
-                                "type": "BottomNavigationBarExample",
-                              },
-                            ),
-                          ),
-
-                          /// dynamic widget
-                          // child: const Json2Widget(
-                          //   jsonData: {
-                          //     "type": "svg",
-                          //     "args": {
-                          //       "asset": "assets/images/visa.svg",
-                          //       "color": "#fff",
-                          //       "height": 40,
-                          //       "width": 56
-                          //     }
-                          //   },
-                          // ),
+                          //             .label),
                         ),
                       ),
                     ),
@@ -585,7 +565,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     }
     setState(() {
       if (key == 'docs') docsOpen = expanded;
-
       _treeViewController = _treeViewController.copyWith(children: updated);
     });
   }
@@ -593,12 +572,11 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
   _addChildrenNode(String key) {
     debugPrint("_addNode: $key ");
 
+    /// get and add children to map [_dirChildren] of current node
     _dirEntryChildren = DirEntry(
       parentPath: key,
       currentPath: '',
     );
-
-    /// get data of children
     _dirEntryChildren.getDirStrList(_dirEntryChildren).then((value) {
       _dirChildren.addEntries(
         {
@@ -621,7 +599,14 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                   iconColor: Colors.green.shade300,
                   selectedIconColor: Colors.white,
                   icon: Icons.insert_drive_file,
-                  subview: const Text("this is preview of widget"),
+                  // nameSubview: file,
+                  subview: Json2Widget(
+                    key:
+                        Key("${_dirEntryChildren.absolutelyCurrentPath}/$file"),
+                    jsonData: {
+                      "type": file,
+                    },
+                  ),
                 );
               },
             ).toList()
@@ -636,13 +621,15 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
         }
       }
 
+      /// get current node by key
       Node? node = _treeViewController.getNode(key);
+
+      /// set children of current node
       node!.children = _dirChildren[key] ?? [];
       debugPrint("_addNode().node: $node");
 
-      List<Node> added;
-
-      added = _treeViewController.updateNode(
+      /// update Node
+      List<Node> added = _treeViewController.updateNode(
         key,
         node.copyWith(),
       );
