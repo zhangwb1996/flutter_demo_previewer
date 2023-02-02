@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'tree_view/flutter_treeview.dart';
-
-import 'package:tree/tree_view/lib/states.dart';
+import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
+import 'tools/tree_view/flutter_treeview.dart';
 
 String str =
     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
@@ -81,6 +80,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
         key: 'docs',
         expanded: docsOpen,
         icon: docsOpen ? Icons.folder_open : Icons.folder,
+        subview: const Text("documents"),
         children: [
           Node(
             label: 'personal',
@@ -121,9 +121,11 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
         ],
       ),
       Node(
-          label: 'MeetingReport.xls',
-          key: 'mrxls',
-          icon: Icons.insert_drive_file),
+        label: 'MeetingReport.xls',
+        key: 'mrxls',
+        icon: Icons.insert_drive_file,
+        subview: const Text("MeetingReport.xls"),
+      ),
       Node(
           label: 'MeetingReport.pdf',
           key: 'mrpdf',
@@ -138,10 +140,16 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       ),
     ];
 
+    /// data from node
     _treeViewController = TreeViewController(
       children: _nodes,
       selectedKey: _selectedNode,
     );
+
+    /// data from json
+    _treeViewController = _treeViewController.loadJSON(json: US_STATES_JSON);
+
+    /// data from map
 
     super.initState();
   }
@@ -321,12 +329,18 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                         child: Container(
                           padding: const EdgeInsets.only(top: 20),
                           alignment: Alignment.center,
-                          child:
-                              _treeViewController.getNode(_selectedNode) == null
-                                  ? null
-                                  : _treeViewController
-                                      .getNode(_selectedNode)!
-                                      .subview,
+                          // child:
+                          //     _treeViewController.getNode(_selectedNode) == null
+                          //         ? null
+                          //         : _treeViewController
+                          //             .getNode(_selectedNode)!
+                          //             .subview,
+                          child: const Json2Widget(
+                            jsonData: {
+                              "type": "text",
+                              "args": {"text": "Align"}
+                            },
+                          ),
                         ),
                       ),
                     ),

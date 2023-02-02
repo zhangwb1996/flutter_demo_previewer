@@ -7,3 +7,4 @@ export 'src/tree_view.dart';
 export 'src/tree_view_controller.dart';
 export 'src/tree_view_theme.dart';
 export 'src/utilities.dart';
+export 'lib/states.dart';

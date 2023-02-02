@@ -48,6 +48,7 @@ class Node<T> {
 
   /// SubView
   Widget? subview;
+  String? strSubview;
 
   Node({
     required this.key,
