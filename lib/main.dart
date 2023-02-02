@@ -1,12 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'tree_view/flutter_treeview.dart';
-import 'package:tree/dir/dir_level.dart';
-
-import 'package:tree/tree_view/lib/states.dart';
+import 'package:tree/tools/dir/dir_entry.dart';
 
 String str =
     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
@@ -40,12 +37,37 @@ class TreeViewPreview extends StatefulWidget {
 
 class TreeViewPreviewState extends State<TreeViewPreview> {
   String? _selectedNode;
-  late List<Node> _nodes;
+
   late List<Node> _nodes1 = [];
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
     selectedKey: null,
   );
+
+  final ExpanderPosition _expanderPosition = ExpanderPosition.start;
+  final ExpanderType _expanderType = ExpanderType.caret;
+  final ExpanderModifier _expanderModifier = ExpanderModifier.none;
+  final bool _allowParentSelect = false;
+  final bool _supportParentDoubleTap = false;
+
+  /// initial data of node
+  DirEntry dirEntry = DirEntry(
+    parentPath: '',
+    currentPath: str,
+  );
+
+  /// data of node's children
+  DirEntry dirEntryChildren = DirEntry(
+    parentPath: '',
+    currentPath: '',
+  );
+
+  /// data of children
+  final Map<String, List<Node<dynamic>>> _dirChildren = {};
+
+  /// TODO workspace
+  final Map<String, List<Node<dynamic>>> _workspace = {};
+
   bool docsOpen = false;
   bool deepExpanded = true;
   final Map<ExpanderPosition, Widget> expansionPositionOptions = const {
@@ -71,30 +93,10 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     ExpanderModifier.squareOutlined:
         ModContainer(ExpanderModifier.squareOutlined),
   };
-  ExpanderPosition _expanderPosition = ExpanderPosition.start;
-  ExpanderType _expanderType = ExpanderType.caret;
-  ExpanderModifier _expanderModifier = ExpanderModifier.none;
-  bool _allowParentSelect = false;
-  bool _supportParentDoubleTap = false;
-
-  var dl = DirLevel(
-    parentDir: '',
-    currentDir: str,
-  );
-
-  var dlChildren = DirLevel(
-    parentDir: '',
-    currentDir: '',
-  );
-
-  final Map<String, List<Node<dynamic>>> _dirChildren = {};
-  // List<Node<dynamic>> _dirChildren = [];
-
-  final Map<String, List<Node<dynamic>>> _workspace = {};
-
   @override
   void initState() {
-    dl.getDirStrList(dl).then((value) {
+    /// init tree node
+    dirEntry.getDirStrList(dirEntry).then((value) {
       _nodes1 = [
         Node(
             label: str,
@@ -103,28 +105,25 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
             icon: !docsOpen ? Icons.folder_open : Icons.folder,
             children: [
               /// dirs
-              ...dl.currentStrDirs.map((dir) {
-                debugPrint("init nodeKey: ${dl.absolutelyCurrentPath}$dir");
+              ...dirEntry.listStrNameCurrentDirs.map((dir) {
+                debugPrint(
+                    "init nodeKey: ${dirEntry.absolutelyCurrentPath}$dir");
                 return Node(
                   label: dir,
-                  key: "${dl.absolutelyCurrentPath}$dir",
+                  key: "${dirEntry.absolutelyCurrentPath}$dir",
                   expanded: docsOpen,
                   icon: docsOpen ? Icons.folder_open : Icons.folder,
-                  // children: _dirChildren,
-                  // children:
-                  //     _dirChildren["${dl.absolutelyCurrentPath}$dir"] ?? [],
-                  // children: _nodes,
                   children: [],
                   parent: true,
                 );
               }).toList(),
 
               /// files
-              ...dl.currentFiles!.map(
+              ...dirEntry.listStrNameCurrentFiles!.map(
                 (file) {
                   return Node(
                     label: file,
-                    key: "${dl.absolutelyCurrentPath}/$file",
+                    key: "${dirEntry.absolutelyCurrentPath}/$file",
                     iconColor: Colors.green.shade300,
                     selectedIconColor: Colors.white,
                     icon: Icons.insert_drive_file,
@@ -135,7 +134,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
             ])
       ];
 
-      /// open different path in one tree
+      /// TODO open different path in one tree
       _workspace.addEntries({_nodes1[0].label: _nodes1}.entries);
 
       /// init TreeViewController
@@ -145,145 +144,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       );
       setState(() {});
     });
-
-    _nodes = [
-      Node(
-        label: 'documents',
-        key: 'docs',
-        expanded: docsOpen,
-        icon: docsOpen ? Icons.folder_open : Icons.folder,
-        children: [
-          Node(
-            label: 'personal',
-            key: 'd3',
-            icon: Icons.input,
-            iconColor: Colors.red,
-            children: [
-              Node(
-                label: 'Poems.docx',
-                key: 'pd1',
-                icon: Icons.insert_drive_file,
-              ),
-              Node(
-                label: 'Job Hunt',
-                key: 'jh1',
-                icon: Icons.input,
-                children: [
-                  Node(
-                    label: 'Resume.docx',
-                    key: 'jh1a',
-                    icon: Icons.insert_drive_file,
-                  ),
-                  Node(
-                    label: 'Cover Letter.docx',
-                    key: 'jh1b',
-                    icon: Icons.insert_drive_file,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Node(
-            label: 'Inspection.docx',
-            key: 'd1',
-//          icon: Icons.insert_drive_file),
-          ),
-          Node(label: 'Invoice.docx', key: 'd2', icon: Icons.insert_drive_file),
-        ],
-      ),
-      Node(
-          label: 'MeetingReport.xls',
-          key: 'mrxls',
-          icon: Icons.insert_drive_file),
-      Node(
-          label: 'MeetingReport.pdf',
-          key: 'mrpdf',
-          iconColor: Colors.green.shade300,
-          selectedIconColor: Colors.white,
-          icon: Icons.insert_drive_file),
-      Node(label: 'Demo.zip', key: 'demo', icon: Icons.archive),
-      Node(
-        label: 'empty folder',
-        key: 'empty',
-        parent: true,
-      ),
-    ];
     super.initState();
-  }
-
-  ListTile _makeExpanderPosition() {
-    return ListTile(
-      title: const Text('Expander Position'),
-      dense: true,
-      trailing: CupertinoSlidingSegmentedControl(
-        children: expansionPositionOptions,
-        groupValue: _expanderPosition,
-        onValueChanged: ((value) {
-          setState(() {
-            _expanderPosition = value!;
-          });
-        }),
-      ),
-    );
-  }
-
-  SwitchListTile _makeAllowParentSelect() {
-    return SwitchListTile.adaptive(
-      title: const Text('Allow Parent Select'),
-      dense: true,
-      value: _allowParentSelect,
-      onChanged: (v) {
-        setState(() {
-          _allowParentSelect = v;
-        });
-      },
-    );
-  }
-
-  SwitchListTile _makeSupportParentDoubleTap() {
-    return SwitchListTile.adaptive(
-      title: const Text('Support Parent Double Tap'),
-      dense: true,
-      value: _supportParentDoubleTap,
-      onChanged: (v) {
-        setState(() {
-          _supportParentDoubleTap = v;
-        });
-      },
-    );
-  }
-
-  ListTile _makeExpanderType() {
-    return ListTile(
-      title: const Text('Expander Style'),
-      dense: true,
-      trailing: CupertinoSlidingSegmentedControl(
-        // trailing: CupertinoSlidingSegmentedControl(
-        children: expansionTypeOptions,
-        groupValue: _expanderType,
-        onValueChanged: ((value) {
-          setState(() {
-            _expanderType = value ?? ExpanderType.arrow;
-          });
-        }),
-      ),
-    );
-  }
-
-  ListTile _makeExpanderModifier() {
-    return ListTile(
-      title: const Text('Expander Modifier'),
-      dense: true,
-      trailing: CupertinoSlidingSegmentedControl(
-        children: expansionModifierOptions,
-        groupValue: _expanderModifier,
-        onValueChanged: ((value) {
-          setState(() {
-            _expanderModifier = value!;
-          });
-        }),
-      ),
-    );
   }
 
   @override
@@ -332,18 +193,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
           height: double.infinity,
           child: Column(
             children: <Widget>[
-              // SizedBox(
-              //   height: 200,
-              //   child: Column(
-              //     children: <Widget>[
-              //       _makeExpanderPosition(),
-              //       _makeExpanderType(),
-              //       _makeExpanderModifier(),
-              //       _makeAllowParentSelect(),
-              //       _makeSupportParentDoubleTap(),
-              //     ],
-              //   ),
-              // ),
               Expanded(
                 child: Row(
                   children: [
@@ -372,7 +221,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           onNodeTap: (key) {
                             debugPrint('Selected: $key');
                             setState(() {
-                              // _dirChildren=
                               _selectedNode = key;
                               _treeViewController = _treeViewController
                                   .copyWith(selectedKey: key);
@@ -403,101 +251,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
               ),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: ButtonBar(
-          alignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CupertinoButton(
-              child: const Text('Node'),
-              onPressed: () {
-                setState(() {
-                  _treeViewController = _treeViewController.copyWith(
-                    // children: _nodes,
-                    children: _nodes1,
-                  );
-                });
-              },
-            ),
-            CupertinoButton(
-              child: const Text('JSON'),
-              onPressed: () {
-                setState(() {
-                  _treeViewController =
-                      _treeViewController.loadJSON(json: US_STATES_JSON);
-                });
-              },
-            ),
-            CupertinoButton(
-              child: const Text('Deep'),
-              onPressed: () {
-                String deepKey = 'jh1b';
-                setState(() {
-                  if (deepExpanded == false) {
-                    List<Node> newdata =
-                        _treeViewController.expandToNode(deepKey);
-                    _treeViewController =
-                        _treeViewController.copyWith(children: newdata);
-                    deepExpanded = true;
-                  } else {
-                    _treeViewController =
-                        _treeViewController.withCollapseToNode(deepKey);
-                    deepExpanded = false;
-                  }
-                });
-              },
-            ),
-            CupertinoButton(
-              child: const Text('Edit'),
-              onPressed: () {
-                TextEditingController editingController = TextEditingController(
-                    text: _treeViewController.selectedNode!.label);
-                showCupertinoDialog(
-                    context: context,
-                    builder: (context) {
-                      return CupertinoAlertDialog(
-                        title: const Text('Edit Label'),
-                        content: Container(
-                          height: 80,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(10),
-                          child: CupertinoTextField(
-                            controller: editingController,
-                            autofocus: true,
-                          ),
-                        ),
-                        actions: <Widget>[
-                          CupertinoDialogAction(
-                            isDestructiveAction: true,
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Cancel'),
-                          ),
-                          CupertinoDialogAction(
-                            isDefaultAction: true,
-                            onPressed: () {
-                              if (editingController.text.isNotEmpty) {
-                                setState(() {
-                                  Node node = _treeViewController.selectedNode!;
-                                  _treeViewController =
-                                      _treeViewController.withUpdateNode(
-                                          _treeViewController.selectedKey!,
-                                          node.copyWith(
-                                              label: editingController.text));
-                                });
-                                debugPrint(editingController.text);
-                              }
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Update'),
-                          ),
-                        ],
-                      );
-                    });
-              },
-            ),
-          ],
         ),
       ),
     );
@@ -535,32 +288,31 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
   _addChildrenNode(String key) {
     debugPrint("_addNode: $key ");
 
-    /// get children
-    dlChildren = DirLevel(
-      parentDir: key,
-      currentDir: '',
+    dirEntryChildren = DirEntry(
+      parentPath: key,
+      currentPath: '',
     );
 
-    dlChildren.getDirStrList(dlChildren).then((value) {
-      // setState(() {
+    /// get data of children
+    dirEntryChildren.getDirStrList(dirEntryChildren).then((value) {
       _dirChildren.addEntries(
         {
-          dlChildren.absolutelyCurrentPath: [
-            ...dlChildren.currentStrDirs.map((dir) {
+          dirEntryChildren.absolutelyCurrentPath: [
+            ...dirEntryChildren.listStrNameCurrentDirs.map((dir) {
               return Node(
                 label: dir,
-                key: "${dlChildren.absolutelyCurrentPath}/$dir",
+                key: "${dirEntryChildren.absolutelyCurrentPath}/$dir",
                 expanded: docsOpen,
                 icon: docsOpen ? Icons.folder_open : Icons.folder,
                 children: [],
                 parent: true,
               );
             }).toList(),
-            ...dlChildren.currentFiles!.map(
+            ...dirEntryChildren.listStrNameCurrentFiles!.map(
               (file) {
                 return Node(
                   label: file,
-                  key: "${dlChildren.absolutelyCurrentPath}/$file",
+                  key: "${dirEntryChildren.absolutelyCurrentPath}/$file",
                   iconColor: Colors.green.shade300,
                   selectedIconColor: Colors.white,
                   icon: Icons.insert_drive_file,
