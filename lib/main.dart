@@ -349,10 +349,12 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           //   },
                           // ),
 
-                          child: const Json2Widget(
-                            jsonData: {
-                              "type": "BottomNavigationBarExample",
-                            },
+                          child: const Scaffold(
+                            body: Json2Widget(
+                              jsonData: {
+                                "type": "BottomNavigationBarExample",
+                              },
+                            ),
                           ),
 
                           /// dynamic widget
