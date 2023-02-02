@@ -17,7 +17,8 @@ class Json2Widget extends StatefulWidget {
 }
 
 class Json2WidgetState extends State<Json2Widget> {
-  JsonWidgetData? _data;
+  // JsonWidgetData? _data;
+  var _data;
   @override
   void initState() {
     super.initState();
@@ -28,5 +29,6 @@ class Json2WidgetState extends State<Json2Widget> {
   @override
   Widget build(BuildContext context) => _data!.build(
         context: context,
+        // registry: widget.registry ?? JsonWidgetRegistry.instance,
       );
 }

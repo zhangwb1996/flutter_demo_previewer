@@ -6,7 +6,10 @@ import 'tools/tree_view/flutter_treeview.dart';
 
 String str =
     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
-void main() => runApp(const MyApp());
+void main() {
+  register();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -335,12 +338,35 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           //         : _treeViewController
                           //             .getNode(_selectedNode)!
                           //             .subview,
+
+                          // child: Json2Widget(
+                          //   jsonData: {
+                          //     // "type": "appbarexample",
+                          //     "type": _treeViewController
+                          //             .getNode(_selectedNode)
+                          //             ?.label ??
+                          //         "container"
+                          //   },
+                          // ),
+
                           child: const Json2Widget(
                             jsonData: {
-                              "type": "text",
-                              "args": {"text": "Align"}
+                              "type": "BottomNavigationBarExample",
                             },
                           ),
+
+                          /// dynamic widget
+                          // child: const Json2Widget(
+                          //   jsonData: {
+                          //     "type": "svg",
+                          //     "args": {
+                          //       "asset": "assets/images/visa.svg",
+                          //       "color": "#fff",
+                          //       "height": 40,
+                          //       "width": 56
+                          //     }
+                          //   },
+                          // ),
                         ),
                       ),
                     ),
