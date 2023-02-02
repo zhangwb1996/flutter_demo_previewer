@@ -6,8 +6,7 @@ class Json2Widget extends StatefulWidget {
     required this.jsonData,
     this.registry,
     Key? key,
-  })  : assert(jsonData != null),
-        super(key: key);
+  }) : super(key: key);
 
   final Map<String, dynamic> jsonData;
   final JsonWidgetRegistry? registry;
@@ -17,8 +16,8 @@ class Json2Widget extends StatefulWidget {
 }
 
 class Json2WidgetState extends State<Json2Widget> {
-  // JsonWidgetData? _data;
-  var _data;
+  JsonWidgetData? _data;
+  // var _data;
   @override
   void initState() {
     super.initState();
