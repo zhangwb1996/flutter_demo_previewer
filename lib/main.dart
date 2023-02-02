@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'tree_view/flutter_treeview.dart';
-import 'package:tree/dir/dir_level.dart';
 
 import 'package:tree/tree_view/lib/states.dart';
 
@@ -41,7 +38,6 @@ class TreeViewPreview extends StatefulWidget {
 class TreeViewPreviewState extends State<TreeViewPreview> {
   String? _selectedNode;
   late List<Node> _nodes;
-  late List<Node> _nodes1 = [];
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
     selectedKey: null,
@@ -77,75 +73,8 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
   bool _allowParentSelect = false;
   bool _supportParentDoubleTap = false;
 
-  var dl = DirLevel(
-    parentDir: '',
-    currentDir: str,
-  );
-
-  var dlChildren = DirLevel(
-    parentDir: '',
-    currentDir: '',
-  );
-
-  final Map<String, List<Node<dynamic>>> _dirChildren = {};
-  // List<Node<dynamic>> _dirChildren = [];
-
-  final Map<String, List<Node<dynamic>>> _workspace = {};
-
   @override
   void initState() {
-    dl.getDirStrList(dl).then((value) {
-      _nodes1 = [
-        Node(
-            label: str,
-            key: str,
-            expanded: !docsOpen,
-            icon: !docsOpen ? Icons.folder_open : Icons.folder,
-            children: [
-              /// dirs
-              ...dl.currentStrDirs.map((dir) {
-                debugPrint("init nodeKey: ${dl.absolutelyCurrentPath}$dir");
-                return Node(
-                  label: dir,
-                  key: "${dl.absolutelyCurrentPath}$dir",
-                  expanded: docsOpen,
-                  icon: docsOpen ? Icons.folder_open : Icons.folder,
-                  // children: _dirChildren,
-                  // children:
-                  //     _dirChildren["${dl.absolutelyCurrentPath}$dir"] ?? [],
-                  // children: _nodes,
-                  children: [],
-                  parent: true,
-                );
-              }).toList(),
-
-              /// files
-              ...dl.currentFiles!.map(
-                (file) {
-                  return Node(
-                    label: file,
-                    key: "${dl.absolutelyCurrentPath}/$file",
-                    iconColor: Colors.green.shade300,
-                    selectedIconColor: Colors.white,
-                    icon: Icons.insert_drive_file,
-                    subview: const Text("this is preview of widget"),
-                  );
-                },
-              ).toList()
-            ])
-      ];
-
-      /// open different path in one tree
-      _workspace.addEntries({_nodes1[0].label: _nodes1}.entries);
-
-      /// init TreeViewController
-      _treeViewController = TreeViewController(
-        children: _nodes1,
-        selectedKey: _selectedNode,
-      );
-      setState(() {});
-    });
-
     _nodes = [
       Node(
         label: 'documents',
@@ -208,6 +137,12 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
         parent: true,
       ),
     ];
+
+    _treeViewController = TreeViewController(
+      children: _nodes,
+      selectedKey: _selectedNode,
+    );
+
     super.initState();
   }
 
@@ -332,18 +267,18 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
           height: double.infinity,
           child: Column(
             children: <Widget>[
-              // SizedBox(
-              //   height: 200,
-              //   child: Column(
-              //     children: <Widget>[
-              //       _makeExpanderPosition(),
-              //       _makeExpanderType(),
-              //       _makeExpanderModifier(),
-              //       _makeAllowParentSelect(),
-              //       _makeSupportParentDoubleTap(),
-              //     ],
-              //   ),
-              // ),
+              SizedBox(
+                height: 200,
+                child: Column(
+                  children: <Widget>[
+                    _makeExpanderPosition(),
+                    _makeExpanderType(),
+                    _makeExpanderModifier(),
+                    _makeAllowParentSelect(),
+                    _makeSupportParentDoubleTap(),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Row(
                   children: [
@@ -359,9 +294,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                           supportParentDoubleTap: _supportParentDoubleTap,
                           onExpansionChanged: (key, expanded) {
                             debugPrint('Selected key: $key');
-
-                            /// add children into node and update
-                            _addChildrenNode(key);
 
                             /// update expand
                             _expandNode(
@@ -415,8 +347,7 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
               onPressed: () {
                 setState(() {
                   _treeViewController = _treeViewController.copyWith(
-                    // children: _nodes,
-                    children: _nodes1,
+                    children: _nodes,
                   );
                 });
               },
@@ -529,72 +460,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
       if (key == 'docs') docsOpen = expanded;
 
       _treeViewController = _treeViewController.copyWith(children: updated);
-    });
-  }
-
-  _addChildrenNode(String key) {
-    debugPrint("_addNode: $key ");
-
-    /// get children
-    dlChildren = DirLevel(
-      parentDir: key,
-      currentDir: '',
-    );
-
-    dlChildren.getDirStrList(dlChildren).then((value) {
-      // setState(() {
-      _dirChildren.addEntries(
-        {
-          dlChildren.absolutelyCurrentPath: [
-            ...dlChildren.currentStrDirs.map((dir) {
-              return Node(
-                label: dir,
-                key: "${dlChildren.absolutelyCurrentPath}/$dir",
-                expanded: docsOpen,
-                icon: docsOpen ? Icons.folder_open : Icons.folder,
-                children: [],
-                parent: true,
-              );
-            }).toList(),
-            ...dlChildren.currentFiles!.map(
-              (file) {
-                return Node(
-                  label: file,
-                  key: "${dlChildren.absolutelyCurrentPath}/$file",
-                  iconColor: Colors.green.shade300,
-                  selectedIconColor: Colors.white,
-                  icon: Icons.insert_drive_file,
-                  subview: const Text("this is preview of widget"),
-                );
-              },
-            ).toList()
-          ]
-        }.entries,
-      );
-      debugPrint("_dirChildren[$key]: ${_dirChildren[key]}");
-
-      if (kDebugMode) {
-        for (var element in _dirChildren[key]!) {
-          debugPrint("children 's key: ${element.key}");
-        }
-      }
-
-      Node? node = _treeViewController.getNode(key);
-      node!.children = _dirChildren[key] ?? [];
-      debugPrint("_addNode().node: $node");
-
-      List<Node> added;
-
-      added = _treeViewController.updateNode(
-        key,
-        node.copyWith(),
-      );
-      debugPrint("added children: $added");
-      // debugPrint("added _nodes1: $_nodes1");
-
-      setState(() {
-        _treeViewController = _treeViewController.copyWith(children: added);
-      });
     });
   }
 }
