@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'tree_view/flutter_treeview.dart';
-import 'package:tree/tree_view/lib/dir_level.dart';
+import 'package:tree/dir/dir_level.dart';
 
 import 'package:tree/tree_view/lib/states.dart';
 
