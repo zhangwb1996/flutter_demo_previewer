@@ -124,3 +124,12 @@ void dynamicWidgetHelper(String path) {
         .writeAsStringSync(listStrContentRegister.join("\n"));
   }
 }
+
+void clean() {
+  Directory("${Directory.current}/$strDirGenerateBuilder")
+      .delete(recursive: true);
+  File("${Directory.current}/$strDirGenerateBuilder/builder.dart")
+      .writeAsStringSync('');
+  File("${Directory.current.path}/$strTempRegisterFunction").copySync(
+      "${Directory.current.path}/$strDirGenerateRegister/register.dart");
+}

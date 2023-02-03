@@ -171,7 +171,16 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    dynamicWidgetHelper(demo);
+    register();
+
     /// Theme
     debugPrint(
         "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
