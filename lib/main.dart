@@ -12,10 +12,9 @@ import 'tools/dir/dir_entry.dart';
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/';
 String demo = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
 void main() async {
-  await dynamicWidgetHelper(demo).whenComplete(() {
-    register();
-    runApp(const MyApp());
-  });
+  dynamicWidgetHelper(demo);
+  register();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

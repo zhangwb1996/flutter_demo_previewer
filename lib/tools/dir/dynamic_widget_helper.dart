@@ -36,7 +36,7 @@ String strDirGenerateRegisterFlag = 'lib/tools/json_dynamic_widget/generated';
 ///
 /// builder.dart
 ///
-Future dynamicWidgetHelper(String path) async {
+void dynamicWidgetHelper(String path) {
   /// [dartFiles]
   Iterable<File> dartFiles = Directory(path)
       .listSync()
@@ -66,6 +66,11 @@ Future dynamicWidgetHelper(String path) async {
     ///
     //  create file
     print("current dir: ${Directory.current.path}");
+    if (File(
+            "${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart")
+        .existsSync()) {
+      continue;
+    }
     File("${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart")
         .createSync(recursive: true);
 
