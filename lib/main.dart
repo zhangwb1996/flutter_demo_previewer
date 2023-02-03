@@ -43,8 +43,6 @@ class TreeViewPreview extends StatefulWidget {
 class TreeViewPreviewState extends State<TreeViewPreview> {
   String? _selectedNode;
 
-  late List<Node> _nodes;
-
   late List<Node> _nodesFromPath = [];
 
   late TreeViewController _treeViewController = TreeViewController(
@@ -103,49 +101,14 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
         ModContainer(ExpanderModifier.squareOutlined),
   };
 
-  ExpanderPosition _expanderPosition = ExpanderPosition.start;
-  ExpanderType _expanderType = ExpanderType.caret;
-  ExpanderModifier _expanderModifier = ExpanderModifier.none;
-  bool _allowParentSelect = false;
-  bool _supportParentDoubleTap = false;
+  final ExpanderPosition _expanderPosition = ExpanderPosition.start;
+  final ExpanderType _expanderType = ExpanderType.caret;
+  final ExpanderModifier _expanderModifier = ExpanderModifier.none;
+  final bool _allowParentSelect = false;
+  final bool _supportParentDoubleTap = false;
 
   @override
   void initState() {
-    _nodes = [
-      Node(
-        label: 'appbar.dart',
-        key: 'mrxls',
-        icon: Icons.insert_drive_file,
-        subview: const Scaffold(
-          body: Json2Widget(
-            jsonData: {
-              "type": "appbar.dart",
-            },
-          ),
-        ),
-      ),
-      Node(
-        label: 'bottom_navigation_bar.dart',
-        key: 'mrpdf',
-        iconColor: Colors.green.shade300,
-        selectedIconColor: Colors.white,
-        icon: Icons.insert_drive_file,
-        subview: const Scaffold(
-          body: Json2Widget(
-            jsonData: {
-              "type": "bottom_navigation_bar.dart",
-            },
-          ),
-        ),
-      ),
-      Node(label: 'Demo.zip', key: 'demo', icon: Icons.archive),
-      Node(
-        label: 'empty folder',
-        key: 'empty',
-        parent: true,
-      ),
-    ];
-
     /// data from path
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       _nodesFromPath = [
@@ -204,81 +167,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     super.initState();
   }
 
-  ListTile _makeExpanderPosition() {
-    return ListTile(
-      title: const Text('Expander Position'),
-      dense: true,
-      trailing: CupertinoSlidingSegmentedControl(
-        children: expansionPositionOptions,
-        groupValue: _expanderPosition,
-        onValueChanged: ((value) {
-          setState(() {
-            _expanderPosition = value!;
-          });
-        }),
-      ),
-    );
-  }
-
-  SwitchListTile _makeAllowParentSelect() {
-    return SwitchListTile.adaptive(
-      title: const Text('Allow Parent Select'),
-      dense: true,
-      value: _allowParentSelect,
-      onChanged: (v) {
-        setState(() {
-          _allowParentSelect = v;
-        });
-      },
-    );
-  }
-
-  SwitchListTile _makeSupportParentDoubleTap() {
-    return SwitchListTile.adaptive(
-      title: const Text('Support Parent Double Tap'),
-      dense: true,
-      value: _supportParentDoubleTap,
-      onChanged: (v) {
-        setState(() {
-          _supportParentDoubleTap = v;
-        });
-      },
-    );
-  }
-
-  ListTile _makeExpanderType() {
-    return ListTile(
-      title: const Text('Expander Style'),
-      dense: true,
-      trailing: CupertinoSlidingSegmentedControl(
-        // trailing: CupertinoSlidingSegmentedControl(
-        children: expansionTypeOptions,
-        groupValue: _expanderType,
-        onValueChanged: ((value) {
-          setState(() {
-            _expanderType = value ?? ExpanderType.arrow;
-          });
-        }),
-      ),
-    );
-  }
-
-  ListTile _makeExpanderModifier() {
-    return ListTile(
-      title: const Text('Expander Modifier'),
-      dense: true,
-      trailing: CupertinoSlidingSegmentedControl(
-        children: expansionModifierOptions,
-        groupValue: _expanderModifier,
-        onValueChanged: ((value) {
-          setState(() {
-            _expanderModifier = value!;
-          });
-        }),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     /// Theme
@@ -325,18 +213,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
           height: double.infinity,
           child: Column(
             children: <Widget>[
-              SizedBox(
-                height: 200,
-                child: Column(
-                  children: <Widget>[
-                    _makeExpanderPosition(),
-                    _makeExpanderType(),
-                    _makeExpanderModifier(),
-                    _makeAllowParentSelect(),
-                    _makeSupportParentDoubleTap(),
-                  ],
-                ),
-              ),
               Expanded(
                 child: Row(
                   children: [
@@ -384,7 +260,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                         child: Container(
                           padding: const EdgeInsets.only(top: 20),
                           alignment: Alignment.center,
-
                           child: Builder(builder: (context) {
                             debugPrint(
                                 'node.subview: ${_treeViewController.getNode(_selectedNode)?.subview?.key}');
@@ -396,34 +271,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
                                         .subview ??
                                     const Text("data");
                           }),
-
-                          // child:
-                          //     _treeViewController.getNode(_selectedNode) == null
-                          //         ? null
-                          //         : Scaffold(
-                          //             body: Json2Widget(
-                          //               jsonData: {
-                          //                 "type": _treeViewController
-                          //                     .getNode(_selectedNode)!
-                          //                     .nameSubview,
-                          //               },
-                          //             ),
-                          //           ),
-
-                          // child: const Scaffold(
-                          //   body: Json2Widget(
-                          //     jsonData: {
-                          //       "type": "BottomNavigationBarExample",
-                          //     },
-                          //   ),
-                          // ),
-
-                          // child:
-                          //     _treeViewController.getNode(_selectedNode) == null
-                          //         ? null
-                          //         : Text(_treeViewController
-                          //             .getNode(_selectedNode)!
-                          //             .label),
                         ),
                       ),
                     ),
@@ -432,110 +279,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
               ),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: ButtonBar(
-          alignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CupertinoButton(
-              child: const Text('Path'),
-              onPressed: () {
-                setState(() {
-                  _treeViewController = _treeViewController.copyWith(
-                    children: _nodesFromPath,
-                  );
-                });
-              },
-            ),
-            CupertinoButton(
-              child: const Text('Node'),
-              onPressed: () {
-                setState(() {
-                  _treeViewController = _treeViewController.copyWith(
-                    children: _nodes,
-                  );
-                });
-              },
-            ),
-            CupertinoButton(
-              child: const Text('JSON'),
-              onPressed: () {
-                setState(() {
-                  _treeViewController =
-                      _treeViewController.loadJSON(json: US_STATES_JSON);
-                });
-              },
-            ),
-            CupertinoButton(
-              child: const Text('Deep'),
-              onPressed: () {
-                String deepKey = 'jh1b';
-                setState(() {
-                  if (deepExpanded == false) {
-                    List<Node> newdata =
-                        _treeViewController.expandToNode(deepKey);
-                    _treeViewController =
-                        _treeViewController.copyWith(children: newdata);
-                    deepExpanded = true;
-                  } else {
-                    _treeViewController =
-                        _treeViewController.withCollapseToNode(deepKey);
-                    deepExpanded = false;
-                  }
-                });
-              },
-            ),
-            CupertinoButton(
-              child: const Text('Edit'),
-              onPressed: () {
-                TextEditingController editingController = TextEditingController(
-                    text: _treeViewController.selectedNode!.label);
-                showCupertinoDialog(
-                    context: context,
-                    builder: (context) {
-                      return CupertinoAlertDialog(
-                        title: const Text('Edit Label'),
-                        content: Container(
-                          height: 80,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(10),
-                          child: CupertinoTextField(
-                            controller: editingController,
-                            autofocus: true,
-                          ),
-                        ),
-                        actions: <Widget>[
-                          CupertinoDialogAction(
-                            isDestructiveAction: true,
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Cancel'),
-                          ),
-                          CupertinoDialogAction(
-                            isDefaultAction: true,
-                            onPressed: () {
-                              if (editingController.text.isNotEmpty) {
-                                setState(() {
-                                  Node node = _treeViewController.selectedNode!;
-                                  _treeViewController =
-                                      _treeViewController.withUpdateNode(
-                                          _treeViewController.selectedKey!,
-                                          node.copyWith(
-                                              label: editingController.text));
-                                });
-                                debugPrint(editingController.text);
-                              }
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Update'),
-                          ),
-                        ],
-                      );
-                    });
-              },
-            ),
-          ],
         ),
       ),
     );
@@ -569,6 +312,13 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
     });
   }
 
+  ///
+  /// add children when dir[node] is clicked:
+  ///   get [children of current node] and add them into map [_dirChildren],
+  ///   get current node by [key]
+  ///   set [children of current node] by [key] of current node from [_dirChildren]
+  ///   update Node
+  ///
   _addChildrenNode(String key) {
     debugPrint("_addNode: $key ");
 
