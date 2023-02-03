@@ -2,6 +2,7 @@ import 'dart:io';
 
 void main(List<String> args) {
   dynamicWidgetHelper(str);
+  clean();
 }
 
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
@@ -35,7 +36,7 @@ String strDirGenerateRegisterFlag = 'lib/tools/json_dynamic_widget/generated';
 ///
 /// builder.dart
 ///
-void dynamicWidgetHelper(String path) {
+Future dynamicWidgetHelper(String path) async {
   /// [dartFiles]
   Iterable<File> dartFiles = Directory(path)
       .listSync()
@@ -126,9 +127,10 @@ void dynamicWidgetHelper(String path) {
 }
 
 void clean() {
-  Directory("${Directory.current}/$strDirGenerateBuilder")
+  Directory("${Directory.current.path}/$strDirGenerateBuilder")
       .delete(recursive: true);
-  File("${Directory.current}/$strDirGenerateBuilder/builder.dart")
+  File("${Directory.current.path}/$strDirGenerateRegisterFlag/register.dart");
+  File("${Directory.current.path}/$strDirGenerateRegisterFlag/builder.dart")
       .writeAsStringSync('');
   File("${Directory.current.path}/$strTempRegisterFunction").copySync(
       "${Directory.current.path}/$strDirGenerateRegister/register.dart");

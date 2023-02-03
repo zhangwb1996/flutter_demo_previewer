@@ -11,10 +11,11 @@ import 'tools/dir/dir_entry.dart';
 
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/';
 String demo = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
-void main() {
-  dynamicWidgetHelper(demo);
-  register();
-  runApp(const MyApp());
+void main() async {
+  await dynamicWidgetHelper(demo).whenComplete(() {
+    register();
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -178,9 +179,6 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
 
   @override
   Widget build(BuildContext context) {
-    dynamicWidgetHelper(demo);
-    register();
-
     /// Theme
     debugPrint(
         "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
