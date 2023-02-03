@@ -87,7 +87,7 @@ class Node<T> {
     var data = map['data'];
     List<Node> children = [];
     Widget? subview = map['subview'];
-    String nameSubview = map['nameSubview'];
+    String? nameSubview = map['nameSubview'];
     key ??= Utilities.generateRandom();
     // if (map['icon'] != null) {
     // int _iconData = int.parse(map['icon']);
