@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
@@ -9,7 +10,9 @@ import 'tools/dir/dir_entry.dart';
 //     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
 
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/';
+String demo = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
 void main() {
+  dynamicWidgetHelper(demo);
   register();
   runApp(const MyApp());
 }

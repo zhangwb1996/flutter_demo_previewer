@@ -1,0 +1,5 @@
+
+  registry.registerCustomBuilder(
+    'RegisterTemp'Builder.type,
+    const JsonWidgetBuilderContainer(builder: 'RegisterTemp'Builder.fromDynamic),
+  );
