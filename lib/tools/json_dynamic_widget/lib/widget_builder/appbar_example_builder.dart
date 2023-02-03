@@ -28,7 +28,7 @@ class AppBarExampleBuilder extends JsonWidgetBuilder {
   }) {
     assert(
       data.children?.isNotEmpty != true,
-      '[SvgBuilder] does not support children.',
+      // '[SvgBuilder] does not support children.',
     );
 
     return const AppBarExample();
