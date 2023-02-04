@@ -1,10 +1,11 @@
 ///
 /// File: c:\Users\12700\Documents\FlutterProjects\Src\tree\lib\main.dart
+/// Project: tree
 ///
 /// Created Date: Wednesday, 2023-02-01 11:05:52 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Saturday, 2023-02-04 2:38:13 pm
+/// Last Modified: Saturday, 2023-02-04 4:20:14 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -22,9 +23,6 @@ import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
-
-// String str1 =
-//     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
 
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/';
 String demo = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
@@ -196,6 +194,9 @@ class TreeViewPreviewState extends State<TreeViewPreview> {
 
   @override
   Widget build(BuildContext context) {
+    dynamicWidgetHelper(demo);
+    register(registry);
+
     /// Theme
     debugPrint(
         "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
