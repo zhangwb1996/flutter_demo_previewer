@@ -2,7 +2,7 @@ import 'dart:io';
 
 void main(List<String> args) {
   dynamicWidgetHelper(str);
-  clean();
+  // clean();
 }
 
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
@@ -34,8 +34,9 @@ String strDirGenerateRegisterFlag = 'lib/tools/json_dynamic_widget/generated';
 ///
 /// replace
 ///
-/// builder.dart
+/// ...builder.dart
 ///
+/// register.dart
 void dynamicWidgetHelper(String path) {
   /// [dartFiles]
   Iterable<File> dartFiles = Directory(path)
