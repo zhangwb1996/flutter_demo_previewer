@@ -5,8 +5,7 @@ import '../generated/builder.dart';
 /// append [content] above the [ /// BODY ]
 /// RegEpx('/// REGISTER')
 ///
-void register() {
-  var registry = JsonWidgetRegistry.instance;
+void register(JsonWidgetRegistry registry) {
 
   /// BODY
 }

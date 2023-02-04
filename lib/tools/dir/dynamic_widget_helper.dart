@@ -1,8 +1,25 @@
+///
+/// File: c:\Users\12700\Documents\FlutterProjects\Src\tree\lib\tools\dir\dynamic_widget_helper.dart
+/// Project: dir
+///
+/// Created Date: Saturday, 2023-02-04 11:43:29 am
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Saturday, 2023-02-04 2:48:54 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
 import 'dart:io';
 
 void main(List<String> args) {
   dynamicWidgetHelper(str);
-  // clean();
+  clean();
 }
 
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
@@ -134,8 +151,9 @@ void dynamicWidgetHelper(String path) {
 
 void clean() {
   Directory("${Directory.current.path}/$strDirGenerateBuilder")
-      .delete(recursive: true);
-  File("${Directory.current.path}/$strDirGenerateRegisterFlag/register.dart");
+      .deleteSync(recursive: true);
+  File("${Directory.current.path}/$strDirGenerateRegisterFlag/register.dart")
+      .deleteSync();
   File("${Directory.current.path}/$strDirGenerateRegisterFlag/builder.dart")
       .writeAsStringSync('');
   File("${Directory.current.path}/$strTempRegisterFunction").copySync(

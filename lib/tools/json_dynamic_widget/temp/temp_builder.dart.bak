@@ -14,18 +14,16 @@ class 'Json2widgetTemp'Builder extends JsonWidgetBuilder {
     dynamic map, {
     JsonWidgetRegistry? registry,
   }) {
-    'Json2widgetTemp'Builder result = const 'Json2widgetTemp'Builder();
-
-    return result;
+    return const 'Json2widgetTemp'Builder();
   }
-
-  @override
+    @override
   Widget buildCustom({
     ChildWidgetBuilder? childBuilder,
     required BuildContext context,
     required JsonWidgetData data,
     Key? key,
   }) {
+    
     return const 'Json2widgetTemp'();
   }
 }

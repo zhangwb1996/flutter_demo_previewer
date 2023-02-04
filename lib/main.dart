@@ -1,19 +1,37 @@
+///
+/// File: c:\Users\12700\Documents\FlutterProjects\Src\tree\lib\main.dart
+///
+/// Created Date: Wednesday, 2023-02-01 11:05:52 am
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Saturday, 2023-02-04 2:38:13 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
 
-// String str =
+// String str1 =
 //     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
 
 String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/';
 String demo = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
+final JsonWidgetRegistry registry = JsonWidgetRegistry.instance;
 void main() async {
   dynamicWidgetHelper(demo);
-  register();
+  register(registry);
   runApp(const MyApp());
 }
 
