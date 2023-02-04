@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:json_dynamic_widget/json_dynamic_widget.dart';
+import 'package:child_builder/child_builder.dart';
+/// replace  '[Json2widgetTemp]' with [className]
+/// replace  [NameOfOriginFile] with [fileName]
+class 'Json2widgetTemp'Builder extends JsonWidgetBuilder {
+  const 'Json2widgetTemp'Builder({
+    super.numSupportedChildren = 0,
+  });
+
+  static const type = 'NameOfOriginFile';
+
+  static 'Json2widgetTemp'Builder fromDynamic(
+    dynamic map, {
+    JsonWidgetRegistry? registry,
+  }) {
+    return const 'Json2widgetTemp'Builder();
+  }
+    @override
+  Widget buildCustom({
+    ChildWidgetBuilder? childBuilder,
+    required BuildContext context,
+    required JsonWidgetData data,
+    Key? key,
+  }) {
+    
+    return const 'Json2widgetTemp'();
+  }
+}
