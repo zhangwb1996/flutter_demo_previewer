@@ -19,7 +19,8 @@ import 'dart:io';
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    dynamicWidgetHelper(str);
+    dynamicWidgetHelper(
+        r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/');
   } else {
     switch (args.join(" ")) {
       case 'clean':
@@ -31,8 +32,8 @@ void main(List<String> args) {
   }
 }
 
-String str =
-    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/src';
+// String str =
+//     r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/src';
 
 String strTempBuilder =
     'lib/tools/json_dynamic_widget/temp/temp_builder.dart.bak';
@@ -43,8 +44,9 @@ String strTempRegisterFunction =
 
 String strDirGenerateBuilder =
     'lib/tools/json_dynamic_widget/generated/builder';
+String fileStructurePathCopy = "";
 String strDirGenerateBuilderExport = 'lib/tools/json_dynamic_widget/generated';
-String strDirGenerateRegister = 'lib/tools/json_dynamic_widget/src';
+String strDirGenerateRegister = 'lib/tools/json_dynamic_widget/src/';
 String strDirGenerateRegisterFlag = 'lib/tools/json_dynamic_widget/generated';
 
 ///
@@ -67,7 +69,7 @@ String strDirGenerateRegisterFlag = 'lib/tools/json_dynamic_widget/generated';
 void dynamicWidgetHelper(String path) {
   /// [dartFiles]
   Iterable<File> dartFiles = Directory(path)
-      .listSync()
+      .listSync(recursive: true)
       .whereType<File>()
       .where((file) => file.path.endsWith('.dart'));
   print("dartFiles: ${dartFiles}");
@@ -79,39 +81,47 @@ void dynamicWidgetHelper(String path) {
   Iterable<String> iterableClassName;
 
   for (var file in dartFiles) {
-    iterableClassName = File(file.path).readAsLinesSync().where(
-          (e) => e.startsWith(RegExp('class')),
-        );
+    iterableClassName = File(file.path).readAsLinesSync().where((e) {
+      return e.startsWith(RegExp('class')) && e.contains("extends");
+    });
 
     if (iterableClassName.isEmpty) {
       continue;
     }
-    className = iterableClassName.toString().split(RegExp(r"\s"))[1];
+
+    // fileStructurePathCopy
+    fileStructurePathCopy = file.path.replaceAll(path, '');
+    print("fileStructurePathCopy: $fileStructurePathCopy");
+    // class name
+    className =
+        resetClassName(iterableClassName.toString().split(RegExp(r"\s"))[1]);
     print("className: $className");
 
     ///
-    /// generate [builder] under [strPathGenerateDir]
+    /// generate [builder] under [strDirGenerateBuilder]
     ///
     //  create file
     print("current dir: ${Directory.current.path}");
     if (File(
-            "${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart")
+            "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
         .existsSync()) {
       continue;
     }
-    File("${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart")
+    print(
+        "path createing file: ${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart");
+    File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
         .createSync(recursive: true);
 
     // copy from [temp builder]
     // import
     // replace [Json2widgetTemp] with [className]
-    File("${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart")
+    File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
         .writeAsStringSync(
-            "import 'file:${file.path.replaceAll(r'\', r'/')}';\n${File("${Directory.current.path}/$strTempBuilder").copySync("${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart").readAsStringSync().replaceAll("'Json2widgetTemp'", className)}");
+            "import 'file:${file.path.replaceAll(r'\', r'/')}';\n${File("${Directory.current.path}/$strTempBuilder").copySync("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart").readAsStringSync().replaceAll("'Json2widgetTemp'", className)}");
     // replace [NameOfOriginFile] with [fileName]
-    File("${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart")
+    File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
         .writeAsStringSync(File(
-                "${Directory.current.path}/$strDirGenerateBuilder/${className.toLowerCase()}_builder.dart")
+                "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
             .readAsStringSync()
             .replaceAll(
                 'NameOfOriginFile', file.path.split(RegExp(r'\\|/')).last));
@@ -119,7 +129,7 @@ void dynamicWidgetHelper(String path) {
     print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
 
     // generate bulder.dart
-    // File("${Directory.current.path}/$strDirGenerateBuilder/builder.dart")
+    // File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/builder.dart")
     //     .writeAsStringSync(
     //   "export './${className.toLowerCase()}_builder.dart';\n",
     //   mode: FileMode.append,
@@ -178,4 +188,8 @@ void clean() {
   }
   File("${Directory.current.path}/$strTempRegisterFunction").copySync(
       "${Directory.current.path}/$strDirGenerateRegister/register.dart");
+}
+
+String resetClassName(String className) {
+  return className.replaceAll(RegExp(r'\W'), "T");
 }
