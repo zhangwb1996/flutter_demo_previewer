@@ -108,7 +108,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   @override
   void initState() {
     /// prepare previewed demo
-    // dynamicWidgetHelper(demoPath);
+    dynamicWidgetHelper(demoPath);
     register(registry);
 
     /// data from path
