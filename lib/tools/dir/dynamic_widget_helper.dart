@@ -28,7 +28,6 @@ void main(List<String> args) {
         break;
       default:
     }
-    clean();
   }
 }
 

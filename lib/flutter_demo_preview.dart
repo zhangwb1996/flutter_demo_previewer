@@ -113,48 +113,46 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
 
     /// data from path
     _dirEntry.getDirStrList(_dirEntry).then((value) {
-      _nodesFromPath = [
-        Node(
-            label: demoPath,
-            key: demoPath,
-            expanded: !docsOpen,
-            icon: !docsOpen ? Icons.folder_open : Icons.folder,
-            children: [
-              /// dirs
-              ..._dirEntry.listStrNameCurrentDirs.map((dir) {
-                debugPrint(
-                    "init nodeKey: ${_dirEntry.absolutelyCurrentPath}$dir");
-                return Node(
-                  label: dir,
-                  key: "${_dirEntry.absolutelyCurrentPath}$dir",
-                  expanded: docsOpen,
-                  icon: docsOpen ? Icons.folder_open : Icons.folder,
-                  children: [],
-                  parent: true,
-                );
-              }).toList(),
+      _nodesFromPath.add(Node(
+          label: demoPath,
+          key: demoPath,
+          expanded: !docsOpen,
+          icon: !docsOpen ? Icons.folder_open : Icons.folder,
+          children: [
+            /// dirs
+            ..._dirEntry.listStrNameCurrentDirs.map((dir) {
+              debugPrint(
+                  "init nodeKey: ${_dirEntry.absolutelyCurrentPath}$dir");
+              return Node(
+                label: dir,
+                key: "${_dirEntry.absolutelyCurrentPath}$dir",
+                expanded: docsOpen,
+                icon: docsOpen ? Icons.folder_open : Icons.folder,
+                children: [],
+                parent: true,
+              );
+            }).toList(),
 
-              /// files
-              ..._dirEntry.listStrNameCurrentFiles!.map(
-                (file) {
-                  return Node(
-                    label: file,
-                    key: "${_dirEntry.absolutelyCurrentPath}/$file",
-                    iconColor: Colors.green.shade300,
-                    selectedIconColor: Colors.white,
-                    icon: Icons.insert_drive_file,
-                    // nameSubview: file,
-                    subview: Json2Widget(
-                      key: Key("${_dirEntry.absolutelyCurrentPath}/$file"),
-                      jsonData: {
-                        "type": file,
-                      },
-                    ),
-                  );
-                },
-              ).toList()
-            ])
-      ];
+            /// files
+            ..._dirEntry.listStrNameCurrentFiles!.map(
+              (file) {
+                return Node(
+                  label: file,
+                  key: "${_dirEntry.absolutelyCurrentPath}/$file",
+                  iconColor: Colors.green.shade300,
+                  selectedIconColor: Colors.white,
+                  icon: Icons.insert_drive_file,
+                  // nameSubview: file,
+                  subview: Json2Widget(
+                    key: Key("${_dirEntry.absolutelyCurrentPath}/$file"),
+                    jsonData: {
+                      "type": file,
+                    },
+                  ),
+                );
+              },
+            ).toList()
+          ]));
 
       /// TODO open different path in one tree
       _workspace.addEntries({_nodesFromPath[0].label: _nodesFromPath}.entries);
