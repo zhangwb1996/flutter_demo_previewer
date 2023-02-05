@@ -1,3 +1,20 @@
+///
+/// File: \test\widget_test.dart
+/// Project: flutter_demo_previewer
+///
+/// Created Date: Wednesday, 2023-02-01 11:05:52 am
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Saturday, 2023-02-04 5:15:55 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
@@ -6,9 +23,8 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/main.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:tree/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

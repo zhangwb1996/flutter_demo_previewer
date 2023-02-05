@@ -1,5 +1,6 @@
 ///
-/// File: c:\Users\12700\Documents\FlutterProjects\Src\tree\lib\main.dart
+/// File: \lib\main.dart
+/// Project: flutter_demo_previewer
 ///
 /// Created Date: Wednesday, 2023-02-01 11:05:52 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
@@ -26,9 +27,11 @@ import 'tools/dir/dir_entry.dart';
 // String str1 =
 //     r'C:\Users\12700\Documents\FlutterProjects\Src\demo_flutter_doc\lib/';
 
-String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/';
-String demo = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
-final JsonWidgetRegistry registry = JsonWidgetRegistry.instance;
+String str =
+    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/';
+String demo =
+    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/src';
+var registry = JsonWidgetRegistry.instance;
 void main() async {
   dynamicWidgetHelper(demo);
   register(registry);

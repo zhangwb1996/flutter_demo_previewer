@@ -1,6 +1,6 @@
 ///
-/// File: c:\Users\12700\Documents\FlutterProjects\Src\tree\lib\tools\dir\dynamic_widget_helper.dart
-/// Project: dir
+/// File: \lib\tools\dir\dynamic_widget_helper.dart
+/// Project: flutter_demo_previewer
 ///
 /// Created Date: Saturday, 2023-02-04 11:43:29 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
@@ -18,11 +18,21 @@
 import 'dart:io';
 
 void main(List<String> args) {
-  dynamicWidgetHelper(str);
-  clean();
+  if (args.isEmpty) {
+    dynamicWidgetHelper(str);
+  } else {
+    switch (args.join(" ")) {
+      case 'clean':
+        clean();
+        break;
+      default:
+    }
+    clean();
+  }
 }
 
-String str = r'C:\Users\12700\Documents\FlutterProjects\Src\tree\lib/src';
+String str =
+    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/src';
 
 String strTempBuilder =
     'lib/tools/json_dynamic_widget/temp/temp_builder.dart.bak';
@@ -150,12 +160,22 @@ void dynamicWidgetHelper(String path) {
 }
 
 void clean() {
-  Directory("${Directory.current.path}/$strDirGenerateBuilder")
-      .deleteSync(recursive: true);
-  File("${Directory.current.path}/$strDirGenerateRegisterFlag/register.dart")
-      .deleteSync();
-  File("${Directory.current.path}/$strDirGenerateRegisterFlag/builder.dart")
-      .writeAsStringSync('');
+  if (Directory("${Directory.current.path}/$strDirGenerateBuilder")
+      .existsSync()) {
+    Directory("${Directory.current.path}/$strDirGenerateBuilder")
+        .deleteSync(recursive: true);
+  }
+  if (File(
+          "${Directory.current.path}/$strDirGenerateRegisterFlag/register.dart")
+      .existsSync()) {
+    File("${Directory.current.path}/$strDirGenerateRegisterFlag/register.dart")
+        .deleteSync();
+  }
+  if (File("${Directory.current.path}/$strDirGenerateRegisterFlag/builder.dart")
+      .existsSync()) {
+    File("${Directory.current.path}/$strDirGenerateRegisterFlag/builder.dart")
+        .writeAsStringSync('');
+  }
   File("${Directory.current.path}/$strTempRegisterFunction").copySync(
       "${Directory.current.path}/$strDirGenerateRegister/register.dart");
 }
