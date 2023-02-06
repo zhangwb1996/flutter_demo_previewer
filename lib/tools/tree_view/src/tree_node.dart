@@ -1,27 +1,44 @@
+///
+/// File: \lib\tools\tree_view\src\tree_node.dart
+/// Project: flutter_demo_previewer
+///
+/// Created Date: Thursday, 2023-02-02 11:14:33 pm
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Monday, 2023-02-06 12:19:57 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
 import 'dart:math' show pi;
 
 import 'package:flutter/material.dart';
 
+import 'models/widget.dart';
 import 'tree_view.dart';
 import 'tree_view_theme.dart';
 import 'expander_theme_data.dart';
-import 'models/node.dart';
 
 const double _kBorderWidth = 0.75;
 
 /// Defines the [TreeNode] widget.
 ///
 /// This widget is used to display a tree node and its children. It requires
-/// a single [Node] value. It uses this node to display the state of the
+/// a single [node] value. It uses this node to display the state of the
 /// widget. It uses the [TreeViewTheme] to handle the appearance and the
 /// [TreeView] properties to handle to user actions.
 ///
 /// __This class should not be used directly!__
 /// The [TreeView] and [TreeViewController] handlers the data and rendering
 /// of the nodes.
-class TreeNode extends StatefulWidget {
+class TreeNode<T> extends StatefulWidget {
   /// The node object used to display the widget state
-  final Node node;
+  final T node;
 
   const TreeNode({Key? key, required this.node}) : super(key: key);
 
@@ -44,7 +61,9 @@ class TreeNodeState extends State<TreeNode>
     _controller = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
-    _isExpanded = widget.node.expanded;
+    _isExpanded = widget.node.runtimeType == NodeParent
+        ? (widget.node as NodeParent).expanded
+        : false;
     if (_isExpanded) _controller.value = 1.0;
   }
 
@@ -63,9 +82,11 @@ class TreeNodeState extends State<TreeNode>
 
   @override
   void didUpdateWidget(TreeNode oldWidget) {
-    if (widget.node.expanded != oldWidget.node.expanded) {
+    if (widget.node.runtimeType == NodeParent &&
+        ((widget.node as NodeParent).expanded !=
+            (widget.node as NodeParent).expanded)) {
       setState(() {
-        _isExpanded = widget.node.expanded;
+        _isExpanded = (widget.node as NodeParent).expanded;
         if (_isExpanded) {
           _controller.forward();
         } else {
@@ -121,16 +142,19 @@ class TreeNodeState extends State<TreeNode>
     assert(treeView != null, 'TreeView must exist in context');
     TreeViewTheme theme = treeView!.theme;
     if (theme.expanderTheme.type == ExpanderType.none) return Container();
-    return widget.node.isParent
-        ? GestureDetector(
-            onTap: () => _handleExpand(),
-            child: _TreeNodeExpander(
-              speed: _controller.duration!,
-              expanded: widget.node.expanded,
-              themeData: theme.expanderTheme,
-            ),
-          )
-        : Container(width: theme.expanderTheme.size);
+    switch (widget.node.runtimeType) {
+      case NodeParent:
+        return GestureDetector(
+          onTap: () => _handleExpand(),
+          child: _TreeNodeExpander(
+            speed: _controller.duration!,
+            expanded: (widget.node as NodeParent).expanded,
+            themeData: theme.expanderTheme,
+          ),
+        );
+      default:
+        return Container(width: theme.expanderTheme.size);
+    }
   }
 
   Widget _buildNodeIcon() {
@@ -173,30 +197,40 @@ class TreeNodeState extends State<TreeNode>
         children: <Widget>[
           icon,
           Expanded(
-            child: Text(
-              widget.node.label,
-              softWrap: widget.node.isParent
-                  ? theme.parentLabelOverflow == null
-                  : theme.labelOverflow == null,
-              overflow: widget.node.isParent
-                  ? theme.parentLabelOverflow
-                  : theme.labelOverflow,
-              style: widget.node.isParent
-                  ? theme.parentLabelStyle.copyWith(
-                      fontWeight: theme.parentLabelStyle.fontWeight,
-                      color: isSelected
-                          ? theme.colorScheme.onPrimary
-                          : theme.parentLabelStyle.color,
-                    )
-                  : theme.labelStyle.copyWith(
-                      fontWeight: theme.labelStyle.fontWeight,
-                      color: isSelected ? theme.colorScheme.onPrimary : null,
-                    ),
-            ),
+            child: _nodeText(widget.node, theme, isSelected),
           ),
         ],
       ),
     );
+  }
+
+  Text _nodeText(thisNode, TreeViewTheme theme, bool isSelected) {
+    switch (thisNode.runtimeType) {
+      case NodeParent:
+        return Text(
+          widget.node.label,
+          softWrap: theme.parentLabelOverflow == null,
+          overflow: theme.parentLabelOverflow,
+          style: theme.parentLabelStyle.copyWith(
+            fontWeight: theme.parentLabelStyle.fontWeight,
+            color: isSelected
+                ? theme.colorScheme.onPrimary
+                : theme.parentLabelStyle.color,
+          ),
+        );
+      case NodeChild:
+        return Text(
+          widget.node.label,
+          softWrap: theme.labelOverflow == null,
+          overflow: theme.labelOverflow,
+          style: theme.labelStyle.copyWith(
+            fontWeight: theme.labelStyle.fontWeight,
+            color: isSelected ? theme.colorScheme.onPrimary : null,
+          ),
+        );
+      default:
+        return const Text("error type node");
+    }
   }
 
   Widget _buildNodeWidget() {
@@ -220,7 +254,7 @@ class TreeNodeState extends State<TreeNode>
             onTap: _handleTap,
             child: labelContainer,
           );
-    if (widget.node.isParent) {
+    if (widget.node.runtimeType == NodeParent) {
       if (treeView.supportParentDoubleTap && canSelectParent) {
         tappable = InkWell(
           onTap: canSelectParent ? _handleTap : _handleExpand,
@@ -272,39 +306,77 @@ class TreeNodeState extends State<TreeNode>
     final bool closed =
         (!_isExpanded || !widget.node.expanded) && _controller.isDismissed;
     final nodeWidget = _buildNodeWidget();
-    return widget.node.isParent
-        ? AnimatedBuilder(
-            animation: _controller.view,
-            builder: (BuildContext context, Widget? child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  nodeWidget,
-                  ClipRect(
-                    child: Align(
-                      heightFactor: _heightFactor.value,
-                      child: child,
-                    ),
+    switch (widget.node.runtimeType) {
+      case NodeWorkspace:
+        return AnimatedBuilder(
+          animation: _controller.view,
+          builder: (BuildContext context, Widget? child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                nodeWidget,
+                ClipRect(
+                  child: Align(
+                    heightFactor: _heightFactor.value,
+                    child: child,
                   ),
-                ],
-              );
-            },
-            child: closed
-                ? null
-                : Container(
-                    margin: EdgeInsets.only(
-                        left: treeView!.theme.horizontalSpacing ??
-                            treeView.theme.iconTheme.size!),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: widget.node.children.map((Node node) {
-                          return TreeNode(node: node);
-                        }).toList()),
+                ),
+              ],
+            );
+          },
+          child: closed
+              ? null
+              : Container(
+                  margin: EdgeInsets.only(
+                      left: treeView!.theme.horizontalSpacing ??
+                          treeView.theme.iconTheme.size!),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: (widget.node as NodeParent)
+                          .children!
+                          .map((NodeBase node) {
+                        return TreeNode(node: node);
+                      }).toList()),
+                ),
+        );
+      case NodeParent:
+        return AnimatedBuilder(
+          animation: _controller.view,
+          builder: (BuildContext context, Widget? child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                nodeWidget,
+                ClipRect(
+                  child: Align(
+                    heightFactor: _heightFactor.value,
+                    child: child,
                   ),
-          )
-        : Container(
-            child: nodeWidget,
-          );
+                ),
+              ],
+            );
+          },
+          child: closed
+              ? null
+              : Container(
+                  margin: EdgeInsets.only(
+                      left: treeView!.theme.horizontalSpacing ??
+                          treeView.theme.iconTheme.size!),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: (widget.node as NodeParent)
+                          .children!
+                          .map((NodeBase node) {
+                        return TreeNode(node: node);
+                      }).toList()),
+                ),
+        );
+      case NodeChild:
+      default:
+        return Container(
+          child: nodeWidget,
+        );
+    }
   }
 }
 

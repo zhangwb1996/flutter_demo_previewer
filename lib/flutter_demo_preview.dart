@@ -17,14 +17,14 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
-
-import 'package:flutter/material.dart';
 
 String demoPath =
     r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/';
@@ -40,7 +40,7 @@ class FlutterDemoPreview extends StatefulWidget {
 class TreeViewPreviewState extends State<FlutterDemoPreview> {
   String? _selectedNode;
 
-  final List<Node> _nodesFromPath = [];
+  final List<NodeBase> _nodesFromPath = [];
 
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
@@ -67,10 +67,10 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   /// key: current path of this node
   ///
   /// List: children of this node
-  final Map<String, List<Node<dynamic>>> _dirChildren = {};
+  final Map<String, List<NodeBase<dynamic>>> _dirChildren = {};
 
   /// TODO workspace
-  final Map<String, List<Node<dynamic>>> _workspace = {};
+  final Map<String, List<NodeBase<dynamic>>> _workspace = {};
 
   var registry = JsonWidgetRegistry.instance;
   bool docsOpen = false;
@@ -114,9 +114,10 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
     /// data from path
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       // add workspace
-      _nodesFromPath.add(Node(key: "button for adding workspace", label: "+"));
+      _nodesFromPath.add(
+          const NodeWorkspace(key: "button for adding workspace", label: "+"));
       // initial data
-      _nodesFromPath.add(Node(
+      _nodesFromPath.add(NodeWorkspace(
           label: demoPath,
           key: demoPath,
           expanded: !docsOpen,
@@ -126,20 +127,19 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
             ..._dirEntry.listStrNameCurrentDirs.map((dir) {
               debugPrint(
                   "init nodeKey: ${_dirEntry.absolutelyCurrentPath}$dir");
-              return Node(
+              return NodeParent(
                 label: dir,
                 key: "${_dirEntry.absolutelyCurrentPath}$dir",
                 expanded: docsOpen,
                 icon: docsOpen ? Icons.folder_open : Icons.folder,
-                children: [],
-                parent: true,
+                children: const [],
               );
             }).toList(),
 
             /// files
             ..._dirEntry.listStrNameCurrentFiles!.map(
               (file) {
-                return Node(
+                return NodeChild(
                   label: file,
                   key: "${_dirEntry.absolutelyCurrentPath}/$file",
                   iconColor: Colors.green.shade300,
@@ -305,8 +305,8 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   _expandNode(String key, bool expanded) {
     String msg = '${expanded ? "Expanded" : "Collapsed"}: $key';
     debugPrint('_expandNode: $msg');
-    Node node = _treeViewController.getNode(key)!;
-    List<Node> updated;
+    var node = _treeViewController.getNode(key)! as NodeParent;
+    List<NodeBase> updated;
     if (key == 'docs') {
       updated = _treeViewController.updateNode(
           key,
@@ -350,18 +350,17 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         {
           _dirEntryChildren.absolutelyCurrentPath: [
             ..._dirEntryChildren.listStrNameCurrentDirs.map((dir) {
-              return Node(
+              return NodeParent(
                 label: dir,
                 key: "${_dirEntryChildren.absolutelyCurrentPath}/$dir",
                 expanded: docsOpen,
                 icon: docsOpen ? Icons.folder_open : Icons.folder,
-                children: [],
-                parent: true,
+                children: const [],
               );
             }).toList(),
             ..._dirEntryChildren.listStrNameCurrentFiles!.map(
               (file) {
-                return Node(
+                return NodeChild(
                   label: file,
                   key: "${_dirEntryChildren.absolutelyCurrentPath}/$file",
                   iconColor: Colors.green.shade300,
@@ -390,16 +389,19 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       }
 
       /// get current node by key
-      Node? node = _treeViewController.getNode(key);
+      NodeBase? node = _treeViewController.getNode(key);
 
       /// set children of current node
-      node!.children = _dirChildren[key] ?? [];
+      if (node.runtimeType is NodeParent) {
+        (node! as NodeParent).children = _dirChildren[key] ?? [];
+      }
+
       debugPrint("_addNode().node: $node");
 
       /// update Node
-      List<Node> added = _treeViewController.updateNode(
+      List<NodeBase> added = _treeViewController.updateNode(
         key,
-        node.copyWith(),
+        node!.copyWith(),
       );
       debugPrint("added children: $added");
       // debugPrint("added _nodesFromPath: $_nodesFromPath");

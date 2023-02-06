@@ -1,9 +1,26 @@
+///
+/// File: \lib\tools\tree_view\src\tree_view.dart
+/// Project: flutter_demo_previewer
+///
+/// Created Date: Thursday, 2023-02-02 11:14:33 pm
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Monday, 2023-02-06 12:54:47 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/src/models/base/node_base.dart';
 
 import 'tree_view_controller.dart';
 import 'tree_view_theme.dart';
 import 'tree_node.dart';
-import 'models/node.dart';
 
 /// Defines the [TreeView] widget.
 ///
@@ -33,7 +50,7 @@ class TreeView extends InheritedWidget {
   final Function(String)? onNodeTap;
 
   /// Custom builder for nodes. Parameters are the build context and tree node.
-  final Widget Function(BuildContext, Node)? nodeBuilder;
+  final Widget Function(BuildContext, NodeBase)? nodeBuilder;
 
   /// The double tap handler for a node. Passes the node key.
   final Function(String)? onNodeDoubleTap;
@@ -133,7 +150,7 @@ class _TreeViewData extends StatelessWidget {
         primary: primary,
         physics: physics,
         padding: EdgeInsets.zero,
-        children: _controller.children.map((Node node) {
+        children: _controller.children.map((node) {
           return TreeNode(node: node);
         }).toList(),
       ),
