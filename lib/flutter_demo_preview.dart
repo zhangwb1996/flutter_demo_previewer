@@ -40,7 +40,7 @@ class FlutterDemoPreview extends StatefulWidget {
 class TreeViewPreviewState extends State<FlutterDemoPreview> {
   String? _selectedNode;
 
-  late List<Node> _nodesFromPath = [];
+  final List<Node> _nodesFromPath = [];
 
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
@@ -113,6 +113,9 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
 
     /// data from path
     _dirEntry.getDirStrList(_dirEntry).then((value) {
+      // add workspace
+      _nodesFromPath.add(Node(key: "button for adding workspace", label: "+"));
+      // initial data
       _nodesFromPath.add(Node(
           label: demoPath,
           key: demoPath,
@@ -219,9 +222,15 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           height: double.infinity,
           child: Column(
             children: <Widget>[
-              ElevatedButton(
-                  onPressed: () => Phoenix.rebirth(context),
-                  child: const Text("restart")),
+              Row(
+                children: [
+                  ElevatedButton(
+                      onPressed: () => Phoenix.rebirth(context),
+                      child: const Text("restart")),
+                  ElevatedButton(
+                      onPressed: () => {}, child: const Text("add workspace")),
+                ],
+              ),
               Expanded(
                 child: Row(
                   children: [
