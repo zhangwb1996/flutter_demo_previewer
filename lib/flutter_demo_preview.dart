@@ -26,7 +26,7 @@ import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
 
 String demoPath =
-    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/';
+    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/tools';
 
 class FlutterDemoPreview extends StatefulWidget {
   const FlutterDemoPreview({Key? key, required this.title}) : super(key: key);
@@ -113,30 +113,23 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
 
     /// data from path
     _dirEntry.getDirStrList(_dirEntry).then((value) {
-      // add workspace
-      _nodesFromPath
-          .add(NodeWorkspace(key: "button for adding workspace", label: "+"));
-      // initial data
       _nodesFromPath.add(NodeParent(
           label: demoPath,
           key: demoPath,
           expanded: isExpanded,
           icon: isExpanded ? Icons.folder_open : Icons.folder,
           children: [
-            /// dirs
+            // dir
             ..._dirEntry.listStrNameCurrentDirs.map((dir) {
-              debugPrint(
-                  "init nodeKey: ${_dirEntry.absolutelyCurrentPath}$dir");
               return NodeParent(
                 label: dir,
-                key: "${_dirEntry.absolutelyCurrentPath}$dir",
+                key: "${_dirEntry.absolutelyCurrentPath}/$dir",
                 expanded: isExpanded,
                 icon: isExpanded ? Icons.folder_open : Icons.folder,
                 children: const [],
               );
             }).toList(),
-
-            /// files
+            // file
             ..._dirEntry.listStrNameCurrentFiles!.map(
               (file) {
                 return NodeChild(
@@ -147,7 +140,8 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                   icon: Icons.insert_drive_file,
                   // nameSubview: file,
                   subview: Json2Widget(
-                    key: Key("${_dirEntry.absolutelyCurrentPath}/$file"),
+                    key: Key(
+                        "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file"),
                     jsonData: {
                       "type": file,
                     },
@@ -178,9 +172,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
 
   @override
   Widget build(BuildContext context) {
-    /// Theme
-    debugPrint(
-        "expanderType:${_expanderType.name}; expanderModifier:${_expanderModifier.name}; expanderPosition:${_expanderPosition.name}; ");
     var treeViewTheme = TreeViewTheme(
       labelOverflow: TextOverflow.clip,
       parentLabelOverflow: TextOverflow.fade,
@@ -245,7 +236,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                           allowParentSelect: _allowParentSelect,
                           supportParentDoubleTap: _supportParentDoubleTap,
                           onExpansionChanged: (key, expanded) {
-                            debugPrint('Selected key: $key');
                             if (expanded) _addChildrenNode(key);
                             _expandNode(
                               key,
@@ -253,7 +243,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             );
                           },
                           onNodeTap: (key) {
-                            debugPrint('Selected: $key');
                             debugPrint(
                                 'nameSubview: ${_treeViewController.getNode(key)?.nameSubview}');
                             setState(() {
@@ -274,8 +263,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                           padding: const EdgeInsets.only(top: 20),
                           alignment: Alignment.center,
                           child: Builder(builder: (context) {
-                            debugPrint(
-                                'node.subview: ${_treeViewController.getNode(_selectedNode)?.subview?.key}');
                             return _treeViewController.getNode(_selectedNode) ==
                                     null
                                 ? const Text("data")
@@ -298,8 +285,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   }
 
   _expandNode(String key, bool expanded) {
-    String msg = '${expanded ? "Expanded" : "Collapsed"}: $key';
-    debugPrint('_expandNode: $msg');
     NodeBase? node = _treeViewController.getNode(key);
     List<NodeBase>? updated;
 
@@ -337,9 +322,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   ///   update Node
   ///
   _addChildrenNode(String key) {
-    debugPrint("_addNode: $key ");
-
-    /// get and add children to map [_dirChildren] of current node
     _dirEntryChildren = DirEntry(
       parentPath: key,
       currentPath: '',
@@ -367,8 +349,8 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                   icon: Icons.insert_drive_file,
                   // nameSubview: file,
                   subview: Json2Widget(
-                    key:
-                        Key("${_dirEntryChildren.absolutelyCurrentPath}/$file"),
+                    key: Key(
+                        "Json2Widget: ${_dirEntryChildren.absolutelyCurrentPath}/$file"),
                     jsonData: {
                       "type": file,
                     },
@@ -379,32 +361,22 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           ]
         }.entries,
       );
-      debugPrint("_dirChildren[$key]: ${_dirChildren[key]}");
-
-      // if (kDebugMode) {
-      //   for (var element in _dirChildren[key]!) {
-      //     debugPrint("children 's key: ${element.key}");
-      //   }
-      // }
-
       NodeBase? node = _treeViewController.getNode(key);
-      debugPrint(
-          "_addNode()._treeViewController.getNode($key): ${_treeViewController.getNode(key)} \n _addNode().node.runtimeType: ${node.runtimeType}");
 
-      if (node != null) {
-        (node as NodeBaseExpandable).children = _dirChildren[key] ?? [];
+      if (node == null) {
+        return;
       }
+      (node as NodeBaseExpandable).children = _dirChildren[key] ?? [];
 
       List<NodeBase>? added = _treeViewController.updateNode(
         key,
-        node!.copyWith(),
+        node.copyWith(),
       );
-      debugPrint("added children: $added");
+      // debugPrint("added children: $added");
       // debugPrint("added _nodesFromPath: $_nodesFromPath");
 
       setState(() {
-        _treeViewController =
-            _treeViewController.copyWith(children: _dirChildren[key]);
+        _treeViewController = _treeViewController.copyWith(children: added);
       });
     });
   }

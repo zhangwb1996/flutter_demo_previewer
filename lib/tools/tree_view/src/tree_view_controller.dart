@@ -280,39 +280,42 @@ class TreeViewController<N extends NodeBase> {
 
   /// Gets the node that has a key value equal to the specified key.
   N? getNode<T>(String? key, {N? parent}) {
+    debugPrint("getNode() key :  $key");
     N? found;
-    Iterator? nodes;
+    Iterator nodes;
     switch (parent.runtimeType) {
       case NodeWorkspace:
         nodes = parent == null
             ? children.iterator
-            : (parent as NodeWorkspace).children?.iterator;
+            : (parent as NodeWorkspace).children!.iterator;
         break;
       case NodeParent:
         nodes = parent == null
             ? children.iterator
-            : (parent as NodeParent).children?.iterator;
+            : (parent as NodeParent).children!.iterator;
         break;
       default:
         nodes = children.iterator;
-      // return null;
     }
 
-    while (nodes?.moveNext() ?? false) {
-      N child = nodes?.current;
-      // debugPrint("getNode: ${child}");
-
+    while (nodes.moveNext()) {
+      N child = nodes.current;
       if (child.key == key) {
         found = child;
-        break;
+        debugPrint("getNode() found node which key is:  ${child.key}");
       } else {
-        if (child.runtimeType == NodeBaseExpandable) {
-          found = getNode(key, parent: child);
-          if (found != null) {
+        switch (child.runtimeType) {
+          case NodeWorkspace:
+            found = getNode(key, parent: child);
             break;
-          }
+          case NodeParent:
+            found = getNode(key, parent: child);
+            break;
+          default:
         }
-        // break;
+      }
+      if (found != null) {
+        break;
       }
     }
     return found;
@@ -589,7 +592,7 @@ class TreeViewController<N extends NodeBase> {
   /// returns a new list with the updated node.
   List<NodeBase>? updateNode<T>(String key, NodeBase newNode,
       {NodeBase? parent}) {
-    debugPrint("updateNode: parent is > $parent}");
+    // debugPrint("updateNode: parent is > $parent}");
     List<NodeBase>? currentChildren =
         parent == null ? children : (parent as NodeBaseExpandable).children;
     return currentChildren?.map((child) {
