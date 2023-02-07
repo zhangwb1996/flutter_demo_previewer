@@ -151,9 +151,9 @@ class TreeViewController<N extends NodeBase> {
   /// });
   /// ```
   TreeViewController withUpdateNode<T>(String key, N newNode, {N? parent}) {
-    List<NodeBase> data = updateNode<T>(key, newNode, parent: parent);
+    List<NodeBase>? data = updateNode<T>(key, newNode, parent: parent);
     return TreeViewController(
-      children: data,
+      children: data!,
       selectedKey: selectedKey,
     );
   }
@@ -191,7 +191,7 @@ class TreeViewController<N extends NodeBase> {
   /// });
   /// ```
   TreeViewController withToggleNode<T>(String key, {N? parent}) {
-    List<NodeBase> data = toggleNode<T>(key, parent: parent);
+    List<NodeBase> data = toggleNode<T>(key, parent: parent)!;
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -295,18 +295,18 @@ class TreeViewController<N extends NodeBase> {
         break;
       default:
         nodes = children.iterator;
+      // return null;
     }
 
     while (nodes?.moveNext() ?? false) {
       N child = nodes?.current;
-      debugPrint("getNode: ${child}");
+      // debugPrint("getNode: ${child}");
 
       if (child.key == key) {
         found = child;
         break;
       } else {
-        if (child.runtimeType == NodeParent ||
-            child.runtimeType == NodeWorkspace) {
+        if (child.runtimeType == NodeBaseExpandable) {
           found = getNode(key, parent: child);
           if (found != null) {
             break;
@@ -363,7 +363,7 @@ class TreeViewController<N extends NodeBase> {
     List<NodeBase> children = [];
     Iterator iter = parent == null
         ? children.iterator
-        : (parent as NodeParent).children!.iterator;
+        : (parent as NodeBaseExpandable).children!.iterator;
     while (iter.moveNext()) {
       N child = iter.current;
       switch (child.runtimeType) {
@@ -391,7 +391,7 @@ class TreeViewController<N extends NodeBase> {
     N? found;
     Iterator iter = parent == null
         ? children.iterator
-        : (parent as NodeParent).children!.iterator;
+        : (parent as NodeBaseExpandable).children!.iterator;
 
     while (iter.moveNext()) {
       N child = iter.current;
@@ -517,11 +517,8 @@ class TreeViewController<N extends NodeBase> {
   }) {
     List<NodeBase> cunrentChildren;
     switch (parent.runtimeType) {
-      case NodeWorkspace:
-        cunrentChildren = (parent as NodeWorkspace).children!;
-        break;
-      case NodeParent:
-        cunrentChildren = (parent as NodeParent).children!;
+      case NodeBaseExpandable:
+        cunrentChildren = (parent as NodeBaseExpandable).children!;
         break;
       default:
         cunrentChildren = children;
@@ -590,18 +587,19 @@ class TreeViewController<N extends NodeBase> {
 
   /// Updates an existing node identified by specified key. This method
   /// returns a new list with the updated node.
-  List<NodeBase> updateNode<T>(String key, NodeBase newNode,
+  List<NodeBase>? updateNode<T>(String key, NodeBase newNode,
       {NodeBase? parent}) {
-    List<NodeBase> currentChildren =
-        parent == null ? children : (parent as NodeParent).children!;
-    return currentChildren.map((child) {
+    debugPrint("updateNode: parent is > $parent}");
+    List<NodeBase>? currentChildren =
+        parent == null ? children : (parent as NodeBaseExpandable).children;
+    return currentChildren?.map((child) {
       if (child.key == key) {
         return newNode;
       } else {
         switch (child.runtimeType) {
           case NodeWorkspace:
             return (child as NodeWorkspace).copyWith(
-              children: updateNode<NodeBase>(
+              children: updateNode(
                 key,
                 newNode,
                 parent: child,
@@ -609,7 +607,7 @@ class TreeViewController<N extends NodeBase> {
             );
           case NodeParent:
             return (child as NodeParent).copyWith(
-              children: updateNode<NodeBase>(
+              children: updateNode(
                 key,
                 newNode,
                 parent: child,
@@ -624,12 +622,23 @@ class TreeViewController<N extends NodeBase> {
 
   /// Toggles an existing node identified by specified key. This method
   /// returns a new list with the specified node toggled.
-  List<NodeBase> toggleNode<T>(String key, {N? parent}) {
+  List<NodeBase>? toggleNode<T>(String key, {N? parent}) {
     NodeBase? node = getNode<T>(key, parent: parent);
-    return updateNode<T>(
-        key,
-        (node! as NodeParent)
-            .copyWith(expanded: (node as NodeParent).expanded));
+    switch (node.runtimeType) {
+      case NodeWorkspace:
+        return updateNode<T>(
+            key,
+            (node! as NodeParent)
+                .copyWith(expanded: (node as NodeParent).expanded));
+
+      case NodeParent:
+        return updateNode<T>(
+            key,
+            (node! as NodeParent)
+                .copyWith(expanded: (node as NodeParent).expanded));
+      default:
+        return null;
+    }
   }
 
   /// Deletes an existing node identified by specified key. This method
@@ -637,7 +646,7 @@ class TreeViewController<N extends NodeBase> {
   List<NodeBase> deleteNode<T>(String key, {NodeBase? parent}) {
     Iterator iter = parent == null
         ? children.iterator
-        : (parent as NodeParent).children!.iterator;
+        : (parent as NodeBaseExpandable).children!.iterator;
     List<NodeBase> filteredChildren = [];
     while (iter.moveNext()) {
       NodeBase child = iter.current;

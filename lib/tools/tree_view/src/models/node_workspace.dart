@@ -30,20 +30,13 @@ import 'widget.dart';
 /// a node on the [TreeView] widget. The key and label properties are
 /// required. The key is needed for events that occur on the generated
 /// [TreeNode]. It should always be unique.
-class NodeWorkspace<T> extends NodeBase {
-  /// The open or closed state of the [TreeNode]. Applicable only if the
-  /// node is a parent
-  final bool expanded;
-
-  /// The sub [Node]s of this object.
-  final List<NodeBase>? children;
-
-  const NodeWorkspace({
+class NodeWorkspace<T> extends NodeBaseExpandable {
+  NodeWorkspace({
     super.nodeType = "NodeWorkspace",
     required super.key,
     required super.label,
-    this.expanded = false,
-    this.children,
+    super.expanded = false,
+    super.children,
     super.icon,
     super.iconColor,
     super.selectedIconColor,
@@ -134,36 +127,11 @@ class NodeWorkspace<T> extends NodeBase {
         nameSubview: nameSubview ?? this.nameSubview,
       );
 
-  /// Map representation of this object
-  @override
-  Map<String, dynamic> get asMap {
-    Map<String, dynamic> map = {
-      "nodeType": nodeType,
-      "key": key,
-      "label": label,
-      "icon": icon == null ? null : icon!.codePoint,
-      "iconColor": iconColor == null ? null : iconColor!.toString(),
-      "selectedIconColor":
-          selectedIconColor == null ? null : selectedIconColor!.toString(),
-      "expanded": expanded,
-      "children": children?.map((NodeBase child) => child.asMap).toList(),
-      // "subview": subview,
-      "nameSubview": nameSubview,
-    };
-    if (data != null) {
-      map['data'] = data as T;
-    }
-    //TODO: figure out a means to check for getter or method on generic to include map from generic
-    return map;
-  }
-
   @override
   String toString() {
     return const JsonEncoder().convert(asMap);
   }
 
   @override
-  List<Object?> get props => [
-        super.props..addAll([expanded, children])
-      ];
+  List<Object?> get props => [super.props];
 }

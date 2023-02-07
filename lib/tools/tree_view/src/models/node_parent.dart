@@ -30,20 +30,13 @@ import 'widget.dart';
 /// a node on the [TreeView] widget. The key and label properties are
 /// required. The key is needed for events that occur on the generated
 /// [TreeNode]. It should always be unique.
-class NodeParent<T> extends NodeBase {
-  /// The open or closed state of the [TreeNode]. Applicable only if the
-  /// node is a parent
-  final bool expanded;
-
-  /// The sub [Node]s of this object.
-  List<NodeBase>? children;
-
+class NodeParent<T> extends NodeBaseExpandable {
   NodeParent({
     super.nodeType = "NodeParent",
     required super.key,
     required super.label,
-    this.expanded = false,
-    this.children,
+    super.expanded = false,
+    super.children,
     super.icon,
     super.iconColor,
     super.selectedIconColor,
@@ -121,41 +114,18 @@ class NodeParent<T> extends NodeBase {
     String? nameSubview,
   }) =>
       NodeParent<T>(
-        nodeType: nodeType ?? this.nodeType,
-        key: key ?? this.key,
-        label: label ?? this.label,
-        icon: icon ?? this.icon,
-        iconColor: iconColor ?? this.iconColor,
-        selectedIconColor: selectedIconColor ?? this.selectedIconColor,
-        expanded: expanded ?? this.expanded,
-        children: children ?? this.children,
-        data: data ?? this.data,
-        subview: subview ?? this.subview,
-        nameSubview: nameSubview ?? this.nameSubview,
+        nodeType: nodeType ?? super.nodeType,
+        key: key ?? super.key,
+        label: label ?? super.label,
+        icon: icon ?? super.icon,
+        iconColor: iconColor ?? super.iconColor,
+        selectedIconColor: selectedIconColor ?? super.selectedIconColor,
+        expanded: expanded ?? super.expanded,
+        children: children ?? super.children,
+        data: data ?? super.data,
+        subview: subview ?? super.subview,
+        nameSubview: nameSubview ?? super.nameSubview,
       );
-
-  /// Map representation of this object
-  @override
-  Map<String, dynamic> get asMap {
-    Map<String, dynamic> map = {
-      "nodeType": nodeType,
-      "key": key,
-      "label": label,
-      "icon": icon == null ? null : icon!.codePoint,
-      "iconColor": iconColor == null ? null : iconColor!.toString(),
-      "selectedIconColor":
-          selectedIconColor == null ? null : selectedIconColor!.toString(),
-      "expanded": expanded,
-      "children": children?.map((NodeBase child) => child.asMap).toList(),
-      // "subview": subview,
-      "nameSubview": nameSubview,
-    };
-    if (data != null) {
-      map['data'] = data as T;
-    }
-    //TODO: figure out a means to check for getter or method on generic to include map from generic
-    return map;
-  }
 
   @override
   String toString() {
@@ -163,7 +133,5 @@ class NodeParent<T> extends NodeBase {
   }
 
   @override
-  List<Object?> get props => [
-        super.props..addAll([expanded, children])
-      ];
+  List<Object?> get props => [super.props];
 }

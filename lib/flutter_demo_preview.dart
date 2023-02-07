@@ -72,8 +72,9 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   final Map<String, List<NodeBase<dynamic>>> _workspace = {};
 
   var registry = JsonWidgetRegistry.instance;
-  bool docsOpen = false;
-  bool deepExpanded = true;
+
+  bool isExpanded = false;
+
   final Map<ExpanderPosition, Widget> expansionPositionOptions = const {
     ExpanderPosition.start: Text('Start'),
     ExpanderPosition.end: Text('End'),
@@ -113,14 +114,14 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
     /// data from path
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       // add workspace
-      _nodesFromPath.add(
-          const NodeWorkspace(key: "button for adding workspace", label: "+"));
+      _nodesFromPath
+          .add(NodeWorkspace(key: "button for adding workspace", label: "+"));
       // initial data
-      _nodesFromPath.add(NodeWorkspace(
+      _nodesFromPath.add(NodeParent(
           label: demoPath,
           key: demoPath,
-          expanded: !docsOpen,
-          icon: !docsOpen ? Icons.folder_open : Icons.folder,
+          expanded: isExpanded,
+          icon: isExpanded ? Icons.folder_open : Icons.folder,
           children: [
             /// dirs
             ..._dirEntry.listStrNameCurrentDirs.map((dir) {
@@ -129,8 +130,8 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
               return NodeParent(
                 label: dir,
                 key: "${_dirEntry.absolutelyCurrentPath}$dir",
-                expanded: docsOpen,
-                icon: docsOpen ? Icons.folder_open : Icons.folder,
+                expanded: isExpanded,
+                icon: isExpanded ? Icons.folder_open : Icons.folder,
                 children: const [],
               );
             }).toList(),
@@ -245,11 +246,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                           supportParentDoubleTap: _supportParentDoubleTap,
                           onExpansionChanged: (key, expanded) {
                             debugPrint('Selected key: $key');
-
-                            /// add Children to current Node
-                            _addChildrenNode(key);
-
-                            /// update expand
+                            if (expanded) _addChildrenNode(key);
                             _expandNode(
                               key,
                               expanded,
@@ -259,7 +256,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             debugPrint('Selected: $key');
                             debugPrint(
                                 'nameSubview: ${_treeViewController.getNode(key)?.nameSubview}');
-
                             setState(() {
                               _selectedNode = key;
                               _treeViewController = _treeViewController
@@ -304,27 +300,31 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   _expandNode(String key, bool expanded) {
     String msg = '${expanded ? "Expanded" : "Collapsed"}: $key';
     debugPrint('_expandNode: $msg');
-    var node = _treeViewController.getNode(key)! as NodeParent;
-    List<NodeBase> updated;
-    if (key == 'docs') {
-      updated = _treeViewController.updateNode(
-          key,
-          node.copyWith(
-            expanded: expanded,
-            icon: expanded ? Icons.folder_open : Icons.folder,
-          ));
-    } else {
-      updated = _treeViewController.updateNode(
-          key,
-          node.copyWith(
-            expanded: expanded,
-            icon: expanded ? Icons.folder_open : Icons.folder,
-          ));
-      // key,
-      // node.copyWith());
+    NodeBase? node = _treeViewController.getNode(key);
+    List<NodeBase>? updated;
+
+    switch (node.runtimeType) {
+      case NodeWorkspace:
+        updated = _treeViewController.updateNode(
+            key,
+            (node as NodeWorkspace).copyWith(
+              expanded: expanded,
+              icon: expanded ? Icons.folder_open : Icons.folder,
+            ));
+        break;
+      case NodeParent:
+        updated = _treeViewController.updateNode(
+            key,
+            (node as NodeParent).copyWith(
+              expanded: expanded,
+              icon: expanded ? Icons.folder_open : Icons.folder,
+            ));
+        break;
+      default:
+        updated = [];
     }
+
     setState(() {
-      if (key == 'docs') docsOpen = expanded;
       _treeViewController = _treeViewController.copyWith(children: updated);
     });
   }
@@ -352,8 +352,8 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
               return NodeParent(
                 label: dir,
                 key: "${_dirEntryChildren.absolutelyCurrentPath}/$dir",
-                expanded: docsOpen,
-                icon: docsOpen ? Icons.folder_open : Icons.folder,
+                expanded: isExpanded,
+                icon: isExpanded ? Icons.folder_open : Icons.folder,
                 children: const [],
               );
             }).toList(),
@@ -381,24 +381,21 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       );
       debugPrint("_dirChildren[$key]: ${_dirChildren[key]}");
 
-      if (kDebugMode) {
-        for (var element in _dirChildren[key]!) {
-          debugPrint("children 's key: ${element.key}");
-        }
-      }
+      // if (kDebugMode) {
+      //   for (var element in _dirChildren[key]!) {
+      //     debugPrint("children 's key: ${element.key}");
+      //   }
+      // }
 
-      /// get current node by key
       NodeBase? node = _treeViewController.getNode(key);
+      debugPrint(
+          "_addNode()._treeViewController.getNode($key): ${_treeViewController.getNode(key)} \n _addNode().node.runtimeType: ${node.runtimeType}");
 
-      /// set children of current node
-      if (node.runtimeType is NodeParent) {
-        (node! as NodeParent).children = _dirChildren[key] ?? [];
+      if (node != null) {
+        (node as NodeBaseExpandable).children = _dirChildren[key] ?? [];
       }
 
-      debugPrint("_addNode().node: $node");
-
-      /// update Node
-      List<NodeBase> added = _treeViewController.updateNode(
+      List<NodeBase>? added = _treeViewController.updateNode(
         key,
         node!.copyWith(),
       );
@@ -406,7 +403,8 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       // debugPrint("added _nodesFromPath: $_nodesFromPath");
 
       setState(() {
-        _treeViewController = _treeViewController.copyWith(children: added);
+        _treeViewController =
+            _treeViewController.copyWith(children: _dirChildren[key]);
       });
     });
   }

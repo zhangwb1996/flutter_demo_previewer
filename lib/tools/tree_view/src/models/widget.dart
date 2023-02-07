@@ -20,4 +20,5 @@ export 'node_child.dart';
 export 'node_parent.dart';
 export 'node_workspace.dart';
 export './base/node_base.dart';
+export './base/node_base_expandable.dart';
 export './base/node_mixin.dart';
