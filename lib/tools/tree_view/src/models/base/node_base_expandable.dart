@@ -96,7 +96,5 @@ abstract class NodeBaseExpandable<T> extends NodeBase {
   }
 
   @override
-  List<Object?> get props => [
-        super.props..addAll([expanded, children])
-      ];
+  List<Object?> get props => super.props..addAll([expanded, children]);
 }

@@ -131,7 +131,4 @@ class NodeWorkspace<T> extends NodeBaseExpandable {
   String toString() {
     return const JsonEncoder().convert(asMap);
   }
-
-  @override
-  List<Object?> get props => [super.props];
 }

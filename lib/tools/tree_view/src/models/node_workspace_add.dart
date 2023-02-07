@@ -1,11 +1,11 @@
 ///
-/// File: \lib\tools\tree_view\src\models\node_child.dart
+/// File: \lib\tools\tree_view\src\models\node_workspace_add.dart
 /// Project: flutter_demo_previewer
 ///
-/// Created Date: Thursday, 2023-02-02 11:14:33 pm
+/// Created Date: Tuesday, 2023-02-07 8:38:25 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-06 1:01:00 pm
+/// Last Modified: Tuesday, 2023-02-07 8:52:00 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -15,38 +15,33 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
-import 'dart:convert';
 import 'package:flutter/widgets.dart';
 
 import '../tree_node.dart';
 import '../utilities.dart';
 import 'widget.dart';
 
-/// Defines the data used to display a [TreeNode].
+/// [NodeWorkspaceAdd] extending [NodeBase] used to add one [NodeWorkspace].
 ///
 /// Used by [TreeView] to display a [TreeNode].
 ///
-/// This object allows the creation of key, label and icon to display
-/// a node on the [TreeView] widget. The key and label properties are
-/// required. The key is needed for events that occur on the generated
+/// This object allows the creation of key, label to display a node on the [TreeView] widget.
+/// The [key] and [label] properties are required.
+/// The [key] is needed for events that occur on the generated
 /// [TreeNode]. It should always be unique.
-class NodeChild<T> extends NodeBase {
-  const NodeChild({
-    super.nodeType = "NodeChild",
+class NodeWorkspaceAdd<T> extends NodeBase {
+  const NodeWorkspaceAdd({
+    super.nodeType = "NodeWorkspaceAdd",
     required super.key,
     required super.label,
-    super.icon,
-    super.iconColor,
-    super.selectedIconColor,
-    super.data,
     super.subview,
     super.nameSubview,
   });
 
   /// Creates a [NodeChild] from a string value. It generates a unique key.
-  factory NodeChild.fromLabel(String label) {
+  factory NodeWorkspaceAdd.fromLabel(String label) {
     String key = Utilities.generateRandom();
-    return NodeChild<T>(
+    return NodeWorkspaceAdd<T>(
       key: '${key}_$label',
       label: label,
     );
@@ -58,20 +53,18 @@ class NodeChild<T> extends NodeBase {
   /// If the expanded value, if present, can be any 'truthful'
   /// value. Excepted values include: 1, yes, true and their
   /// associated string values.
-  factory NodeChild.fromMap(Map<String, dynamic> map) {
+  factory NodeWorkspaceAdd.fromMap(Map<String, dynamic> map) {
     // NodeChild fromMap(Map<String, dynamic> map) {
     String nodeType = map['nodeType'];
     String? key = map['key'];
     String label = map['label'];
-    var data = map['data'];
     Widget? subview = map['subview'];
     String? nameSubview = map['nameSubview'];
     key ??= Utilities.generateRandom();
-    return NodeChild<T>(
+    return NodeWorkspaceAdd<T>(
       nodeType: nodeType,
       key: key,
       label: label,
-      data: data,
       subview: subview,
       nameSubview: nameSubview,
     );

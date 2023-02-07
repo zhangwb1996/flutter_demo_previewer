@@ -184,6 +184,8 @@ class TreeNodeState extends State<TreeNode>
             themeData: theme.expanderTheme,
           ),
         );
+      case NodeWorkspaceAdd:
+        return Container();
       default:
         return Container(width: theme.expanderTheme.size);
     }
@@ -218,25 +220,42 @@ class TreeNodeState extends State<TreeNode>
     bool isSelected = treeView.controller.selectedKey != null &&
         treeView.controller.selectedKey == widget.node.key;
     final icon = _buildNodeIcon();
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: theme.verticalSpacing ?? (theme.dense ? 10 : 15),
-        horizontal: 0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          icon,
-          Expanded(
-            child: _nodeText(widget.node, theme, isSelected),
+    switch (widget.node.runtimeType) {
+      case NodeWorkspaceAdd:
+        return Container(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              icon,
+              Expanded(
+                child: _nodeText(widget.node, theme, isSelected),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
+      default:
+        return Container(
+          padding: EdgeInsets.symmetric(
+            vertical: theme.verticalSpacing ?? (theme.dense ? 10 : 15),
+            horizontal: 0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              icon,
+              Expanded(
+                child: _nodeText(widget.node, theme, isSelected),
+              ),
+            ],
+          ),
+        );
+    }
   }
 
-  Text _nodeText(thisNode, TreeViewTheme theme, bool isSelected) {
+  Widget _nodeText(thisNode, TreeViewTheme theme, bool isSelected) {
     switch (thisNode.runtimeType) {
       case NodeWorkspace:
         return Text(
@@ -272,6 +291,33 @@ class TreeNodeState extends State<TreeNode>
             color: isSelected ? theme.colorScheme.onPrimary : null,
           ),
         );
+      case NodeWorkspaceAdd:
+        return
+            // DecoratedBox(
+            //   decoration: const BoxDecoration(
+            //     boxShadow: <BoxShadow>[
+            //       BoxShadow(
+            //         color: Colors.white,
+            //         offset: Offset(-2, 2),
+            //         blurRadius: 1,
+            //       ),
+            //     ],
+            //   ),
+            //   child:
+            Text(widget.node.label,
+                textAlign: TextAlign.center,
+                softWrap: theme.labelOverflow == null,
+                overflow: theme.labelOverflow,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 18,
+                )
+                // style: theme.labelStyle.copyWith(
+                //   fontWeight: theme.labelStyle.fontWeight,
+                //   color: isSelected ? theme.colorScheme.onPrimary : null,
+                // ),
+                // ),
+                );
       default:
         return const Text("error type node");
     }
@@ -301,28 +347,6 @@ class TreeNodeState extends State<TreeNode>
 
     switch (widget.node.runtimeType) {
       case NodeWorkspace:
-        if (treeView.supportParentDoubleTap && canSelectParent) {
-          tappable = InkWell(
-            onTap: canSelectParent ? _handleTap : _handleExpand,
-            onDoubleTap: () {
-              _handleExpand();
-              _handleDoubleTap();
-            },
-            child: labelContainer,
-          );
-        } else if (treeView.supportParentDoubleTap) {
-          tappable = InkWell(
-            onTap: _handleExpand,
-            onDoubleTap: _handleDoubleTap,
-            child: labelContainer,
-          );
-        } else {
-          tappable = InkWell(
-            onTap: canSelectParent ? _handleTap : _handleExpand,
-            child: labelContainer,
-          );
-        }
-        break;
       case NodeParent:
         if (treeView.supportParentDoubleTap && canSelectParent) {
           tappable = InkWell(
@@ -345,6 +369,9 @@ class TreeNodeState extends State<TreeNode>
             child: labelContainer,
           );
         }
+        break;
+      case NodeWorkspaceAdd:
+        isSelected = false;
         break;
       default:
     }
@@ -447,6 +474,7 @@ class TreeNodeState extends State<TreeNode>
                 ),
         );
       case NodeChild:
+      case NodeWorkspaceAdd:
       default:
         return Container(
           child: nodeWidget,

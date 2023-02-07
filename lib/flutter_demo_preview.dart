@@ -1,11 +1,11 @@
 ///
 /// File: \lib\flutter_demo_preview.dart
 /// Project: flutter_demo_previewer
-///
-/// Created Date: Sunday, 2023-02-05 9:54:28 pm
+/// -----
+/// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-05 9:55:21 pm
+/// Last Modified: Tuesday, 2023-02-07 11:46:15 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -18,15 +18,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
-import 'tools/dir/dynamic_widget_helper.dart';
+// import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
 
 String demoPath =
-    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/tools';
+    r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib';
 
 class FlutterDemoPreview extends StatefulWidget {
   const FlutterDemoPreview({Key? key, required this.title}) : super(key: key);
@@ -111,45 +110,56 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
     // dynamicWidgetHelper(demoPath);
     register(registry);
 
-    /// data from path
+    var t = "Add Workspace";
+
+    /// initial data
     _dirEntry.getDirStrList(_dirEntry).then((value) {
-      _nodesFromPath.add(NodeParent(
-          label: demoPath,
-          key: demoPath,
-          expanded: isExpanded,
-          icon: isExpanded ? Icons.folder_open : Icons.folder,
-          children: [
-            // dir
-            ..._dirEntry.listStrNameCurrentDirs.map((dir) {
-              return NodeParent(
-                label: dir,
-                key: "${_dirEntry.absolutelyCurrentPath}/$dir",
-                expanded: isExpanded,
-                icon: isExpanded ? Icons.folder_open : Icons.folder,
-                children: const [],
-              );
-            }).toList(),
-            // file
-            ..._dirEntry.listStrNameCurrentFiles!.map(
-              (file) {
-                return NodeChild(
-                  label: file,
-                  key: "${_dirEntry.absolutelyCurrentPath}/$file",
-                  iconColor: Colors.green.shade300,
-                  selectedIconColor: Colors.white,
-                  icon: Icons.insert_drive_file,
-                  // nameSubview: file,
-                  subview: Json2Widget(
-                    key: Key(
-                        "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file"),
-                    jsonData: {
-                      "type": file,
-                    },
-                  ),
+      _nodesFromPath.add(
+        const NodeWorkspaceAdd(
+          key: "button for adding workspace",
+          label: "Add Workspace",
+          subview: Text("Add Workspace"),
+        ),
+      );
+      _nodesFromPath.add(
+        NodeParent(
+            label: demoPath,
+            key: demoPath,
+            expanded: isExpanded,
+            icon: isExpanded ? Icons.folder_open : Icons.folder,
+            children: [
+              // dir
+              ..._dirEntry.listStrNameCurrentDirs.map((dir) {
+                return NodeParent(
+                  label: dir,
+                  key: "${_dirEntry.absolutelyCurrentPath}/$dir",
+                  expanded: isExpanded,
+                  icon: isExpanded ? Icons.folder_open : Icons.folder,
+                  children: const [],
                 );
-              },
-            ).toList()
-          ]));
+              }).toList(),
+              // file
+              ..._dirEntry.listStrNameCurrentFiles!.map(
+                (file) {
+                  return NodeChild(
+                    label: file,
+                    key: "${_dirEntry.absolutelyCurrentPath}/$file",
+                    iconColor: Colors.green.shade300,
+                    selectedIconColor: Colors.white,
+                    icon: Icons.insert_drive_file,
+                    // nameSubview: file,
+                    subview: Json2Widget(
+                      key: Key(
+                          "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file"),
+                      jsonData: {
+                        "type": file,
+                      },
+                    ),
+                  );
+                },
+              ).toList()
+            ]),
+      );
 
       /// TODO open different path in one tree
       _workspace.addEntries({_nodesFromPath[0].label: _nodesFromPath}.entries);
@@ -213,15 +223,15 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           height: double.infinity,
           child: Column(
             children: <Widget>[
-              Row(
-                children: [
-                  ElevatedButton(
-                      onPressed: () => Phoenix.rebirth(context),
-                      child: const Text("restart")),
-                  ElevatedButton(
-                      onPressed: () => {}, child: const Text("add workspace")),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     ElevatedButton(
+              //         onPressed: () => Phoenix.rebirth(context),
+              //         child: const Text("restart")),
+              //     ElevatedButton(
+              //         onPressed: () => {}, child: const Text("add workspace")),
+              //   ],
+              // ),
               Expanded(
                 child: Row(
                   children: [
@@ -230,7 +240,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(2),
                         child: TreeView(
                           controller: _treeViewController,
                           allowParentSelect: _allowParentSelect,

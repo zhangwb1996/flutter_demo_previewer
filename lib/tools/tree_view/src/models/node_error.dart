@@ -94,9 +94,4 @@ class NodeError<T> extends NodeBase {
         subview: subview ?? this.subview,
         nameSubview: nameSubview ?? this.nameSubview,
       );
-
-  @override
-  List<Object?> get props => [
-        super.props,
-      ];
 }
