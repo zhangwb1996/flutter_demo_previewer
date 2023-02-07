@@ -17,9 +17,8 @@
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/flutter_treeview.dart';
-import 'models/widget.dart';
 
 /// Defines the insertion mode adding a new [Node] to the [TreeView].
 enum InsertMode {
@@ -100,6 +99,8 @@ class TreeViewController<N extends NodeBase> {
           return NodeChild.fromMap(item);
         case 'NodeParent':
           return NodeParent.fromMap(item);
+        case 'NodeWorkspace':
+          return NodeWorkspace.fromMap(item);
         default:
           return const NodeError(key: "NodeError", label: "Node Error....");
       }
@@ -250,7 +251,7 @@ class TreeViewController<N extends NodeBase> {
   /// });
   /// ```
   TreeViewController withExpandAll({N? parent}) {
-    List<NodeBase> data = expandAll(parent: parent)!;
+    List<NodeBase> data = expandAll(parent: parent);
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -295,70 +296,91 @@ class TreeViewController<N extends NodeBase> {
       default:
         nodes = children.iterator;
     }
-    nodes ??= children.iterator;
 
-    while (nodes.moveNext()) {
-      N child = nodes.current;
+    while (nodes?.moveNext() ?? false) {
+      N child = nodes?.current;
+      debugPrint("getNode: ${child}");
+
       if (child.key == key) {
-        //   switch (child.nodeType) {
-        //     case 'NodeParent':
-        //       found = child;
-        //       break;
-        //     case 'NodeChild':
-        //       found = child;
-        //       break;
-        //     default:
-        //     // found = child as NodeError;
-        //   }
         found = child;
         break;
       } else {
-        if (child.nodeType == 'NodeParent') {
+        if (child.runtimeType == NodeParent ||
+            child.runtimeType == NodeWorkspace) {
           found = getNode(key, parent: child);
           if (found != null) {
             break;
           }
         }
+        // break;
       }
     }
     return found;
   }
 
   /// Expands all node that are children of the parent node parameter. If no parent is passed, uses the root node as the parent.
-  List<NodeBase>? expandAll({NodeBase? parent}) {
+  List<NodeBase> expandAll({N? parent}) {
     List<NodeBase> children = [];
-    Iterator iter = parent == null
-        ? children.iterator
-        : (parent as NodeParent).children!.iterator;
-    while (iter.moveNext()) {
-      NodeBase? child = iter.current;
-      if (child!.nodeType == 'NodeParent') {
-        children.add((child as NodeParent).copyWith(
-          expanded: true,
-          children: expandAll(parent: child),
-        ));
-      } else {
-        children.add(child);
+    Iterator? iter;
+    switch (parent.runtimeType) {
+      case NodeWorkspace:
+        (parent as NodeWorkspace).children!.iterator;
+        break;
+      case NodeParent:
+        (parent as NodeParent).children!.iterator;
+        break;
+      // case NodeChild:
+      //   (parent as NodeChild).children!.iterator;
+      //   break;
+      default:
+        children.iterator;
+    }
+
+    while (iter!.moveNext()) {
+      N child = iter.current;
+      switch (child.runtimeType) {
+        case NodeWorkspace:
+          children.add((child as NodeWorkspace).copyWith(
+            expanded: true,
+            children: expandAll(parent: child),
+          ));
+          break;
+        case NodeParent:
+          children.add((child as NodeParent).copyWith(
+            expanded: true,
+            children: expandAll(parent: child),
+          ));
+          break;
+        default:
+          children.add(child);
       }
     }
     return children;
   }
 
   /// Collapses all node that are children of the parent node parameter. If no parent is passed, uses the root node as the parent.
-  List<NodeBase> collapseAll({NodeBase? parent}) {
+  List<NodeBase> collapseAll({N? parent}) {
     List<NodeBase> children = [];
     Iterator iter = parent == null
         ? children.iterator
         : (parent as NodeParent).children!.iterator;
     while (iter.moveNext()) {
-      NodeBase? child = iter.current;
-      if (child!.nodeType == 'NodeParent') {
-        children.add((child as NodeParent).copyWith(
-          expanded: false,
-          children: expandAll(parent: child),
-        ));
-      } else {
-        children.add(child);
+      N child = iter.current;
+      switch (child.runtimeType) {
+        case NodeWorkspace:
+          children.add((child as NodeWorkspace).copyWith(
+            expanded: true,
+            children: collapseAll(parent: child),
+          ));
+          break;
+        case NodeParent:
+          children.add((child as NodeParent).copyWith(
+            expanded: true,
+            children: collapseAll(parent: child),
+          ));
+          break;
+        default:
+          children.add(child);
       }
     }
     return children;
@@ -377,11 +399,23 @@ class TreeViewController<N extends NodeBase> {
         found = parent ?? child;
         break;
       } else {
-        if (child.nodeType == 'NodeParent') {
-          found = getParent<T>(key, parent: child);
-          if (found != null) {
+        switch (child.runtimeType) {
+          case NodeWorkspace:
+            found = getParent<T>(key, parent: child);
+            if (found != null) {
+              break;
+            }
             break;
-          }
+          case NodeParent:
+            found = getParent<T>(key, parent: child);
+            if (found != null) {
+              break;
+            }
+            break;
+          case NodeChild:
+          case NodeError:
+            break;
+          default:
         }
       }
     }
@@ -407,8 +441,20 @@ class TreeViewController<N extends NodeBase> {
       for (var k in ancestors) {
         NodeBase? node = tvCtrl.getNode(k);
         var updated;
-        if (node.runtimeType == NodeParent) {
-          updated = (node as NodeParent).copyWith(expanded: true);
+        switch (node.runtimeType) {
+          case NodeWorkspace:
+            updated = (node as NodeWorkspace).copyWith(expanded: true);
+            break;
+          case NodeParent:
+            updated = (node as NodeParent).copyWith(expanded: true);
+            break;
+          case NodeChild:
+            updated = (node as NodeChild).copyWith();
+            break;
+          case NodeError:
+            updated = (node as NodeError).copyWith();
+            break;
+          default:
         }
         tvCtrl = tvCtrl.withUpdateNode(k, updated);
       }
@@ -436,8 +482,20 @@ class TreeViewController<N extends NodeBase> {
       for (var k in ancestors) {
         NodeBase? node = tvCtrl.getNode(k);
         var updated;
-        if (node.runtimeType == NodeParent) {
-          updated = (node as NodeParent).copyWith(expanded: true);
+        switch (node.runtimeType) {
+          case NodeWorkspace:
+            updated = (node as NodeWorkspace).copyWith(expanded: true);
+            break;
+          case NodeParent:
+            updated = (node as NodeParent).copyWith(expanded: true);
+            break;
+          case NodeChild:
+            updated = (node as NodeChild).copyWith();
+            break;
+          case NodeError:
+            updated = (node as NodeError).copyWith();
+            break;
+          default:
         }
         tvCtrl = tvCtrl.withUpdateNode(k, updated);
       }
@@ -457,12 +515,31 @@ class TreeViewController<N extends NodeBase> {
     int? index,
     InsertMode mode = InsertMode.append,
   }) {
-    List<NodeBase> cunrentChildren =
-        parent == null ? children : (parent as NodeParent).children!;
+    List<NodeBase> cunrentChildren;
+    switch (parent.runtimeType) {
+      case NodeWorkspace:
+        cunrentChildren = (parent as NodeWorkspace).children!;
+        break;
+      case NodeParent:
+        cunrentChildren = (parent as NodeParent).children!;
+        break;
+      default:
+        cunrentChildren = children;
+    }
     return cunrentChildren.map((child) {
       if (child.key == key) {
-        List<NodeBase> cunrentChildrenChildren =
-            (child as NodeParent).children!.toList(growable: true);
+        List<NodeBase> cunrentChildrenChildren = [];
+        switch (parent.runtimeType) {
+          case NodeWorkspace:
+            cunrentChildrenChildren =
+                (parent as NodeWorkspace).children!.toList(growable: true);
+            break;
+          case NodeParent:
+            cunrentChildrenChildren =
+                (parent as NodeParent).children!.toList(growable: true);
+            break;
+          default:
+        }
         if (mode == InsertMode.prepend) {
           cunrentChildrenChildren.insert(0, newNode);
         } else if (mode == InsertMode.insert) {
@@ -471,17 +548,42 @@ class TreeViewController<N extends NodeBase> {
         } else {
           cunrentChildrenChildren.add(newNode);
         }
-        return child.copyWith(children: cunrentChildrenChildren);
+        switch (parent.runtimeType) {
+          case NodeWorkspace:
+            return (child as NodeWorkspace)
+                .copyWith(children: cunrentChildrenChildren);
+
+          case NodeParent:
+            return (child as NodeParent)
+                .copyWith(children: cunrentChildrenChildren);
+          default:
+            return NodeError(key: "add node: $key", label: "NodeError");
+        }
       } else {
-        return (child as NodeParent).copyWith(
-          children: addNode<T>(
-            key,
-            newNode,
-            parent: child,
-            mode: mode,
-            index: index,
-          ),
-        );
+        switch (child.runtimeType) {
+          case NodeWorkspace:
+            return (child as NodeWorkspace).copyWith(
+              children: addNode<T>(
+                key,
+                newNode,
+                parent: child,
+                mode: mode,
+                index: index,
+              ),
+            );
+          case NodeParent:
+            return (child as NodeParent).copyWith(
+              children: addNode<T>(
+                key,
+                newNode,
+                parent: child,
+                mode: mode,
+                index: index,
+              ),
+            );
+          default:
+            return NodeError(key: "add node: $key", label: "NodeError");
+        }
       }
     }).toList();
   }
@@ -490,32 +592,32 @@ class TreeViewController<N extends NodeBase> {
   /// returns a new list with the updated node.
   List<NodeBase> updateNode<T>(String key, NodeBase newNode,
       {NodeBase? parent}) {
-    // switch (N.runtimeType) {
-    //   case NodeWorkspace:
-    //     break;
-    //   case NodeParent:
-    //     break;
-    //   case NodeChild:
-    //     break;
-    //   default:
-    // }
-
     List<NodeBase> currentChildren =
         parent == null ? children : (parent as NodeParent).children!;
     return currentChildren.map((child) {
       if (child.key == key) {
         return newNode;
       } else {
-        if (child.nodeType == 'NodeParent') {
-          return (child as NodeParent).copyWith(
-            children: updateNode<NodeBase>(
-              key,
-              newNode,
-              parent: child,
-            ),
-          );
+        switch (child.runtimeType) {
+          case NodeWorkspace:
+            return (child as NodeWorkspace).copyWith(
+              children: updateNode<NodeBase>(
+                key,
+                newNode,
+                parent: child,
+              ),
+            );
+          case NodeParent:
+            return (child as NodeParent).copyWith(
+              children: updateNode<NodeBase>(
+                key,
+                newNode,
+                parent: child,
+              ),
+            );
+          default:
+            return child;
         }
-        return child;
       }
     }).toList();
   }
@@ -523,7 +625,7 @@ class TreeViewController<N extends NodeBase> {
   /// Toggles an existing node identified by specified key. This method
   /// returns a new list with the specified node toggled.
   List<NodeBase> toggleNode<T>(String key, {N? parent}) {
-    N? node = getNode<T>(key, parent: parent);
+    NodeBase? node = getNode<T>(key, parent: parent);
     return updateNode<T>(
         key,
         (node! as NodeParent)
@@ -540,12 +642,19 @@ class TreeViewController<N extends NodeBase> {
     while (iter.moveNext()) {
       NodeBase child = iter.current;
       if (child.key != key) {
-        if (child.nodeType == 'NodeParent') {
-          filteredChildren.add((child as NodeParent).copyWith(
-            children: deleteNode<T>(key, parent: child),
-          ));
-        } else {
-          filteredChildren.add(child);
+        switch (child.runtimeType) {
+          case NodeWorkspace:
+            filteredChildren.add((child as NodeWorkspace).copyWith(
+              children: deleteNode<T>(key, parent: child),
+            ));
+            break;
+          case NodeParent:
+            filteredChildren.add((child as NodeParent).copyWith(
+              children: deleteNode<T>(key, parent: child),
+            ));
+            break;
+          default:
+            filteredChildren.add(child);
         }
       }
     }
@@ -553,7 +662,7 @@ class TreeViewController<N extends NodeBase> {
   }
 
   /// Get the current selected node. Returns null if there is no selectedKey
-  N? get selectedNode {
+  NodeBase? get selectedNode {
     return selectedKey!.isEmpty ? null : getNode(selectedKey!);
   }
 

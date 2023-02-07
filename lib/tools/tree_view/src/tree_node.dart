@@ -206,6 +206,18 @@ class TreeNodeState extends State<TreeNode>
 
   Text _nodeText(thisNode, TreeViewTheme theme, bool isSelected) {
     switch (thisNode.runtimeType) {
+      case NodeWorkspace:
+        return Text(
+          widget.node.label,
+          softWrap: theme.parentLabelOverflow == null,
+          overflow: theme.parentLabelOverflow,
+          style: theme.parentLabelStyle.copyWith(
+            fontWeight: theme.parentLabelStyle.fontWeight,
+            color: isSelected
+                ? theme.colorScheme.onPrimary
+                : theme.parentLabelStyle.color,
+          ),
+        );
       case NodeParent:
         return Text(
           widget.node.label,

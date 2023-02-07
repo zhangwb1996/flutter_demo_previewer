@@ -15,7 +15,6 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -259,7 +258,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                           onNodeTap: (key) {
                             debugPrint('Selected: $key');
                             debugPrint(
-                                'nameSubview: ${_treeViewController.getNode(key)!.nameSubview}');
+                                'nameSubview: ${_treeViewController.getNode(key)?.nameSubview}');
 
                             setState(() {
                               _selectedNode = key;
