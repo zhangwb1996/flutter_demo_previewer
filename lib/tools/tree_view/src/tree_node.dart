@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 4:29:43 pm
+/// Last Modified: Wednesday, 2023-02-08 5:31:05 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -56,6 +56,10 @@ class TreeNodeState extends State<TreeNode>
   bool _isExpanded = false;
   bool _showIconNodeWorksapceAdd = false;
 
+  /// default: false
+  // bool _editNodeWorksapce = false;
+  // late TextEditingController _controllerTextEditing;
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +71,7 @@ class TreeNodeState extends State<TreeNode>
         ? (widget.node as NodeBaseExpandable).expanded
         : false;
     if (_isExpanded) _controller.value = 1.0;
+    // _controllerTextEditing = TextEditingController();
   }
 
   @override
@@ -299,6 +304,7 @@ class TreeNodeState extends State<TreeNode>
   Widget _nodeText(thisNode, TreeViewTheme theme, bool isSelected) {
     switch (thisNode.runtimeType) {
       case NodeWorkspace:
+        // if (_editNodeWorksapce) {
         return Text(
           widget.node.label,
           softWrap: theme.parentLabelOverflow == null,
@@ -310,6 +316,11 @@ class TreeNodeState extends State<TreeNode>
                 : theme.parentLabelStyle.color,
           ),
         );
+      // } else {
+      //   _controllerTextEditing.text = widget.node.label;
+      //   return TextField();
+      // }
+
       case NodeParent:
         return Text(
           widget.node.label,
@@ -387,12 +398,20 @@ class TreeNodeState extends State<TreeNode>
           );
 
     switch (widget.node.runtimeType) {
+      case NodeWorkspaceAdd:
+        isSelected = false;
+        tappable = InkWell(
+          onTap: _handleTap,
+          child: labelContainer,
+        );
+        break;
       case NodeWorkspace:
         tappable = InkWell(
           onHover: (value) => setState(() {
             _showIconNodeWorksapceAdd = !_showIconNodeWorksapceAdd;
           }),
           onTap: _handleExpand,
+          onDoubleTap: _handleDoubleTap,
           child: labelContainer,
         );
         break;
@@ -419,8 +438,7 @@ class TreeNodeState extends State<TreeNode>
           );
         }
         break;
-      case NodeWorkspaceAdd:
-        isSelected = false;
+      case NodeChild:
         tappable = InkWell(
           onTap: _handleTap,
           child: labelContainer,

@@ -110,9 +110,6 @@ class TreeView extends InheritedWidget {
         super(
           key: key,
           child: Builder(builder: (context) {
-            debugPrint(
-                "TreeView: workspace: workspace 1: ${controller.getNode("workspace: workspace 1").runtimeType}");
-
             return _TreeViewData(
               controller,
               shrinkWrap: shrinkWrap,
@@ -132,6 +129,7 @@ class TreeView extends InheritedWidget {
         oldWidget.onExpansionChanged != onExpansionChanged ||
         oldWidget.theme != theme ||
         oldWidget.supportParentDoubleTap != supportParentDoubleTap ||
+        // oldWidget.onNodeDoubleTap != onNodeDoubleTap ||
         oldWidget.allowParentSelect != allowParentSelect;
   }
 }

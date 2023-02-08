@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 3:29:27 pm
+/// Last Modified: Wednesday, 2023-02-08 4:52:38 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -267,6 +267,9 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             controller: _treeViewController,
                             allowParentSelect: _allowParentSelect,
                             supportParentDoubleTap: _supportParentDoubleTap,
+                            onNodeDoubleTap: (key) => {
+                              debugPrint("node which key is $key doubletapped!")
+                            },
                             onExpansionChanged: (key, expanded) {
                               if (expanded) _addChildrenNode(key);
 
