@@ -84,8 +84,7 @@ class TreeNodeState extends State<TreeNode>
   void didUpdateWidget(TreeNode oldWidget) {
     switch (widget.node.runtimeType) {
       case NodeWorkspace:
-        if (((widget.node as NodeWorkspace).expanded !=
-            (widget.node as NodeWorkspace).expanded)) {
+        if ((widget.node as NodeWorkspace).expanded) {
           setState(() {
             _isExpanded = (widget.node as NodeWorkspace).expanded;
             if (_isExpanded) {
@@ -102,8 +101,7 @@ class TreeNodeState extends State<TreeNode>
         }
         break;
       case NodeParent:
-        if (((widget.node as NodeParent).expanded !=
-            (widget.node as NodeParent).expanded)) {
+        if ((widget.node as NodeParent).expanded) {
           setState(() {
             _isExpanded = (widget.node as NodeParent).expanded;
             if (_isExpanded) {
@@ -372,27 +370,34 @@ class TreeNodeState extends State<TreeNode>
         break;
       case NodeWorkspaceAdd:
         isSelected = false;
+        tappable = InkWell(
+          onTap: _handleTap,
+          child: labelContainer,
+        );
         break;
       default:
     }
-    return Container(
-      color: isSelected ? theme.colorScheme.primary : null,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: theme.expanderTheme.position == ExpanderPosition.end
-            ? <Widget>[
-                Expanded(
-                  child: tappable,
-                ),
-                arrowContainer,
-              ]
-            : <Widget>[
-                arrowContainer,
-                Expanded(
-                  child: tappable,
-                ),
-              ],
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        color: isSelected ? theme.colorScheme.primary : null,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: theme.expanderTheme.position == ExpanderPosition.end
+              ? <Widget>[
+                  Expanded(
+                    child: tappable,
+                  ),
+                  arrowContainer,
+                ]
+              : <Widget>[
+                  arrowContainer,
+                  Expanded(
+                    child: tappable,
+                  ),
+                ],
+        ),
       ),
     );
   }
@@ -465,12 +470,13 @@ class TreeNodeState extends State<TreeNode>
                       left: treeView!.theme.horizontalSpacing ??
                           treeView.theme.iconTheme.size!),
                   child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: (widget.node as NodeParent)
-                          .children!
-                          .map((NodeBase node) {
-                        return TreeNode(node: node);
-                      }).toList()),
+                    mainAxisSize: MainAxisSize.min,
+                    children: (widget.node as NodeParent)
+                        .children!
+                        .map((NodeBase node) {
+                      return TreeNode(node: node);
+                    }).toList(),
+                  ),
                 ),
         );
       case NodeChild:
