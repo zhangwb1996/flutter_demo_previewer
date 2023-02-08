@@ -1,3 +1,20 @@
+///
+/// File: \lib\tools\dir\dir_entry.dart
+/// Project: flutter_demo_previewer
+/// -----
+/// Created Date: Friday, 2023-02-03 1:29:18 pm
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Wednesday, 2023-02-08 2:15:52 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
 import 'dart:io';
 
 // import 'package:flutter/material.dart';
@@ -31,7 +48,7 @@ class DirEntry {
   ///
   Future<List<String>> dir(DirEntry dirEntry) async {
     parentPath = absolutelyCurrentPath;
-    print('absolutelyCurrentPath: ' "$absolutelyCurrentPath");
+    // print('absolutelyCurrentPath: ' "$absolutelyCurrentPath");
     var path = "";
     var subPath = "";
     List<String> listEntriesCurrentPath = [];
@@ -51,7 +68,7 @@ class DirEntry {
       listEntriesCurrentPath.remove("");
     }
 
-    print('listEntriesCurrentPath: $listEntriesCurrentPath');
+    // print('listEntriesCurrentPath: $listEntriesCurrentPath');
 
     return listEntriesCurrentPath;
   }

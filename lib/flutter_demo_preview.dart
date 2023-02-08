@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-07 11:46:15 pm
+/// Last Modified: Wednesday, 2023-02-08 3:07:27 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -38,8 +38,6 @@ class FlutterDemoPreview extends StatefulWidget {
 class TreeViewPreviewState extends State<FlutterDemoPreview> {
   String? _selectedNode;
 
-  final List<NodeBase> _nodesFromPath = [];
-
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
     selectedKey: null,
@@ -68,7 +66,9 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   final Map<String, List<NodeBase<dynamic>>> _dirChildren = {};
 
   /// TODO workspace
-  final Map<String, List<NodeBase<dynamic>>> _workspace = {};
+  final List<NodeBase<dynamic>> _workspace = [];
+
+  final List<NodeBase> _nodesFromPath = [];
 
   var registry = JsonWidgetRegistry.instance;
 
@@ -115,13 +115,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
     /// initial data
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       _nodesFromPath.add(
-        const NodeWorkspaceAdd(
-          key: "button for adding workspace",
-          label: "Add Workspace",
-          subview: Text("Add Workspace"),
-        ),
-      );
-      _nodesFromPath.add(
         NodeParent(
             label: demoPath,
             key: demoPath,
@@ -162,11 +155,39 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       );
 
       /// TODO open different path in one tree
-      _workspace.addEntries({_nodesFromPath[0].label: _nodesFromPath}.entries);
+      _workspace.add(
+        const NodeWorkspaceAdd(
+          key: "button for adding workspace",
+          label: "Add Workspace",
+          subview: Text("Add Workspace"),
+        ),
+      );
+      _workspace.add(
+        NodeWorkspace(
+          key: "workspace: workspace 1",
+          label: "workspace 1",
+          children: [..._nodesFromPath, ..._nodesFromPath],
+        ),
+      );
+      _workspace.add(
+        NodeWorkspace(
+          key: "workspace: workspace 2",
+          label: "workspace 2",
+          children: [..._nodesFromPath, ..._nodesFromPath],
+        ),
+      );
+      _workspace.add(
+        NodeWorkspace(
+          key: "workspace: workspace 3",
+          label: "workspace 3",
+        ),
+      );
+      // _workspace.addAll(_nodesFromPath);
+      // _workspace.addAll(_nodesFromPath);
 
       /// init TreeViewController
       _treeViewController = TreeViewController(
-        children: _nodesFromPath,
+        children: _workspace,
         selectedKey: _selectedNode,
       );
       setState(() {});
@@ -241,28 +262,31 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.all(2),
-                        child: TreeView(
-                          controller: _treeViewController,
-                          allowParentSelect: _allowParentSelect,
-                          supportParentDoubleTap: _supportParentDoubleTap,
-                          onExpansionChanged: (key, expanded) {
-                            if (expanded) _addChildrenNode(key);
-                            _expandNode(
-                              key,
-                              expanded,
-                            );
-                          },
-                          onNodeTap: (key) {
-                            debugPrint(
-                                'nameSubview: ${_treeViewController.getNode(key)?.nameSubview}');
-                            setState(() {
-                              _selectedNode = key;
-                              _treeViewController = _treeViewController
-                                  .copyWith(selectedKey: key);
-                            });
-                          },
-                          theme: treeViewTheme,
-                        )),
+                        child: Builder(builder: (context) {
+                          return TreeView(
+                            controller: _treeViewController,
+                            allowParentSelect: _allowParentSelect,
+                            supportParentDoubleTap: _supportParentDoubleTap,
+                            onExpansionChanged: (key, expanded) {
+                              // if (expanded) _addChildrenNode(key);
+                              // TODO: To Fix: _expandNode() will convert NodeWorkspace to NodeParen
+                              _expandNode(
+                                key,
+                                expanded,
+                              );
+                            },
+                            onNodeTap: (key) {
+                              debugPrint(
+                                  'nameSubview: ${_treeViewController.getNode(key)?.nameSubview}');
+                              setState(() {
+                                _selectedNode = key;
+                                _treeViewController = _treeViewController
+                                    .copyWith(selectedKey: key);
+                              });
+                            },
+                            theme: treeViewTheme,
+                          );
+                        })),
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
@@ -297,14 +321,12 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   _expandNode(String key, bool expanded) {
     NodeBase? node = _treeViewController.getNode(key);
     List<NodeBase>? updated;
-
     switch (node.runtimeType) {
       case NodeWorkspace:
         updated = _treeViewController.updateNode(
             key,
             (node as NodeWorkspace).copyWith(
               expanded: expanded,
-              icon: expanded ? Icons.folder_open : Icons.folder,
             ));
         break;
       case NodeParent:
@@ -325,11 +347,11 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   }
 
   ///
-  /// add children when dir[node] is clicked:
-  ///   get [children of current node] and add them into map [_dirChildren],
-  ///   get current node by [key]
-  ///   set [children of current node] by [key] of current node from [_dirChildren]
-  ///   update Node
+  /// ### add children when dir[node] is clicked:
+  /// > get [children of current node] and add them into map [_dirChildren],
+  /// > get current node by [key]
+  /// > set [children of current node] by [key] of current node from [_dirChildren]
+  /// > update Node
   ///
   _addChildrenNode(String key) {
     _dirEntryChildren = DirEntry(
@@ -373,10 +395,20 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       );
       NodeBase? node = _treeViewController.getNode(key);
 
-      if (node == null) {
+      if (node == null || node.runtimeType == NodeWorkspace) {
         return;
       }
       (node as NodeBaseExpandable).children = _dirChildren[key] ?? [];
+      // switch (node.runtimeType) {
+      //   case NodeWorkspace:
+      //     (node as NodeWorkspace).children = _dirChildren[key] ?? [];
+
+      //     break;
+      //   case NodeParent:
+      //     (node as NodeParent).children = _dirChildren[key] ?? [];
+      //     break;
+      //   default:
+      // }
 
       List<NodeBase>? added = _treeViewController.updateNode(
         key,

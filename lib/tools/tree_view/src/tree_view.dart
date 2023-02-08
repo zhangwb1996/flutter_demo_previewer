@@ -109,12 +109,17 @@ class TreeView extends InheritedWidget {
   })  : theme = theme ?? const TreeViewTheme(),
         super(
           key: key,
-          child: _TreeViewData(
-            controller,
-            shrinkWrap: shrinkWrap,
-            primary: primary,
-            physics: physics,
-          ),
+          child: Builder(builder: (context) {
+            debugPrint(
+                "TreeView: workspace: workspace 1: ${controller.getNode("workspace: workspace 1").runtimeType}");
+
+            return _TreeViewData(
+              controller,
+              shrinkWrap: shrinkWrap,
+              primary: primary,
+              physics: physics,
+            );
+          }),
         );
 
   static TreeView? of(BuildContext context) =>

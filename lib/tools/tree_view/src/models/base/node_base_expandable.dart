@@ -53,7 +53,7 @@ abstract class NodeBaseExpandable<T> extends NodeBase {
     required super.key,
     required super.label,
     this.expanded = false,
-    this.children,
+    this.children = const [],
     super.icon,
     super.iconColor,
     super.selectedIconColor,

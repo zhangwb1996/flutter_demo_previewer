@@ -280,7 +280,7 @@ class TreeViewController<N extends NodeBase> {
 
   /// Gets the node that has a key value equal to the specified key.
   N? getNode<T>(String? key, {N? parent}) {
-    debugPrint("getNode() key :  $key");
+    // debugPrint("getNode() key :  $key");
     N? found;
     Iterator nodes;
     switch (parent.runtimeType) {
@@ -302,7 +302,8 @@ class TreeViewController<N extends NodeBase> {
       N child = nodes.current;
       if (child.key == key) {
         found = child;
-        debugPrint("getNode() found node which key is:  ${child.key}");
+        // debugPrint(
+        //     "getNode() found node which key is:  ${child.key}; type is: ${child.runtimeType}");
       } else {
         switch (child.runtimeType) {
           case NodeWorkspace:
@@ -631,8 +632,8 @@ class TreeViewController<N extends NodeBase> {
       case NodeWorkspace:
         return updateNode<T>(
             key,
-            (node! as NodeParent)
-                .copyWith(expanded: (node as NodeParent).expanded));
+            (node! as NodeWorkspace)
+                .copyWith(expanded: (node as NodeWorkspace).expanded));
 
       case NodeParent:
         return updateNode<T>(

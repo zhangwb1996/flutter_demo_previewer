@@ -1,11 +1,11 @@
 ///
 /// File: \lib\tools\tree_view\src\tree_node.dart
 /// Project: flutter_demo_previewer
-///
+/// ----
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-06 12:19:57 pm
+/// Last Modified: Wednesday, 2023-02-08 2:36:21 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -61,6 +61,7 @@ class TreeNodeState extends State<TreeNode>
     _controller = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
+
     _isExpanded = widget.node.nodeType == 'NodeBaseExpandable'
         ? (widget.node as NodeBaseExpandable).expanded
         : false;
@@ -96,7 +97,7 @@ class TreeNodeState extends State<TreeNode>
               });
             }
           });
-        } else if (widget.node != oldWidget.node) {
+        } else if (widget.node as NodeWorkspace != oldWidget.node) {
           setState(() {});
         }
         break;
@@ -113,13 +114,14 @@ class TreeNodeState extends State<TreeNode>
               });
             }
           });
-        } else if (widget.node != oldWidget.node) {
+        } else if (widget.node as NodeParent != oldWidget.node) {
           setState(() {});
         }
         break;
       default:
         _isExpanded = false;
     }
+
     super.didUpdateWidget(oldWidget);
   }
 
@@ -226,9 +228,33 @@ class TreeNodeState extends State<TreeNode>
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              icon,
+              // icon,
               Expanded(
                 child: _nodeText(widget.node, theme, isSelected),
+              ),
+            ],
+          ),
+        );
+      case NodeWorkspace:
+        return Container(
+          padding: EdgeInsets.symmetric(
+            vertical: theme.verticalSpacing ?? (theme.dense ? 10 : 15),
+            horizontal: 0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              // icon,
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(child: _nodeText(widget.node, theme, isSelected)),
+                    IconButton(
+                        onPressed: () => debugPrint("add worksapce"),
+                        icon: const Icon(Icons.add_rounded))
+                  ],
+                ),
               ),
             ],
           ),
@@ -244,9 +270,7 @@ class TreeNodeState extends State<TreeNode>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               icon,
-              Expanded(
-                child: _nodeText(widget.node, theme, isSelected),
-              ),
+              Expanded(child: _nodeText(widget.node, theme, isSelected)),
             ],
           ),
         );
@@ -345,6 +369,11 @@ class TreeNodeState extends State<TreeNode>
 
     switch (widget.node.runtimeType) {
       case NodeWorkspace:
+        tappable = InkWell(
+          onTap: _handleExpand,
+          child: labelContainer,
+        );
+        break;
       case NodeParent:
         if (treeView.supportParentDoubleTap && canSelectParent) {
           tappable = InkWell(
@@ -377,27 +406,24 @@ class TreeNodeState extends State<TreeNode>
         break;
       default:
     }
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        color: isSelected ? theme.colorScheme.primary : null,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: theme.expanderTheme.position == ExpanderPosition.end
-              ? <Widget>[
-                  Expanded(
-                    child: tappable,
-                  ),
-                  arrowContainer,
-                ]
-              : <Widget>[
-                  arrowContainer,
-                  Expanded(
-                    child: tappable,
-                  ),
-                ],
-        ),
+    return Container(
+      color: isSelected ? theme.colorScheme.primary : null,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: theme.expanderTheme.position == ExpanderPosition.end
+            ? <Widget>[
+                Expanded(
+                  child: tappable,
+                ),
+                arrowContainer,
+              ]
+            : <Widget>[
+                arrowContainer,
+                Expanded(
+                  child: tappable,
+                ),
+              ],
       ),
     );
   }
@@ -406,6 +432,8 @@ class TreeNodeState extends State<TreeNode>
   Widget build(BuildContext context) {
     TreeView? treeView = TreeView.of(context);
     assert(treeView != null, 'TreeView must exist in context');
+    // debugPrint(
+    //     "tree_node.build() >> widget.node which key:  ${widget.node.key}; runtimeType: ${widget.node.runtimeType}");
     final nodeWidget = _buildNodeWidget();
     switch (widget.node.runtimeType) {
       case NodeWorkspace:
@@ -436,10 +464,9 @@ class TreeNodeState extends State<TreeNode>
                           treeView.theme.iconTheme.size!),
                   child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: (widget.node as NodeWorkspace)
-                          .children!
-                          .map((NodeBase node) {
-                        return TreeNode(node: node);
+                      children:
+                          (widget.node as NodeWorkspace).children!.map((node) {
+                        return TreeNode(node: node as NodeWorkspace);
                       }).toList()),
                 ),
         );
@@ -471,10 +498,8 @@ class TreeNodeState extends State<TreeNode>
                           treeView.theme.iconTheme.size!),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: (widget.node as NodeParent)
-                        .children!
-                        .map((NodeBase node) {
-                      return TreeNode(node: node);
+                    children: (widget.node as NodeParent).children!.map((node) {
+                      return TreeNode(node: node as NodeParent);
                     }).toList(),
                   ),
                 ),
