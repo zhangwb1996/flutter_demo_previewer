@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 3:28:28 pm
+/// Last Modified: Wednesday, 2023-02-08 4:29:43 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -54,6 +54,7 @@ class TreeNodeState extends State<TreeNode>
   late AnimationController _controller;
   late Animation<double> _heightFactor;
   bool _isExpanded = false;
+  bool _showIconNodeWorksapceAdd = false;
 
   @override
   void initState() {
@@ -248,11 +249,29 @@ class TreeNodeState extends State<TreeNode>
               // icon,
               Expanded(
                 child: Row(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(child: _nodeText(widget.node, theme, isSelected)),
-                    IconButton(
-                        onPressed: () => debugPrint("add worksapce"),
-                        icon: const Icon(Icons.add_rounded))
+                    SizedBox(
+                      height: 20,
+                      child: Builder(
+                        builder: (context) {
+                          if (!_showIconNodeWorksapceAdd) {
+                            return Container();
+                          }
+                          return IconButton(
+                            onPressed: () => debugPrint("add worksapce"),
+                            splashRadius: 20,
+                            // iconSize: 20,
+                            padding: EdgeInsets.zero,
+                            icon: const Icon(
+                              Icons.add_rounded,
+                            ),
+                          );
+                        },
+                        // )
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -370,6 +389,9 @@ class TreeNodeState extends State<TreeNode>
     switch (widget.node.runtimeType) {
       case NodeWorkspace:
         tappable = InkWell(
+          onHover: (value) => setState(() {
+            _showIconNodeWorksapceAdd = !_showIconNodeWorksapceAdd;
+          }),
           onTap: _handleExpand,
           child: labelContainer,
         );
