@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 2:36:21 pm
+/// Last Modified: Wednesday, 2023-02-08 3:28:28 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -464,9 +464,10 @@ class TreeNodeState extends State<TreeNode>
                           treeView.theme.iconTheme.size!),
                   child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children:
-                          (widget.node as NodeWorkspace).children!.map((node) {
-                        return TreeNode(node: node as NodeWorkspace);
+                      children: (widget.node as NodeBaseExpandable)
+                          .children!
+                          .map((node) {
+                        return TreeNode(node: node);
                       }).toList()),
                 ),
         );
@@ -499,7 +500,7 @@ class TreeNodeState extends State<TreeNode>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: (widget.node as NodeParent).children!.map((node) {
-                      return TreeNode(node: node as NodeParent);
+                      return TreeNode(node: node);
                     }).toList(),
                   ),
                 ),

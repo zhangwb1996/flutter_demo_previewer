@@ -100,7 +100,7 @@ class NodeWorkspace<T> extends NodeBaseExpandable {
   /// Creates a copy of this object but with the given fields
   /// replaced with the new values.
   @override
-  NodeParent<T> copyWith({
+  NodeWorkspace<T> copyWith({
     String? nodeType,
     String? key,
     String? label,
@@ -113,7 +113,7 @@ class NodeWorkspace<T> extends NodeBaseExpandable {
     Widget? subview,
     String? nameSubview,
   }) =>
-      NodeParent<T>(
+      NodeWorkspace<T>(
         nodeType: nodeType ?? this.nodeType,
         key: key ?? this.key,
         label: label ?? this.label,

@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 3:07:27 pm
+/// Last Modified: Wednesday, 2023-02-08 3:29:27 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -268,8 +268,8 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             allowParentSelect: _allowParentSelect,
                             supportParentDoubleTap: _supportParentDoubleTap,
                             onExpansionChanged: (key, expanded) {
-                              // if (expanded) _addChildrenNode(key);
-                              // TODO: To Fix: _expandNode() will convert NodeWorkspace to NodeParen
+                              if (expanded) _addChildrenNode(key);
+
                               _expandNode(
                                 key,
                                 expanded,
@@ -358,6 +358,11 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       parentPath: key,
       currentPath: '',
     );
+    NodeBase? node = _treeViewController.getNode(key);
+
+    if (node == null || node.runtimeType == NodeWorkspace) {
+      return;
+    }
     _dirEntryChildren.getDirStrList(_dirEntryChildren).then((value) {
       _dirChildren.addEntries(
         {
@@ -393,11 +398,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           ]
         }.entries,
       );
-      NodeBase? node = _treeViewController.getNode(key);
-
-      if (node == null || node.runtimeType == NodeWorkspace) {
-        return;
-      }
       (node as NodeBaseExpandable).children = _dirChildren[key] ?? [];
       // switch (node.runtimeType) {
       //   case NodeWorkspace:
