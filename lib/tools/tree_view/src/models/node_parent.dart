@@ -20,8 +20,6 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
-import 'widget.dart';
-
 /// Defines the data used to display a [TreeNode].
 ///
 /// Used by [TreeView] to display a [TreeNode].
