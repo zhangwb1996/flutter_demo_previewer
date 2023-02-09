@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 3:39:17 pm
+/// Last Modified: Thursday, 2023-02-09 3:49:23 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -23,7 +23,7 @@ import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 // import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/explorer_view/widget.dart';
-import 'tools/tree_view/tree_view.dart';
+import 'tools/tree_view/widget.dart';
 import 'tools/dir/dir_entry.dart';
 
 String demoPath =

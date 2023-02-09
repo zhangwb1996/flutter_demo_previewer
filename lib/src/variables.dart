@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-09 3:34:29 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 3:38:35 pm
+/// Last Modified: Thursday, 2023-02-09 3:49:13 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -15,7 +15,7 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
-import '../tools/tree_view/tree_view.dart';
+import '../tools/tree_view/widget.dart';
 
 ///
 /// used when node expanded
