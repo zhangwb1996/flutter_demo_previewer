@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 5:31:05 pm
+/// Last Modified: Wednesday, 2023-02-08 6:35:01 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -411,7 +411,7 @@ class TreeNodeState extends State<TreeNode>
             _showIconNodeWorksapceAdd = !_showIconNodeWorksapceAdd;
           }),
           onTap: _handleExpand,
-          onDoubleTap: _handleDoubleTap,
+          // onDoubleTap: _handleDoubleTap,
           child: labelContainer,
         );
         break;

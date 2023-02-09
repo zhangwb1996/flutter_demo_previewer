@@ -5,7 +5,7 @@
 /// Created Date: Friday, 2023-02-03 1:29:18 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 11:22:14 am
+/// Last Modified: Thursday, 2023-02-09 11:29:11 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -23,19 +23,13 @@ class DirEntry {
   String parentPath;
   final String currentPath;
 
-  ///
   /// [absolutelyCurrentPath] = [parentPath] + [currentPath]
-  ///
   String absolutelyCurrentPath;
 
-  ///
   /// List<String>? Name of Current Files
-  ///
   late List<String>? listStrNameCurrentFiles = [];
 
-  ///
   /// List<String> Name of Current Dirs;
-  ///
   late List<String> listStrNameCurrentDirs = [];
 
   DirEntry({
@@ -44,7 +38,7 @@ class DirEntry {
   }) : absolutelyCurrentPath =
             parentPath == '' ? currentPath : "$parentPath$currentPath";
 
-  /// get entries under the [absolutelyCurrentPath], Not recurse
+  /// [dir] return the entries under the [absolutelyCurrentPath], Not recurse
   ///
   Future<List<String>> dir() async {
     try {

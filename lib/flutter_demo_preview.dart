@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 4:52:38 pm
+/// Last Modified: Thursday, 2023-02-09 1:01:44 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 // import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
+import 'tools/explorer_view/widget.dart';
 import 'tools/tree_view/flutter_treeview.dart';
 import 'tools/dir/dir_entry.dart';
 
@@ -154,12 +155,11 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
             ]),
       );
 
-      /// TODO open different path in one tree
       _workspace.add(
         const NodeWorkspaceAdd(
           key: "button for adding workspace",
           label: "Add Workspace",
-          subview: Text("Add Workspace"),
+          subview: ExplorerView(),
         ),
       );
       _workspace.add(
@@ -244,15 +244,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           height: double.infinity,
           child: Column(
             children: <Widget>[
-              // Row(
-              //   children: [
-              //     ElevatedButton(
-              //         onPressed: () => Phoenix.rebirth(context),
-              //         child: const Text("restart")),
-              //     ElevatedButton(
-              //         onPressed: () => {}, child: const Text("add workspace")),
-              //   ],
-              // ),
               Expanded(
                 child: Row(
                   children: [
@@ -297,7 +288,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                           FocusScope.of(context).unfocus();
                         },
                         child: Container(
-                          padding: const EdgeInsets.only(top: 20),
+                          // padding: const EdgeInsets.only(top: 20),
                           alignment: Alignment.center,
                           child: Builder(builder: (context) {
                             return _treeViewController.getNode(_selectedNode) ==

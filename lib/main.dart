@@ -16,12 +16,11 @@
 ///
 
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'flutter_demo_preview.dart';
 
 void main() async {
-  runApp(Phoenix(child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,8 +30,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TreeView Example',
-      home: const FlutterDemoPreview(title: 'TreeView Example'),
+      title: 'Flutter Demo Preview',
+      home: const FlutterDemoPreview(title: 'Flutter Demo Preview'),
       theme: ThemeData().copyWith(
           // accentColor: Colors.deepPurple,
           // hoverColor: Colors.red.shade100,

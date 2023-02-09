@@ -20,7 +20,7 @@ import 'dart:io';
 void main(List<String> args) {
   if (args.isEmpty) {
     dynamicWidgetHelper(
-        r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib/');
+        r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib');
   } else {
     switch (args.join(" ")) {
       case 'clean':
