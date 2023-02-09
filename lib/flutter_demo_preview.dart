@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 1:01:44 pm
+/// Last Modified: Thursday, 2023-02-09 3:39:17 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -17,12 +17,13 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/src/variables.dart';
 
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 // import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/explorer_view/widget.dart';
-import 'tools/tree_view/flutter_treeview.dart';
+import 'tools/tree_view/tree_view.dart';
 import 'tools/dir/dir_entry.dart';
 
 String demoPath =
@@ -55,21 +56,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
     parentPath: '',
     currentPath: '',
   );
-
-  ///
-  /// used when node expanded
-  ///
-  /// all data of children
-  ///
-  /// key: current path of this node
-  ///
-  /// List: children of this node
-  final Map<String, List<NodeBase<dynamic>>> _dirChildren = {};
-
-  /// TODO workspace
-  final List<NodeBase<dynamic>> _workspace = [];
-
-  final List<NodeBase> _nodesFromPath = [];
 
   var registry = JsonWidgetRegistry.instance;
 
@@ -113,9 +99,17 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
 
     var t = "Add Workspace";
 
+    workspace.add(
+      const NodeWorkspaceAdd(
+        key: "button for adding workspace",
+        label: "Add Workspace",
+        subview: ExplorerView(),
+      ),
+    );
+
     /// initial data
     _dirEntry.getDirStrList(_dirEntry).then((value) {
-      _nodesFromPath.add(
+      nodesFromPath.add(
         NodeParent(
             label: demoPath,
             key: demoPath,
@@ -155,39 +149,30 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
             ]),
       );
 
-      _workspace.add(
-        const NodeWorkspaceAdd(
-          key: "button for adding workspace",
-          label: "Add Workspace",
-          subview: ExplorerView(),
-        ),
-      );
-      _workspace.add(
+      workspace.add(
         NodeWorkspace(
           key: "workspace: workspace 1",
           label: "workspace 1",
-          children: [..._nodesFromPath, ..._nodesFromPath],
+          children: [...nodesFromPath, ...nodesFromPath],
         ),
       );
-      _workspace.add(
+      workspace.add(
         NodeWorkspace(
           key: "workspace: workspace 2",
           label: "workspace 2",
-          children: [..._nodesFromPath, ..._nodesFromPath],
+          children: [...nodesFromPath, ...nodesFromPath],
         ),
       );
-      _workspace.add(
+      workspace.add(
         NodeWorkspace(
           key: "workspace: workspace 3",
           label: "workspace 3",
         ),
       );
-      // _workspace.addAll(_nodesFromPath);
-      // _workspace.addAll(_nodesFromPath);
 
       /// init TreeViewController
       _treeViewController = TreeViewController(
-        children: _workspace,
+        children: workspace,
         selectedKey: _selectedNode,
       );
       setState(() {});
@@ -358,7 +343,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       return;
     }
     _dirEntryChildren.getDirStrList(_dirEntryChildren).then((value) {
-      _dirChildren.addEntries(
+      dirChildren.addEntries(
         {
           _dirEntryChildren.absolutelyCurrentPath: [
             ..._dirEntryChildren.listStrNameCurrentDirs.map((dir) {
@@ -392,7 +377,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           ]
         }.entries,
       );
-      (node as NodeBaseExpandable).children = _dirChildren[key] ?? [];
+      (node as NodeBaseExpandable).children = dirChildren[key] ?? [];
       // switch (node.runtimeType) {
       //   case NodeWorkspace:
       //     (node as NodeWorkspace).children = _dirChildren[key] ?? [];

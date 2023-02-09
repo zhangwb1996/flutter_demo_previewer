@@ -18,7 +18,7 @@
 import 'dart:convert' show jsonDecode, jsonEncode;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_demo_previewer/tools/tree_view/flutter_treeview.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/tree_view.dart';
 
 /// Defines the insertion mode adding a new [Node] to the [TreeView].
 enum InsertMode {
