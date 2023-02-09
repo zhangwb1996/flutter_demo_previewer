@@ -5,7 +5,7 @@
 /// Created Date: Friday, 2023-02-03 1:29:18 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 9:29:05 am
+/// Last Modified: Thursday, 2023-02-09 11:22:14 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -46,7 +46,7 @@ class DirEntry {
 
   /// get entries under the [absolutelyCurrentPath], Not recurse
   ///
-  Future<List<String>> dir(DirEntry dirEntry) async {
+  Future<List<String>> dir() async {
     try {
       parentPath = absolutelyCurrentPath;
       // print('absolutelyCurrentPath: ' "$absolutelyCurrentPath");
@@ -93,7 +93,7 @@ class DirEntry {
   }
 
   Future getDirStrList(DirEntry dirEntry) async {
-    await dirEntry.dir(dirEntry).then((value) {
+    await dirEntry.dir().then((value) {
       dirEntry.initCurrentFileOrDir(value, dirEntry);
     });
     return dirEntry;
