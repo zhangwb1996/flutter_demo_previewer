@@ -5,7 +5,7 @@
 /// Created Date: Friday, 2023-02-03 1:29:18 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 2:15:52 pm
+/// Last Modified: Thursday, 2023-02-09 9:29:05 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -47,30 +47,35 @@ class DirEntry {
   /// get entries under the [absolutelyCurrentPath], Not recurse
   ///
   Future<List<String>> dir(DirEntry dirEntry) async {
-    parentPath = absolutelyCurrentPath;
-    // print('absolutelyCurrentPath: ' "$absolutelyCurrentPath");
-    var path = "";
-    var subPath = "";
-    List<String> listEntriesCurrentPath = [];
+    try {
+      parentPath = absolutelyCurrentPath;
+      // print('absolutelyCurrentPath: ' "$absolutelyCurrentPath");
+      var path = "";
+      var subPath = "";
+      List<String> listEntriesCurrentPath = [];
 
-    await for (var entity in Directory(absolutelyCurrentPath)
-        .list(recursive: false, followLinks: true)) {
-      path = entity.path.toString();
+      await for (var entity in Directory(absolutelyCurrentPath)
+          .list(recursive: false, followLinks: true)) {
+        path = entity.path.toString();
 
-      /// cut the absolutelyCurrentPath from  the absolute path of entry
-      subPath = path.substring(path.lastIndexOf(absolutelyCurrentPath) +
-          absolutelyCurrentPath.length);
+        /// cut the absolutelyCurrentPath from  the absolute path of entry
+        subPath = path.substring(path.lastIndexOf(absolutelyCurrentPath) +
+            absolutelyCurrentPath.length);
 
-      /// dir or file all to list
-      listEntriesCurrentPath.addAll(subPath.split(RegExp(r'\\|/')));
+        /// dir or file all to list
+        listEntriesCurrentPath.addAll(subPath.split(RegExp(r'\\|/')));
 
-      /// remove empty item
-      listEntriesCurrentPath.remove("");
+        /// remove empty item
+        listEntriesCurrentPath.remove("");
+      }
+
+      // print('listEntriesCurrentPath: $listEntriesCurrentPath');
+
+      return listEntriesCurrentPath;
+    } catch (e) {
+      print(e);
+      return [];
     }
-
-    // print('listEntriesCurrentPath: $listEntriesCurrentPath');
-
-    return listEntriesCurrentPath;
   }
 
   void initCurrentFileOrDir(List<String> pathEntries, DirEntry dirEntry) {
