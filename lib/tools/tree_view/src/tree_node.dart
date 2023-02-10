@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Friday, 2023-02-10 9:59:32 pm
+/// Last Modified: Friday, 2023-02-10 10:16:51 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -55,7 +55,7 @@ class TreeNodeState extends State<TreeNode>
   late AnimationController _controller;
   late Animation<double> _heightFactor;
   bool _isExpanded = false;
-  bool _showIconNodeWorksapceAdd = false;
+  bool _showAddIconNodeWorksapceAdd = false;
 
   /// default: false
   // bool _editNodeWorksapce = false;
@@ -68,11 +68,18 @@ class TreeNodeState extends State<TreeNode>
         duration: const Duration(milliseconds: 200), vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
 
-    _isExpanded = widget.node.nodeType == 'NodeBaseExpandable'
-        ? (widget.node as NodeBaseExpandable).expanded
-        : false;
+    switch (widget.node.runtimeType) {
+      case NodeWorkspace:
+        _isExpanded = (widget.node as NodeWorkspace).expanded;
+        break;
+
+      case NodeParent:
+        _isExpanded = (widget.node as NodeParent).expanded;
+        break;
+      default:
+        _isExpanded = false;
+    }
     if (_isExpanded) _controller.value = 1.0;
-    // _controllerTextEditing = TextEditingController();
   }
 
   @override
@@ -270,7 +277,7 @@ class TreeNodeState extends State<TreeNode>
                       height: 20,
                       child: Builder(
                         builder: (context) {
-                          if (!_showIconNodeWorksapceAdd) {
+                          if (!_showAddIconNodeWorksapceAdd) {
                             return Container();
                           }
                           return IconButton(
@@ -417,7 +424,7 @@ class TreeNodeState extends State<TreeNode>
       case NodeWorkspace:
         tappable = InkWell(
           onHover: (value) => setState(() {
-            _showIconNodeWorksapceAdd = !_showIconNodeWorksapceAdd;
+            _showAddIconNodeWorksapceAdd = !_showAddIconNodeWorksapceAdd;
           }),
           onTap: _handleExpand,
           // onDoubleTap: _handleDoubleTap,

@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Friday, 2023-02-10 9:20:21 pm
+/// Last Modified: Friday, 2023-02-10 10:13:45 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -232,9 +232,9 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             controller: _treeViewController,
                             allowParentSelect: _allowParentSelect,
                             supportParentDoubleTap: _supportParentDoubleTap,
-                            onNodeDoubleTap: (key) => {
-                              debugPrint("node which key is $key DoubleTapped!")
-                            },
+                            // onNodeDoubleTap: (key) => {
+                            //   debugPrint("node which key is $key DoubleTapped!")
+                            // },
                             onExpansionChanged: (key, expanded) {
                               debugPrint(
                                   "node which key is $key ExpansionChanged!");
@@ -401,9 +401,9 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         key,
         newNode.copyWith(),
       );
-      setState(() {
-        _treeViewController = _treeViewController.copyWith(children: added);
-      });
+      // setState(() {
+      _treeViewController = _treeViewController.copyWith(children: added);
+      // });
     });
   }
 
