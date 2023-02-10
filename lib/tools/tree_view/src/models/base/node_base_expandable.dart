@@ -32,9 +32,6 @@
  * ----------	---	---------------------------------------------------------
  */
 
-import 'dart:convert';
-import 'package:flutter/widgets.dart';
-
 import '../../tree_node.dart';
 import '../widget.dart';
 
@@ -44,11 +41,9 @@ abstract class NodeBaseExpandable<T> extends NodeBase {
   final bool expanded;
 
   /// The sub [Node]s of this object.
-  List<NodeBase>? children;
+  final List<NodeBase>? children;
 
-  bool? temp;
-
-  NodeBaseExpandable({
+  const NodeBaseExpandable({
     required super.nodeType,
     required super.key,
     required super.label,
@@ -81,7 +76,6 @@ abstract class NodeBaseExpandable<T> extends NodeBase {
     if (data != null) {
       map['data'] = data as T;
     }
-    //TODO: figure out a means to check for getter or method on generic to include map from generic
     return map;
   }
 
@@ -89,11 +83,6 @@ abstract class NodeBaseExpandable<T> extends NodeBase {
   /// replaced with the new values.
   @override
   NodeBaseExpandable<T> copyWith();
-
-  @override
-  String toString() {
-    return const JsonEncoder().convert(asMap);
-  }
 
   @override
   List<Object?> get props => super.props..addAll([expanded, children]);

@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 3:49:23 pm
+/// Last Modified: Friday, 2023-02-10 12:21:15 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -91,23 +91,23 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   final bool _allowParentSelect = false;
   final bool _supportParentDoubleTap = false;
 
+  late TreeViewTheme treeViewTheme;
   @override
   void initState() {
-    /// prepare previewed demo
+    // prepare previewed demo
     // dynamicWidgetHelper(demoPath);
     register(registry);
 
     var t = "Add Workspace";
-
     workspace.add(
-      const NodeWorkspaceAdd(
+      NodeWorkspaceAdd(
         key: "button for adding workspace",
-        label: "Add Workspace",
-        subview: ExplorerView(),
+        label: t,
+        subview: const ExplorerView(),
       ),
     );
 
-    /// initial data
+    // initial data
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       nodesFromPath.add(
         NodeParent(
@@ -164,7 +164,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         ),
       );
       workspace.add(
-        NodeWorkspace(
+        const NodeWorkspace(
           key: "workspace: workspace 3",
           label: "workspace 3",
         ),
@@ -182,13 +182,13 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var treeViewTheme = TreeViewTheme(
+    // theme
+    treeViewTheme = TreeViewTheme(
       labelOverflow: TextOverflow.clip,
       parentLabelOverflow: TextOverflow.fade,
       expanderTheme: ExpanderThemeData(
@@ -214,7 +214,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       ),
       colorScheme: Theme.of(context).colorScheme,
     );
-
+    // return [Scaffold]
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -377,21 +377,23 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           ]
         }.entries,
       );
-      (node as NodeBaseExpandable).children = dirChildren[key] ?? [];
-      // switch (node.runtimeType) {
-      //   case NodeWorkspace:
-      //     (node as NodeWorkspace).children = _dirChildren[key] ?? [];
 
-      //     break;
-      //   case NodeParent:
-      //     (node as NodeParent).children = _dirChildren[key] ?? [];
-      //     break;
-      //   default:
-      // }
+      NodeBaseExpandable newNode;
+      switch (node.runtimeType) {
+        // case NodeWorkspace:
+        //   (node as NodeWorkspace).copyWith(children: dirChildren[key] ?? []);
+        //   break;
+        case NodeParent:
+          newNode =
+              (node as NodeParent).copyWith(children: dirChildren[key] ?? []);
+          break;
+        default:
+          newNode = (node as NodeBaseExpandable).copyWith();
+      }
 
       List<NodeBase>? added = _treeViewController.updateNode(
         key,
-        node.copyWith(),
+        newNode.copyWith(),
       );
       // debugPrint("added children: $added");
       // debugPrint("added _nodesFromPath: $_nodesFromPath");

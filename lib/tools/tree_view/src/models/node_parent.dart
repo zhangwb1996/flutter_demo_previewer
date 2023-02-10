@@ -29,7 +29,7 @@ import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 /// required. The key is needed for events that occur on the generated
 /// [TreeNode]. It should always be unique.
 class NodeParent<T> extends NodeBaseExpandable {
-  NodeParent({
+  const NodeParent({
     super.nodeType = "NodeParent",
     required super.key,
     required super.label,

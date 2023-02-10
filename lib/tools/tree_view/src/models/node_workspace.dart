@@ -20,8 +20,6 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
-import 'widget.dart';
-
 /// Defines the data used to display a [TreeNode].
 ///
 /// Used by [TreeView] to display a [TreeNode].
@@ -31,7 +29,7 @@ import 'widget.dart';
 /// required. The key is needed for events that occur on the generated
 /// [TreeNode]. It should always be unique.
 class NodeWorkspace<T> extends NodeBaseExpandable {
-  NodeWorkspace({
+  const NodeWorkspace({
     super.nodeType = "NodeWorkspace",
     required super.key,
     required super.label,
