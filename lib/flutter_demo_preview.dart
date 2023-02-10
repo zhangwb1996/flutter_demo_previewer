@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Friday, 2023-02-10 12:21:15 pm
+/// Last Modified: Friday, 2023-02-10 9:20:21 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -17,7 +17,9 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/src/models/node_workspace_editalbe.dart';
 
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 // import 'tools/dir/dynamic_widget_helper.dart';
@@ -98,15 +100,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
     // dynamicWidgetHelper(demoPath);
     register(registry);
 
-    var t = "Add Workspace";
-    workspace.add(
-      NodeWorkspaceAdd(
-        key: "button for adding workspace",
-        label: t,
-        subview: const ExplorerView(),
-      ),
-    );
-
     // initial data
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       nodesFromPath.add(
@@ -149,24 +142,20 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
             ]),
       );
 
+      var t = "Add Workspace";
+      workspace.add(
+        NodeWorkspaceAdd(
+          key: "adding workspace",
+          label: t,
+          subview: const ExplorerView(),
+        ),
+      );
+
       workspace.add(
         NodeWorkspace(
           key: "workspace: workspace 1",
           label: "workspace 1",
-          children: [...nodesFromPath, ...nodesFromPath],
-        ),
-      );
-      workspace.add(
-        NodeWorkspace(
-          key: "workspace: workspace 2",
-          label: "workspace 2",
-          children: [...nodesFromPath, ...nodesFromPath],
-        ),
-      );
-      workspace.add(
-        const NodeWorkspace(
-          key: "workspace: workspace 3",
-          label: "workspace 3",
+          children: nodesFromPath,
         ),
       );
 
@@ -244,24 +233,42 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             allowParentSelect: _allowParentSelect,
                             supportParentDoubleTap: _supportParentDoubleTap,
                             onNodeDoubleTap: (key) => {
-                              debugPrint("node which key is $key doubletapped!")
+                              debugPrint("node which key is $key DoubleTapped!")
                             },
                             onExpansionChanged: (key, expanded) {
+                              debugPrint(
+                                  "node which key is $key ExpansionChanged!");
                               if (expanded) _addChildrenNode(key);
-
                               _expandNode(
                                 key,
                                 expanded,
                               );
                             },
                             onNodeTap: (key) {
-                              debugPrint(
-                                  'nameSubview: ${_treeViewController.getNode(key)?.nameSubview}');
+                              debugPrint('node which key is $key Tapped!');
                               setState(() {
-                                _selectedNode = key;
-                                _treeViewController = _treeViewController
-                                    .copyWith(selectedKey: key);
+                                if (key == "adding workspace") {
+                                  workspace.insert(
+                                    1,
+                                    NodeWorkspaceEditable(
+                                      key: "workspace: NodeWorkspaceEditable",
+                                      label: "wNodeWorkspaceEditable",
+                                    ),
+                                  );
+                                  // _selectedNode = key;
+                                  _treeViewController =
+                                      _treeViewController.copyWith(
+                                    children: workspace,
+                                  );
+                                } else {
+                                  _selectedNode = key;
+                                  _treeViewController = _treeViewController
+                                      .copyWith(selectedKey: key);
+                                }
                               });
+                            },
+                            onSubmitted: (key, str) {
+                              addNewWorkspace(key, str);
                             },
                             theme: treeViewTheme,
                           );
@@ -297,7 +304,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
     );
   }
 
-  _expandNode(String key, bool expanded) {
+  void _expandNode(String key, bool expanded) {
     NodeBase? node = _treeViewController.getNode(key);
     List<NodeBase>? updated;
     switch (node.runtimeType) {
@@ -332,7 +339,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   /// > set [children of current node] by [key] of current node from [_dirChildren]
   /// > update Node
   ///
-  _addChildrenNode(String key) {
+  void _addChildrenNode(String key) {
     _dirEntryChildren = DirEntry(
       parentPath: key,
       currentPath: '',
@@ -390,18 +397,21 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         default:
           newNode = (node as NodeBaseExpandable).copyWith();
       }
-
       List<NodeBase>? added = _treeViewController.updateNode(
         key,
         newNode.copyWith(),
       );
-      // debugPrint("added children: $added");
-      // debugPrint("added _nodesFromPath: $_nodesFromPath");
-
       setState(() {
         _treeViewController = _treeViewController.copyWith(children: added);
       });
     });
+  }
+
+  ///
+  void addNewWorkspace(String key, String str) {
+    _treeViewController.deleteNode(key);
+    workspace.add(NodeWorkspace(key: 'Workspace:$str', label: str));
+    setState(() {});
   }
 }
 

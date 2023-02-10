@@ -55,6 +55,9 @@ class TreeView extends InheritedWidget {
   /// The double tap handler for a node. Passes the node key.
   final Function(String)? onNodeDoubleTap;
 
+  /// [onSubmitted] for an editable node . Parameters are key and text inputted
+  final Function(String, String)? onSubmitted;
+
   /// The expand/collapse handler for a node. Passes the node key and the
   /// expansion state.
   final Function(String, bool)? onExpansionChanged;
@@ -98,6 +101,7 @@ class TreeView extends InheritedWidget {
     required this.controller,
     this.onNodeTap,
     this.onNodeDoubleTap,
+    this.onSubmitted,
     this.physics,
     this.onExpansionChanged,
     this.allowParentSelect = false,
@@ -129,6 +133,7 @@ class TreeView extends InheritedWidget {
         oldWidget.onExpansionChanged != onExpansionChanged ||
         oldWidget.theme != theme ||
         oldWidget.supportParentDoubleTap != supportParentDoubleTap ||
+        oldWidget.onSubmitted != onSubmitted ||
         // oldWidget.onNodeDoubleTap != onNodeDoubleTap ||
         oldWidget.allowParentSelect != allowParentSelect;
   }

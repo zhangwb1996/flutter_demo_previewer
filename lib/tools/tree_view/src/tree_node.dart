@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-08 6:35:01 pm
+/// Last Modified: Friday, 2023-02-10 8:52:00 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -18,6 +18,7 @@
 import 'dart:math' show pi;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/src/models/node_workspace_editalbe.dart';
 
 import 'models/widget.dart';
 import 'tree_view.dart';
@@ -163,6 +164,14 @@ class TreeNodeState extends State<TreeNode>
     assert(treeView != null, 'TreeView must exist in context');
     if (treeView!.onNodeDoubleTap != null) {
       treeView.onNodeDoubleTap!(widget.node.key);
+    }
+  }
+
+  void _handleSubmitted(String str) {
+    TreeView? treeView = TreeView.of(context);
+    assert(treeView != null, 'TreeView must exist in context');
+    if (treeView!.onSubmitted != null) {
+      treeView.onSubmitted!(widget.node.key, str);
     }
   }
 
@@ -415,6 +424,7 @@ class TreeNodeState extends State<TreeNode>
           child: labelContainer,
         );
         break;
+
       case NodeParent:
         if (treeView.supportParentDoubleTap && canSelectParent) {
           tappable = InkWell(
@@ -442,6 +452,21 @@ class TreeNodeState extends State<TreeNode>
         tappable = InkWell(
           onTap: _handleTap,
           child: labelContainer,
+        );
+        break;
+      case NodeWorkspaceEditable:
+        tappable = TextField(
+          obscureText: false,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'worksapce',
+          ),
+          onSubmitted: (str) {
+            if (str.isEmpty) {
+              return;
+            }
+            _handleSubmitted(str);
+          },
         );
         break;
       default:
