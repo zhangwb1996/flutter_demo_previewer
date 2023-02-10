@@ -17,10 +17,9 @@
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
-/// Defines the insertion mode adding a new [Node] to the [TreeView].
+/// Defines the insertion mode adding a new [NodeBase] to the [TreeView].
 enum InsertMode {
   prepend,
   append,
@@ -444,7 +443,7 @@ class TreeViewController<N extends NodeBase> {
       TreeViewController tvCtrl = this;
       for (var k in ancestors) {
         NodeBase? node = tvCtrl.getNode(k);
-        var updated;
+        NodeBase updated;
         switch (node.runtimeType) {
           case NodeWorkspace:
             updated = (node as NodeWorkspace).copyWith(expanded: true);
@@ -459,6 +458,7 @@ class TreeViewController<N extends NodeBase> {
             updated = (node as NodeError).copyWith();
             break;
           default:
+            updated = (node as NodeError).copyWith();
         }
         tvCtrl = tvCtrl.withUpdateNode(k, updated);
       }
@@ -485,7 +485,7 @@ class TreeViewController<N extends NodeBase> {
       TreeViewController tvCtrl = this;
       for (var k in ancestors) {
         NodeBase? node = tvCtrl.getNode(k);
-        var updated;
+        NodeBase updated;
         switch (node.runtimeType) {
           case NodeWorkspace:
             updated = (node as NodeWorkspace).copyWith(expanded: true);
@@ -500,6 +500,7 @@ class TreeViewController<N extends NodeBase> {
             updated = (node as NodeError).copyWith();
             break;
           default:
+            updated = (node as NodeError).copyWith();
         }
         tvCtrl = tvCtrl.withUpdateNode(k, updated);
       }

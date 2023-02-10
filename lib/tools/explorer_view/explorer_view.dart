@@ -5,7 +5,7 @@
 /// Created Date: Wednesday, 2023-02-08 6:38:28 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 3:53:48 pm
+/// Last Modified: Friday, 2023-02-10 11:53:35 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -138,7 +138,7 @@ class _ExplorerViewState extends State<ExplorerView> {
             alignment: Alignment.bottomRight,
             // color: Colors.white,
             child: ElevatedButton(
-                onPressed: () {}, child: Text(" add to workspace")),
+                onPressed: () {}, child: const Text(" add to workspace")),
           ),
         ],
       ),
