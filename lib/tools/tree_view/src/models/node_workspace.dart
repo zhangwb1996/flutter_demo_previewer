@@ -33,7 +33,7 @@ class NodeWorkspace<T> extends NodeBaseExpandable {
     super.nodeType = "NodeWorkspace",
     required super.key,
     required super.label,
-    super.expanded = false,
+    super.expanded,
     super.children,
     super.icon,
     super.iconColor,
@@ -124,9 +124,4 @@ class NodeWorkspace<T> extends NodeBaseExpandable {
         subview: subview ?? this.subview,
         nameSubview: nameSubview ?? this.nameSubview,
       );
-
-  @override
-  String toString() {
-    return const JsonEncoder().convert(asMap);
-  }
 }

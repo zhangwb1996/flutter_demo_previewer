@@ -33,7 +33,6 @@ class NodeWorkspaceEditable<T> extends NodeBaseExpandable {
     super.nodeType = "NodeWorkspaceEditable",
     required super.key,
     required super.label,
-    super.expanded = false,
     super.icon,
     super.iconColor,
     super.selectedIconColor,
@@ -68,7 +67,6 @@ class NodeWorkspaceEditable<T> extends NodeBaseExpandable {
       nodeType: nodeType,
       key: key,
       label: label,
-      expanded: Utilities.truthful(map['expanded']),
       data: data,
     );
   }
@@ -96,12 +94,6 @@ class NodeWorkspaceEditable<T> extends NodeBaseExpandable {
         icon: icon ?? this.icon,
         iconColor: iconColor ?? this.iconColor,
         selectedIconColor: selectedIconColor ?? this.selectedIconColor,
-        expanded: expanded ?? this.expanded,
         data: data ?? this.data,
       );
-
-  @override
-  String toString() {
-    return const JsonEncoder().convert(asMap);
-  }
 }

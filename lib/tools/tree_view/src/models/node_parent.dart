@@ -33,7 +33,7 @@ class NodeParent<T> extends NodeBaseExpandable {
     super.nodeType = "NodeParent",
     required super.key,
     required super.label,
-    super.expanded = false,
+    super.expanded,
     super.children,
     super.icon,
     super.iconColor,
@@ -124,9 +124,4 @@ class NodeParent<T> extends NodeBaseExpandable {
         subview: subview ?? super.subview,
         nameSubview: nameSubview ?? super.nameSubview,
       );
-
-  @override
-  String toString() {
-    return const JsonEncoder().convert(asMap);
-  }
 }
