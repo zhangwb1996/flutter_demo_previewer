@@ -1,11 +1,11 @@
 ///
-/// File: \lib\tools\dir\dir_explorer_help.dart
+/// File: \lib\tools\dir\dir_explorer_helper.dart
 /// Project: flutter_demo_previewer
 /// -----
 /// Created Date: Thursday, 2023-02-09 9:59:43 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 12:29:28 pm
+/// Last Modified: Saturday, 2023-02-11 11:01:43 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -16,6 +16,7 @@
 ///
 import 'dart:io';
 
+/// [dirExplorer] return a List including folders absolutely path in this [path]
 List<String> dirExplorer(String path) {
   try {
     List<String> entriesCurrentPath = [];

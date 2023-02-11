@@ -5,7 +5,7 @@
 /// Created Date: Wednesday, 2023-02-08 6:38:28 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Friday, 2023-02-10 11:53:35 am
+/// Last Modified: Sunday, 2023-02-12 12:03:42 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -42,6 +42,7 @@ class _ExplorerViewState extends State<ExplorerView> {
   }
 
   void initCurrentPath({String? path}) {
+    // path
     pathItem = [];
     path == null
         ? currentPath =
@@ -57,6 +58,7 @@ class _ExplorerViewState extends State<ExplorerView> {
       );
     }
 
+    // folders in this path
     itemTileSelected = {};
     var strPath = '';
     for (var item in dirExplorer(currentPath)) {
@@ -138,7 +140,16 @@ class _ExplorerViewState extends State<ExplorerView> {
             alignment: Alignment.bottomRight,
             // color: Colors.white,
             child: ElevatedButton(
-                onPressed: () {}, child: const Text(" add to workspace")),
+                onPressed: () {
+                  itemTileSelected.forEach((key, value) {
+                    if (value) {
+                      debugPrint(
+                        'ExplorerView "add to worksapce": $currentPath/$key',
+                      );
+                    }
+                  });
+                },
+                child: const Text(" add to workspace")),
           ),
         ],
       ),

@@ -16,6 +16,8 @@
 ///
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/src/widget.dart';
+import 'package:provider/provider.dart';
 
 import 'flutter_demo_preview.dart';
 
@@ -29,14 +31,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo Preview',
-      home: const FlutterDemoPreview(title: 'Flutter Demo Preview'),
-      theme: ThemeData().copyWith(
-          // accentColor: Colors.deepPurple,
-          // hoverColor: Colors.red.shade100,
-          // colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.red),
-          ),
+    // TODO: restructure with provider
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Workspace()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo Preview',
+        home: const FlutterDemoPreview(title: 'Flutter Demo Preview'),
+        theme: ThemeData().copyWith(
+            // accentColor: Colors.deepPurple,
+            // hoverColor: Colors.red.shade100,
+            // colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.red),
+            ),
+      ),
     );
   }
 }
