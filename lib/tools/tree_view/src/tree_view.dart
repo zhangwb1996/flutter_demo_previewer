@@ -62,6 +62,9 @@ class TreeView extends InheritedWidget {
   /// expansion state.
   final Function(String, bool)? onExpansionChanged;
 
+  /// Adding Worksapce. Show the [ExplorerView]
+  final Function(String)? onAddingWorksapce;
+
   /// The theme for [TreeView].
   final TreeViewTheme theme;
 
@@ -102,6 +105,7 @@ class TreeView extends InheritedWidget {
     this.onNodeTap,
     this.onNodeDoubleTap,
     this.onSubmitted,
+    this.onAddingWorksapce,
     this.physics,
     this.onExpansionChanged,
     this.allowParentSelect = false,
@@ -134,6 +138,7 @@ class TreeView extends InheritedWidget {
         oldWidget.theme != theme ||
         oldWidget.supportParentDoubleTap != supportParentDoubleTap ||
         oldWidget.onSubmitted != onSubmitted ||
+        oldWidget.onAddingWorksapce != onAddingWorksapce ||
         // oldWidget.onNodeDoubleTap != onNodeDoubleTap ||
         oldWidget.allowParentSelect != allowParentSelect;
   }

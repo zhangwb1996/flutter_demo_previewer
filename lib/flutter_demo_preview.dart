@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Saturday, 2023-02-11 11:36:14 am
+/// Last Modified: Saturday, 2023-02-11 10:41:25 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -41,7 +41,7 @@ class FlutterDemoPreview extends StatefulWidget {
 
 class TreeViewPreviewState extends State<FlutterDemoPreview> {
   String? _selectedNode;
-
+  String? _showExplorerView;
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
     selectedKey: null,
@@ -147,7 +147,6 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         NodeWorkspaceAdd(
           key: "adding workspace",
           label: t,
-          subview: const ExplorerView(),
         ),
       );
 
@@ -155,6 +154,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         NodeWorkspace(
           key: "workspace: workspace 1",
           label: "workspace 1",
+          subview: const ExplorerView(),
           children: nodesFromPath,
         ),
       );
@@ -260,7 +260,17 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             onSubmitted: (key, str) {
                               debugPrint("onSubmitted");
                               addNewWorkspace(
-                                  "workspace: NodeWorkspaceEditable", str);
+                                "workspace: NodeWorkspaceEditable",
+                                str,
+                              );
+                            },
+                            onAddingWorksapce: (key) {
+                              debugPrint("onAddingWorksapce, key is: $key");
+
+                              setState(() {
+                                _selectedNode = key;
+                                _showExplorerView = key;
+                              });
                             },
                             theme: treeViewTheme,
                           );
@@ -275,6 +285,19 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                           // padding: const EdgeInsets.only(top: 20),
                           alignment: Alignment.center,
                           child: Builder(builder: (context) {
+                            if (_treeViewController
+                                    .getNode(_selectedNode)
+                                    .runtimeType ==
+                                Workspace) {
+                              return _treeViewController
+                                          .getNode(_showExplorerView) ==
+                                      null
+                                  ? const Text("data")
+                                  : _treeViewController
+                                          .getNode(_showExplorerView)!
+                                          .subview ??
+                                      const Text("data");
+                            }
                             return _treeViewController.getNode(_selectedNode) ==
                                     null
                                 ? const Text("data")

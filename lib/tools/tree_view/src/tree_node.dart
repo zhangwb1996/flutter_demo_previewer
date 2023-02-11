@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Friday, 2023-02-10 10:46:51 pm
+/// Last Modified: Saturday, 2023-02-11 10:42:37 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -182,6 +182,14 @@ class TreeNodeState extends State<TreeNode>
     }
   }
 
+  void _handleAddingWorksapce() {
+    TreeView? treeView = TreeView.of(context);
+    assert(treeView != null, 'TreeView must exist in context');
+    if (treeView!.onAddingWorksapce != null) {
+      treeView.onAddingWorksapce!(widget.node.key);
+    }
+  }
+
   Widget _buildNodeExpander() {
     TreeView? treeView = TreeView.of(context);
     assert(treeView != null, 'TreeView must exist in context');
@@ -281,7 +289,10 @@ class TreeNodeState extends State<TreeNode>
                             return Container();
                           }
                           return IconButton(
-                            onPressed: () => debugPrint("add worksapce"),
+                            onPressed: () => {
+                              debugPrint("add worksapce"),
+                              _handleAddingWorksapce()
+                            },
                             splashRadius: 20,
                             // iconSize: 20,
                             padding: EdgeInsets.zero,
