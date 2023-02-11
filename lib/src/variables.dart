@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-09 3:34:29 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 3:49:13 pm
+/// Last Modified: Saturday, 2023-02-11 11:28:49 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -25,7 +25,8 @@ import '../tools/tree_view/widget.dart';
 /// key: current path of this node
 ///
 /// List: children of this node
-final Map<String, List<NodeBase<dynamic>>> dirChildren = {};
+// final Map<String, List<NodeBase<dynamic>>> dirChildren = {};
+final List<NodeBase<dynamic>> dirChildren = [];
 
 final List<NodeBase<dynamic>> workspace = [];
 

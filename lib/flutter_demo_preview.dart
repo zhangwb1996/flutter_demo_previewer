@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Saturday, 2023-02-11 10:53:49 am
+/// Last Modified: Saturday, 2023-02-11 11:36:14 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -237,13 +237,13 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             // },
                             onExpansionChanged: (key, expanded) {
                               debugPrint(
-                                  "node which key is $key ExpansionChanged!");
-                              debugPrint("expanded: $expanded");
-                              if (expanded) _addChildrenNode(key);
+                                  "node which key is $key ExpansionChanged! \n expanded=$expanded");
+
                               _expandNode(
                                 key,
                                 expanded,
                               );
+                              if (expanded) _addChildrenNode(key);
                             },
                             onNodeTap: (key) {
                               debugPrint('node which key is $key Tapped!');
@@ -361,40 +361,37 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       return;
     }
     _dirEntryChildren.getDirStrList(_dirEntryChildren).then((value) {
-      dirChildren.addEntries(
-        {
-          _dirEntryChildren.absolutelyCurrentPath: [
-            ..._dirEntryChildren.listStrNameCurrentDirs.map((dir) {
-              return NodeParent(
-                label: dir,
-                key: "${_dirEntryChildren.absolutelyCurrentPath}/$dir",
-                expanded: isExpanded,
-                icon: isExpanded ? Icons.folder_open : Icons.folder,
-                children: const [],
-              );
-            }).toList(),
-            ..._dirEntryChildren.listStrNameCurrentFiles!.map(
-              (file) {
-                return NodeChild(
-                  label: file,
-                  key: "${_dirEntryChildren.absolutelyCurrentPath}/$file",
-                  iconColor: Colors.green.shade300,
-                  selectedIconColor: Colors.white,
-                  icon: Icons.insert_drive_file,
-                  // nameSubview: file,
-                  subview: Json2Widget(
-                    key: Key(
-                        "Json2Widget: ${_dirEntryChildren.absolutelyCurrentPath}/$file"),
-                    jsonData: {
-                      "type": file,
-                    },
-                  ),
-                );
-              },
-            ).toList()
-          ]
-        }.entries,
-      );
+      dirChildren.clear();
+      dirChildren.addAll([
+        ..._dirEntryChildren.listStrNameCurrentDirs.map((dir) {
+          return NodeParent(
+            label: dir,
+            key: "${_dirEntryChildren.absolutelyCurrentPath}/$dir",
+            expanded: isExpanded,
+            icon: isExpanded ? Icons.folder_open : Icons.folder,
+            children: const [],
+          );
+        }).toList(),
+        ..._dirEntryChildren.listStrNameCurrentFiles!.map(
+          (file) {
+            return NodeChild(
+              label: file,
+              key: "${_dirEntryChildren.absolutelyCurrentPath}/$file",
+              iconColor: Colors.green.shade300,
+              selectedIconColor: Colors.white,
+              icon: Icons.insert_drive_file,
+              // nameSubview: file,
+              subview: Json2Widget(
+                key: Key(
+                    "Json2Widget: ${_dirEntryChildren.absolutelyCurrentPath}/$file"),
+                jsonData: {
+                  "type": file,
+                },
+              ),
+            );
+          },
+        ).toList()
+      ]);
 
       NodeBaseExpandable newNode;
       switch (node.runtimeType) {
@@ -402,8 +399,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         //   (node as NodeWorkspace).copyWith(children: dirChildren[key] ?? []);
         //   break;
         case NodeParent:
-          newNode =
-              (node as NodeParent).copyWith(children: dirChildren[key] ?? []);
+          newNode = (node as NodeParent).copyWith(children: dirChildren);
           break;
         default:
           newNode = (node as NodeBaseExpandable).copyWith();
