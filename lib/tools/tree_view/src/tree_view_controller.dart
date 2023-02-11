@@ -668,9 +668,10 @@ class TreeViewController<N extends NodeBase> {
             ));
             break;
           default:
-            filteredChildren.add(child);
+          // filteredChildren.add(child);
         }
       }
+      filteredChildren.add(child);
     }
     return filteredChildren;
   }

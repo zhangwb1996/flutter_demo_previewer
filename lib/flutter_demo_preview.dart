@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Friday, 2023-02-10 10:13:45 pm
+/// Last Modified: Saturday, 2023-02-11 10:53:49 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -238,6 +238,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                             onExpansionChanged: (key, expanded) {
                               debugPrint(
                                   "node which key is $key ExpansionChanged!");
+                              debugPrint("expanded: $expanded");
                               if (expanded) _addChildrenNode(key);
                               _expandNode(
                                 key,
@@ -248,18 +249,7 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                               debugPrint('node which key is $key Tapped!');
                               setState(() {
                                 if (key == "adding workspace") {
-                                  workspace.insert(
-                                    1,
-                                    NodeWorkspaceEditable(
-                                      key: "workspace: NodeWorkspaceEditable",
-                                      label: "wNodeWorkspaceEditable",
-                                    ),
-                                  );
-                                  // _selectedNode = key;
-                                  _treeViewController =
-                                      _treeViewController.copyWith(
-                                    children: workspace,
-                                  );
+                                  clickNodeWorkspaceEditable();
                                 } else {
                                   _selectedNode = key;
                                   _treeViewController = _treeViewController
@@ -268,7 +258,9 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
                               });
                             },
                             onSubmitted: (key, str) {
-                              addNewWorkspace(key, str);
+                              debugPrint("onSubmitted");
+                              addNewWorkspace(
+                                  "workspace: NodeWorkspaceEditable", str);
                             },
                             theme: treeViewTheme,
                           );
@@ -301,6 +293,25 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
           ),
         ),
       ),
+    );
+  }
+
+  void clickNodeWorkspaceEditable() {
+    if (_treeViewController.getNode("workspace: NodeWorkspaceEditable") !=
+        null) {
+      return;
+    }
+    workspace.insert(
+      1,
+      NodeWorkspaceEditable(
+        key: "workspace: NodeWorkspaceEditable",
+        label: "wNodeWorkspaceEditable",
+      ),
+    );
+
+    // _selectedNode = key;
+    _treeViewController = _treeViewController.copyWith(
+      children: workspace,
     );
   }
 
@@ -409,9 +420,16 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
 
   ///
   void addNewWorkspace(String key, String str) {
-    _treeViewController.deleteNode(key);
-    workspace.add(NodeWorkspace(key: 'Workspace:$str', label: str));
-    setState(() {});
+    // TODO: If key is existed, do something
+    if (_treeViewController.getNode('Workspace:$str') != null) {
+      return;
+    }
+
+    workspace.insert(2, NodeWorkspace(key: 'Workspace:$str', label: str));
+    workspace.removeAt(1);
+    setState(() {
+      // _treeViewController = _treeViewController.copyWith(children: workspace);
+    });
   }
 }
 
