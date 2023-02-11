@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Saturday, 2023-02-11 10:41:25 pm
+/// Last Modified: Sunday, 2023-02-12 12:09:25 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -444,7 +444,13 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
       return;
     }
 
-    workspace.insert(2, NodeWorkspace(key: 'Workspace:$str', label: str));
+    workspace.insert(
+        2,
+        NodeWorkspace(
+          key: 'Workspace:$str',
+          label: str,
+          subview: const ExplorerView(),
+        ));
     workspace.removeAt(1);
     setState(() {
       // _treeViewController = _treeViewController.copyWith(children: workspace);
