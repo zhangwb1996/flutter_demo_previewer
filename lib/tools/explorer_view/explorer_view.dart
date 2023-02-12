@@ -5,7 +5,7 @@
 /// Created Date: Wednesday, 2023-02-08 6:38:28 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-12 11:56:16 am
+/// Last Modified: Sunday, 2023-02-12 12:06:21 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -164,6 +164,7 @@ class _ExplorerViewState extends State<ExplorerView> {
                       );
                       workspace.clear();
                       workspace.addAll(added);
+                      dynamicWidgetHelper("$currentPath/$key");
                       debugPrint(workspace.toString());
                     }
                   });
