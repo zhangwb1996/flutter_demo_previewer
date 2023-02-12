@@ -17,6 +17,7 @@
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
 /// Defines the insertion mode adding a new [NodeBase] to the [TreeView].
@@ -521,15 +522,20 @@ class TreeViewController<N extends NodeBase> {
     InsertMode mode = InsertMode.append,
   }) {
     List<NodeBase> cunrentChildren;
+    // List<NodeBase> cunrentChildrenChildren;
     switch (parent.runtimeType) {
-      case NodeBaseExpandable:
-        cunrentChildren = (parent as NodeBaseExpandable).children!;
+      case NodeWorkspace:
+        cunrentChildren = (parent as NodeWorkspace).children!;
+        break;
+      case NodeParent:
+        cunrentChildren = (parent as NodeParent).children!;
         break;
       default:
         cunrentChildren = children;
     }
-    return cunrentChildren.map((child) {
-      if (child.key == key) {
+    return cunrentChildren.map((node) {
+      // print("1244");
+      if (node.key == key) {
         List<NodeBase> cunrentChildrenChildren = [];
         switch (parent.runtimeType) {
           case NodeWorkspace:
@@ -550,41 +556,45 @@ class TreeViewController<N extends NodeBase> {
         } else {
           cunrentChildrenChildren.add(newNode);
         }
-        switch (parent.runtimeType) {
+        switch (node.runtimeType) {
           case NodeWorkspace:
-            return (child as NodeWorkspace)
+            return (node as NodeWorkspace)
                 .copyWith(children: cunrentChildrenChildren);
 
           case NodeParent:
-            return (child as NodeParent)
+            return (node as NodeParent)
                 .copyWith(children: cunrentChildrenChildren);
           default:
-            return NodeError(key: "add node: $key", label: "NodeError");
+            return node;
+          // if (cunrentChildrenChildren.isNotEmpty) {
+          //   return NodeError(key: "add error node: $key", label: "NodeError");
+          // }
         }
       } else {
-        switch (child.runtimeType) {
+        switch (node.runtimeType) {
           case NodeWorkspace:
-            return (child as NodeWorkspace).copyWith(
+            return (node as NodeWorkspace).copyWith(
               children: addNode<T>(
                 key,
                 newNode,
-                parent: child,
+                parent: node,
                 mode: mode,
                 index: index,
               ),
             );
           case NodeParent:
-            return (child as NodeParent).copyWith(
+            return (node as NodeParent).copyWith(
               children: addNode<T>(
                 key,
                 newNode,
-                parent: child,
+                parent: node,
                 mode: mode,
                 index: index,
               ),
             );
           default:
-            return NodeError(key: "add node: $key", label: "NodeError");
+            return node;
+          // return NodeError(key: "add node: $key", label: "NodeError");
         }
       }
     }).toList();
