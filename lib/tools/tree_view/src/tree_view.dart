@@ -1,9 +1,26 @@
+///
+/// File: \lib\tools\tree_view\src\tree_view.dart
+/// Project: flutter_demo_previewer
+///
+/// Created Date: Thursday, 2023-02-02 11:14:33 pm
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Monday, 2023-02-06 12:54:47 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/src/models/base/node_base.dart';
 
 import 'tree_view_controller.dart';
 import 'tree_view_theme.dart';
 import 'tree_node.dart';
-import 'models/node.dart';
 
 /// Defines the [TreeView] widget.
 ///
@@ -33,14 +50,20 @@ class TreeView extends InheritedWidget {
   final Function(String)? onNodeTap;
 
   /// Custom builder for nodes. Parameters are the build context and tree node.
-  final Widget Function(BuildContext, Node)? nodeBuilder;
+  final Widget Function(BuildContext, NodeBase)? nodeBuilder;
 
   /// The double tap handler for a node. Passes the node key.
   final Function(String)? onNodeDoubleTap;
 
+  /// [onSubmitted] for an editable node . Parameters are key and text inputted
+  final Function(String, String)? onSubmitted;
+
   /// The expand/collapse handler for a node. Passes the node key and the
   /// expansion state.
   final Function(String, bool)? onExpansionChanged;
+
+  /// Adding Worksapce. Show the [ExplorerView]
+  final Function(String)? onAddingWorksapce;
 
   /// The theme for [TreeView].
   final TreeViewTheme theme;
@@ -81,6 +104,8 @@ class TreeView extends InheritedWidget {
     required this.controller,
     this.onNodeTap,
     this.onNodeDoubleTap,
+    this.onSubmitted,
+    this.onAddingWorksapce,
     this.physics,
     this.onExpansionChanged,
     this.allowParentSelect = false,
@@ -92,12 +117,14 @@ class TreeView extends InheritedWidget {
   })  : theme = theme ?? const TreeViewTheme(),
         super(
           key: key,
-          child: _TreeViewData(
-            controller,
-            shrinkWrap: shrinkWrap,
-            primary: primary,
-            physics: physics,
-          ),
+          child: Builder(builder: (context) {
+            return _TreeViewData(
+              controller,
+              shrinkWrap: shrinkWrap,
+              primary: primary,
+              physics: physics,
+            );
+          }),
         );
 
   static TreeView? of(BuildContext context) =>
@@ -110,6 +137,9 @@ class TreeView extends InheritedWidget {
         oldWidget.onExpansionChanged != onExpansionChanged ||
         oldWidget.theme != theme ||
         oldWidget.supportParentDoubleTap != supportParentDoubleTap ||
+        oldWidget.onSubmitted != onSubmitted ||
+        oldWidget.onAddingWorksapce != onAddingWorksapce ||
+        // oldWidget.onNodeDoubleTap != onNodeDoubleTap ||
         oldWidget.allowParentSelect != allowParentSelect;
   }
 }
@@ -133,7 +163,7 @@ class _TreeViewData extends StatelessWidget {
         primary: primary,
         physics: physics,
         padding: EdgeInsets.zero,
-        children: _controller.children.map((Node node) {
+        children: _controller.children.map((node) {
           return TreeNode(node: node);
         }).toList(),
       ),

@@ -1,3 +1,21 @@
+///
+/// File: \lib\tools\tree_view\src\expander_theme_data.dart
+/// Project: flutter_demo_previewer
+/// -----
+/// Created Date: Thursday, 2023-02-02 11:14:33 pm
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Friday, 2023-02-10 11:50:05 am
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'tree_view_theme.dart';
 
@@ -34,7 +52,7 @@ enum ExpanderModifier {
 ///
 /// Used by [TreeViewTheme] to control the appearance of the expander icons for a
 /// parent tree node in the [TreeView] widget.
-class ExpanderThemeData {
+class ExpanderThemeData extends Equatable {
   /// The [ExpanderPosition] for expander icon.
   final ExpanderPosition position;
 
@@ -116,19 +134,22 @@ class ExpanderThemeData {
 
   ExpanderThemeData resolve(BuildContext context) => this;
 
-  @override
-  bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) return false;
-    return other is ExpanderThemeData &&
-        other.color == color &&
-        other.position == position &&
-        other.type == type &&
-        other.modifier == modifier &&
-        other.animated == animated &&
-        other.size == size;
-  }
+  // @override
+  // bool operator ==(Object other) {
+  //   if (other.runtimeType != runtimeType) return false;
+  //   return other is ExpanderThemeData &&
+  //       other.color == color &&
+  //       other.position == position &&
+  //       other.type == type &&
+  //       other.modifier == modifier &&
+  //       other.animated == animated &&
+  //       other.size == size;
+  // }
+
+  // @override
+  // int get hashCode =>
+  //     hashValues(color, position, type, size, modifier, animated);
 
   @override
-  int get hashCode =>
-      hashValues(color, position, type, size, modifier, animated);
+  List<Object?> get props => [color, position, type, size, modifier, animated];
 }

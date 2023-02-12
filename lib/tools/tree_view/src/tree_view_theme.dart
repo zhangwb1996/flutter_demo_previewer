@@ -1,3 +1,21 @@
+///
+/// File: \lib\tools\tree_view\src\tree_view_theme.dart
+/// Project: flutter_demo_previewer
+/// -----
+/// Created Date: Thursday, 2023-02-02 11:14:33 pm
+/// Author: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Last Modified: Tuesday, 2023-02-07 11:12:51 pm
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
+/// -----
+/// Copyright (c) 2023
+/// -----
+/// HISTORY:
+/// Date      	By	Comments
+/// ----------	---	---------------------------------------------------------
+///
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'expander_theme_data.dart';
@@ -10,7 +28,7 @@ const int _kExpandSpeed = 130;
 ///
 /// Used by [TreeView] to control the appearance of the sub-widgets
 /// in the [TreeView] widget.
-class TreeViewTheme {
+class TreeViewTheme extends Equatable {
   /// The [ColorScheme] for [TreeView] widget.
   final ColorScheme colorScheme;
 
@@ -153,8 +171,7 @@ class TreeViewTheme {
       Duration(milliseconds: (expandSpeed.inMilliseconds * 1.6).toInt());
 
   @override
-  int get hashCode {
-    return hashValues(
+  List<Object?> get props => [
         colorScheme,
         levelPadding,
         iconPadding,
@@ -166,25 +183,6 @@ class TreeViewTheme {
         horizontalSpacing,
         parentLabelStyle,
         labelOverflow,
-        parentLabelOverflow);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other.runtimeType != runtimeType) return false;
-    return other is TreeViewTheme &&
-        other.colorScheme == colorScheme &&
-        other.levelPadding == levelPadding &&
-        other.iconPadding == iconPadding &&
-        other.iconTheme == iconTheme &&
-        other.expanderTheme == expanderTheme &&
-        other.labelStyle == labelStyle &&
-        other.dense == dense &&
-        other.verticalSpacing == verticalSpacing &&
-        other.horizontalSpacing == horizontalSpacing &&
-        other.parentLabelStyle == parentLabelStyle &&
-        other.labelOverflow == labelOverflow &&
-        other.parentLabelOverflow == parentLabelOverflow;
-  }
+        parentLabelOverflow,
+      ];
 }
