@@ -136,7 +136,7 @@ void dynamicWidgetHelper(String path) {
       // );
       File("${Directory.current.path}/$strDirGenerateBuilderExport/builder.dart")
           .writeAsStringSync(
-        "export './builder/${className.toLowerCase()}_builder.dart';\n",
+        "export './builder${fileStructurePathCopy.replaceAll("\\", "/")}/${className.toLowerCase()}_builder.dart';\n",
         mode: FileMode.append,
       );
 
