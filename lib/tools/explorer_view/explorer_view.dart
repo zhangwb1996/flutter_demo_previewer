@@ -5,7 +5,7 @@
 /// Created Date: Wednesday, 2023-02-08 6:38:28 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-12 12:03:42 am
+/// Last Modified: Sunday, 2023-02-12 11:56:16 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -18,13 +18,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
+import '../../src/variables.dart';
 import '../dir/widget.dart';
+import '../json_dynamic_widget/widget.dart';
 
 class ExplorerView extends StatefulWidget {
-  const ExplorerView({
-    super.key,
-  });
+  /// key of worksapce node
+  final String? workspaceName;
+  final TreeViewController? controller;
+  const ExplorerView({super.key, this.workspaceName, this.controller});
 
   @override
   State<ExplorerView> createState() => _ExplorerViewState();
@@ -39,6 +43,11 @@ class _ExplorerViewState extends State<ExplorerView> {
     initCurrentPath();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void initCurrentPath({String? path}) {
@@ -146,6 +155,16 @@ class _ExplorerViewState extends State<ExplorerView> {
                       debugPrint(
                         'ExplorerView "add to worksapce": $currentPath/$key',
                       );
+
+                      NodeParent node = NodeParent(
+                          key: "$currentPath/$key", label: "$currentPath/$key");
+                      List<NodeBase>? added = widget.controller!.addNode(
+                        'Workspace:${widget.workspaceName!}',
+                        node,
+                      );
+                      workspace.clear();
+                      workspace.addAll(added);
+                      debugPrint(workspace.toString());
                     }
                   });
                 },

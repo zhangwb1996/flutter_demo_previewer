@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-12 12:09:25 am
+/// Last Modified: Sunday, 2023-02-12 11:49:09 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -23,7 +23,7 @@ import 'package:flutter_demo_previewer/tools/tree_view/src/models/node_workspace
 
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 // import 'tools/dir/dynamic_widget_helper.dart';
-import 'tools/json_dynamic_widget/json_dynamic_widget.dart';
+import 'tools/json_dynamic_widget/widget.dart';
 import 'tools/explorer_view/widget.dart';
 import 'tools/tree_view/widget.dart';
 import 'tools/dir/dir_entry.dart';
@@ -150,14 +150,14 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
         ),
       );
 
-      workspace.add(
-        NodeWorkspace(
-          key: "workspace: workspace 1",
-          label: "workspace 1",
-          subview: const ExplorerView(),
-          children: nodesFromPath,
-        ),
-      );
+      // workspace.add(
+      //   NodeWorkspace(
+      //     key: "workspace: workspace 1",
+      //     label: "workspace 1",
+      //     subview: ExplorerView(),
+      //     children: nodesFromPath,
+      //   ),
+      // );
 
       /// init TreeViewController
       _treeViewController = TreeViewController(
@@ -438,18 +438,21 @@ class TreeViewPreviewState extends State<FlutterDemoPreview> {
   }
 
   ///
-  void addNewWorkspace(String key, String str) {
+  void addNewWorkspace(String key, String name) {
     // TODO: If key is existed, do something
-    if (_treeViewController.getNode('Workspace:$str') != null) {
+    if (_treeViewController.getNode('Workspace:$name') != null) {
       return;
     }
 
     workspace.insert(
         2,
         NodeWorkspace(
-          key: 'Workspace:$str',
-          label: str,
-          subview: const ExplorerView(),
+          key: 'Workspace:$name',
+          label: name,
+          subview: ExplorerView(
+            workspaceName: name,
+            controller: _treeViewController,
+          ),
         ));
     workspace.removeAt(1);
     setState(() {
