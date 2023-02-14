@@ -1,11 +1,11 @@
 ///
-/// File: \lib\flutter_demo_preview.dart
+/// File: \lib\flutter_demo_previewer.dart
 /// Project: flutter_demo_previewer
 /// -----
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-12 12:30:46 pm
+/// Last Modified: Wednesday, 2023-02-15 1:20:51 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -31,15 +31,15 @@ import 'tools/dir/dir_entry.dart';
 String demoPath =
     r'C:\Users\12700\Documents\FlutterProjects\Src\flutter_demo_previewer\lib';
 
-class FlutterDemoPreview extends StatefulWidget {
-  const FlutterDemoPreview({Key? key, required this.title}) : super(key: key);
+class FlutterDemoPreviewer extends StatefulWidget {
+  const FlutterDemoPreviewer({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<FlutterDemoPreview> createState() => TreeViewPreviewState();
+  State<FlutterDemoPreviewer> createState() => FlutterDemoPreviewerState();
 }
 
-class TreeViewPreviewState extends State<FlutterDemoPreview> {
+class FlutterDemoPreviewerState extends State<FlutterDemoPreviewer> {
   String? _selectedNode;
   String? _showExplorerView;
   late TreeViewController _treeViewController = TreeViewController(
