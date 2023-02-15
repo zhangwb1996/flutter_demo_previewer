@@ -7,5 +7,10 @@ import '../generated/builder.dart';
 ///
 void register(JsonWidgetRegistry registry) {
 
+
+  registry.registerCustomBuilder(
+    AnimatedAlignViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedAlignViewBuilder.fromDynamic),
+  );
   /// BODY
 }

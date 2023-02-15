@@ -41,6 +41,8 @@ dependencies:
   websafe_svg: ^2.1.3+1
   equatable: ^2.0.5
   provider: ^6.0.5
+  widget_design:
+    path: ../widget_design
 
 dev_dependencies:
   flutter_test:

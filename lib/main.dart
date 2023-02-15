@@ -1,6 +1,6 @@
 ///
-/// File: \lib\main.dart
-/// Project: flutter_demo_previewer
+/// File: \lib\main.dart                                                        
+/// Project: flutter_demo_previewer                                             
 ///
 /// Created Date: Wednesday, 2023-02-01 11:05:52 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
@@ -20,6 +20,7 @@ import 'package:flutter_demo_previewer/src/widget.dart';
 import 'package:provider/provider.dart';
 
 import 'flutter_demo_previewer.dart';
+import 'flutter_demo_previewer_pre.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -37,8 +38,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Workspace()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo Preview',
-        home: const FlutterDemoPreviewer(title: 'Flutter Demo Preview'),
+        title: 'Flutter Demo Previewer',
+        // home: const FlutterDemoPreviewer(title: 'Flutter Demo Previewer'),
+        home: const FlutterDemoPreviewerPre(title: 'Flutter Demo Previewer'),
         theme: ThemeData().copyWith(
             // accentColor: Colors.deepPurple,
             // hoverColor: Colors.red.shade100,
