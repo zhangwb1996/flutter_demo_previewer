@@ -102,6 +102,12 @@ void dynamicWidgetHelper(String path) {
 
       // fileStructurePathCopy
       fileStructurePathCopy = file.path.replaceAll(path, '');
+
+      /// for pre; Remove the duplicated dir which name is same as the [_builder.dart] file
+      var f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
+      f1.removeLast();
+      fileStructurePathCopy = f1.join('/');
+
       if (kDebugMode) {
         print("fileStructurePathCopy: $fileStructurePathCopy");
       }
