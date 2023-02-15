@@ -15,7 +15,6 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
@@ -324,7 +323,7 @@ class FlutterDemoPreviewerState extends State<FlutterDemoPreviewer> {
     }
     workspace.insert(
       1,
-      NodeWorkspaceEditable(
+      const NodeWorkspaceEditable(
         key: "workspace: NodeWorkspaceEditable",
         label: "wNodeWorkspaceEditable",
       ),

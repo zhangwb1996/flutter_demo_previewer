@@ -16,7 +16,6 @@
 ///
 import 'package:flutter/material.dart';
 
-import '../../tools/explorer_view/widget.dart';
 import '../../tools/tree_view/widget.dart';
 
 class Workspace extends ChangeNotifier {

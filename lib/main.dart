@@ -20,7 +20,6 @@ import 'package:flutter_demo_previewer/src/widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:widget_design/src/models/widgets/animation_and_motion/widget.dart';
-import 'flutter_demo_previewer.dart';
 import 'flutter_demo_previewer_pre.dart';
 
 void main() async {

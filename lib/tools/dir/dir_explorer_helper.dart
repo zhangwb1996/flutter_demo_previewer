@@ -16,6 +16,8 @@
 ///
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 /// [dirExplorer] return a List including folders absolutely path in this [path]
 List<String> dirExplorer(String path) {
   try {
@@ -37,7 +39,9 @@ List<String> dirExplorer(String path) {
     }
     return entriesCurrentPath;
   } catch (e) {
-    print(e);
+    if (kDebugMode) {
+      print(e);
+    }
     return [];
   }
 }

@@ -15,8 +15,6 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
-import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
@@ -29,7 +27,7 @@ import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 /// required. The key is needed for events that occur on the generated
 /// [TreeNode]. It should always be unique.
 class NodeWorkspaceEditable<T> extends NodeBaseExpandable {
-  NodeWorkspaceEditable({
+  const NodeWorkspaceEditable({
     super.nodeType = "NodeWorkspaceEditable",
     required super.key,
     required super.label,

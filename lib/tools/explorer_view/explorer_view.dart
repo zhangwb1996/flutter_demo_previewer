@@ -22,7 +22,6 @@ import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
 import '../../src/variables.dart';
 import '../dir/widget.dart';
-import '../json_dynamic_widget/widget.dart';
 
 class ExplorerView extends StatefulWidget {
   /// key of worksapce node

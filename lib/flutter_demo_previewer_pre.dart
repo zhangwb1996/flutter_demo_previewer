@@ -1,21 +1,20 @@
 ///
-/// File: \lib\flutter_demo_previewer_pre.dart                                  
-/// Project: flutter_demo_previewer                                             
+/// File: \lib\flutter_demo_previewer_pre.dart
+/// Project: flutter_demo_previewer
 /// -----
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-15 10:37:11 am                            
-/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)                          
+/// Last Modified: Wednesday, 2023-02-15 10:37:11 am
+/// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
 /// -----
-/// HISTORY:                                                                    
+/// HISTORY:
 /// Date      	By	Comments
 /// ----------	---	---------------------------------------------------------
 ///
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
@@ -27,7 +26,6 @@ import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 import 'tools/json_dynamic_widget/widget.dart';
 import 'tools/explorer_view/widget.dart';
 import 'tools/tree_view/widget.dart';
-import 'tools/dir/dir_entry.dart';
 
 // String demoPath =
 //     r'C:\Users\12700\Documents\FlutterProjects\Src\widget_design\lib\src\views';
@@ -330,7 +328,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     }
     workspace.insert(
       1,
-      NodeWorkspaceEditable(
+      const NodeWorkspaceEditable(
         key: "workspace: NodeWorkspaceEditable",
         label: "wNodeWorkspaceEditable",
       ),
