@@ -27,5 +27,20 @@ void register(JsonWidgetRegistry registry) {
     AnimatedListPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedListPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AnimatedGridPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedGridPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SliverAnimatedGridPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SliverAnimatedGridPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SliverAnimatedListPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SliverAnimatedListPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }

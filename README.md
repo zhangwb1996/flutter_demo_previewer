@@ -1,16 +1,14 @@
-# tree
+# Flutter Demo Previewer
 
-A new Flutter project.
+## About _builder.dart
 
-## Getting Started
+### run below command in `root of flutter_demo_previewer project`
 
-This project is a starting point for a Flutter application.
+```bash
+# generate _builder.dart files
+dart ./dynamic_widget_helper.dart pre
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# clean and regenerate all the _builder.dart files
+dart ./dynamic_widget_helper.dart clean
+dart ./dynamic_widget_helper.dart pre
+```
