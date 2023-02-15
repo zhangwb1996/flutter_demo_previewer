@@ -1,2 +1,3 @@
-export './builder/animation_and_motion/animated_align_view.dart/animatedalignview_builder.dart';
-export './builder/animation_and_motion/animated_container_view.dart/animatedcontainerview_builder.dart';
+export './builder/animation_and_motion/animatedalignview_builder.dart';
+export './builder/animation_and_motion/animatedcontainerview_builder.dart';
+export './builder/animation_and_motion/animatedcrossfadeview_builder.dart';

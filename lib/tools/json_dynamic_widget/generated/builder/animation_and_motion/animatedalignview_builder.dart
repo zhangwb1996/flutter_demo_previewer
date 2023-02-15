@@ -2,7 +2,6 @@ import 'file:C:/Users/12700/Documents/FlutterProjects/Src/widget_design/lib/src/
 import 'package:flutter/material.dart';
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 import 'package:child_builder/child_builder.dart';
-
 /// replace  '[Json2widgetTemp]' with [className]
 /// replace  [animated_align_view.dart] with [fileName]
 class AnimatedAlignViewBuilder extends JsonWidgetBuilder {
@@ -18,14 +17,14 @@ class AnimatedAlignViewBuilder extends JsonWidgetBuilder {
   }) {
     return const AnimatedAlignViewBuilder();
   }
-
-  @override
+    @override
   Widget buildCustom({
     ChildWidgetBuilder? childBuilder,
     required BuildContext context,
     required JsonWidgetData data,
     Key? key,
   }) {
+    
     return const AnimatedAlignView();
   }
 }

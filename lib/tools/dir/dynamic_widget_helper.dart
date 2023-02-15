@@ -17,8 +17,6 @@
 
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
 void main(List<String> args) {
   if (args.isEmpty) {
     dynamicWidgetHelper(
@@ -81,9 +79,8 @@ void dynamicWidgetHelper(String path) {
         .listSync(recursive: true)
         .whereType<File>()
         .where((file) => file.path.endsWith('.dart'));
-    if (kDebugMode) {
-      print("dartFiles: $dartFiles");
-    }
+
+    print("dartFiles: $dartFiles");
 
     /// [className]
     String className;
@@ -108,32 +105,30 @@ void dynamicWidgetHelper(String path) {
       f1.removeLast();
       fileStructurePathCopy = f1.join('/');
 
-      if (kDebugMode) {
-        print("fileStructurePathCopy: $fileStructurePathCopy");
-      }
+      print("fileStructurePathCopy: $fileStructurePathCopy");
+
       // class name
       className =
           resetClassName(iterableClassName.toString().split(RegExp(r"\s"))[1]);
-      if (kDebugMode) {
-        print("className: $className");
-      }
+
+      print("className: $className");
 
       ///
       /// generate [builder] under [strDirGenerateBuilder]
       ///
       //  create file
-      if (kDebugMode) {
-        print("current dir: ${Directory.current.path}");
-      }
+
+      print("current dir: ${Directory.current.path}");
+
       if (File(
               "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
           .existsSync()) {
         continue;
       }
-      if (kDebugMode) {
-        print(
-            "path createing file: ${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart");
-      }
+
+      print(
+          "path createing file: ${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart");
+
       File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
           .createSync(recursive: true);
 
@@ -151,9 +146,7 @@ void dynamicWidgetHelper(String path) {
               .replaceAll(
                   'NameOfOriginFile', file.path.split(RegExp(r'\\|/')).last));
 
-      if (kDebugMode) {
-        print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
-      }
+      print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
 
       // generate bulder.dart
       // File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/builder.dart")
