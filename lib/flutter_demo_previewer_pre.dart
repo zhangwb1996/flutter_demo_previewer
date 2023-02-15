@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-15 9:50:47 am                             
+/// Last Modified: Wednesday, 2023-02-15 10:37:11 am                            
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)                          
 /// -----
 /// Copyright (c) 2023
@@ -29,8 +29,10 @@ import 'tools/explorer_view/widget.dart';
 import 'tools/tree_view/widget.dart';
 import 'tools/dir/dir_entry.dart';
 
-String demoPath =
-    r'C:\Users\12700\Documents\FlutterProjects\Src\widget_design\lib\src\views';
+// String demoPath =
+//     r'C:\Users\12700\Documents\FlutterProjects\Src\widget_design\lib\src\views';
+
+String demoPath = r'../widget_design/lib/src/views';
 
 class FlutterDemoPreviewerPre extends StatefulWidget {
   const FlutterDemoPreviewerPre({Key? key, required this.title})
