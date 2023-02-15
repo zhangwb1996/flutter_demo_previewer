@@ -44,6 +44,4 @@ app.*.map.json
 /android/app/release
 /.vscode
 /pubspec.lock
-/lib/tools/json_dynamic_widget/generated/builder
-/lib/tools/json_dynamic_widget/generated/register.dart
 /pubspec.lock
