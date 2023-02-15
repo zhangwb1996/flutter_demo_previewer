@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-09 3:34:29 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Saturday, 2023-02-11 11:28:49 am
+/// Last Modified: Wednesday, 2023-02-15 10:35:14 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -31,3 +31,5 @@ final List<NodeBase<dynamic>> dirChildren = [];
 final List<NodeBase<dynamic>> workspace = [];
 
 final List<NodeBase> nodesFromPath = [];
+
+final List<NodeBase> nodesFromPathPreview = [];

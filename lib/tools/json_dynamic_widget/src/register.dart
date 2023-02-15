@@ -22,5 +22,10 @@ void register(JsonWidgetRegistry registry) {
     AnimatedCrossFadeViewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedCrossFadeViewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AnimatedListPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedListPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }

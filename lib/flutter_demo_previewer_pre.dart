@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-15 10:37:11 am
+/// Last Modified: Wednesday, 2023-02-15 10:55:15 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -30,7 +30,8 @@ import 'tools/tree_view/widget.dart';
 // String demoPath =
 //     r'C:\Users\12700\Documents\FlutterProjects\Src\widget_design\lib\src\views';
 
-String demoPath = r'../widget_design/lib/src/views';
+String designPath = r'../widget_design/lib/src/views';
+String previewPath = r'../widget_design/lib/src/preview';
 
 class FlutterDemoPreviewerPre extends StatefulWidget {
   const FlutterDemoPreviewerPre({Key? key, required this.title})
@@ -53,7 +54,12 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
   /// initial data of node
   final DirEntry _dirEntry = DirEntry(
     parentPath: '',
-    currentPath: demoPath,
+    currentPath: designPath,
+  );
+
+  final DirEntry _dirEntryPreview = DirEntry(
+    parentPath: '',
+    currentPath: previewPath,
   );
 
   /// data of node's children
@@ -105,8 +111,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       nodesFromPath.add(
         NodeParent(
-            label: demoPath,
-            key: demoPath,
+            label: designPath,
+            key: designPath,
             expanded: isExpanded,
             icon: isExpanded ? Icons.folder_open : Icons.folder,
             children: [
@@ -143,6 +149,72 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
             ]),
       );
 
+      _dirEntryPreview.getDirStrList(_dirEntryPreview).then((value) {
+        nodesFromPathPreview.add(
+          NodeParent(
+              label: previewPath,
+              key: previewPath,
+              expanded: isExpanded,
+              icon: isExpanded ? Icons.folder_open : Icons.folder,
+              children: [
+                // dir
+                ..._dirEntry.listStrNameCurrentDirs.map((dir) {
+                  return NodeParent(
+                    label: dir,
+                    key: "${_dirEntry.absolutelyCurrentPath}/$dir",
+                    expanded: isExpanded,
+                    icon: isExpanded ? Icons.folder_open : Icons.folder,
+                    children: const [],
+                  );
+                }).toList(),
+                // file
+                ..._dirEntry.listStrNameCurrentFiles!.map(
+                  (file) {
+                    return NodeChild(
+                      label: file,
+                      key: "${_dirEntry.absolutelyCurrentPath}/$file",
+                      iconColor: Colors.green.shade300,
+                      selectedIconColor: Colors.white,
+                      icon: Icons.insert_drive_file,
+                      // nameSubview: file,
+                      subview: Json2Widget(
+                        key: Key(
+                            "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file"),
+                        jsonData: {
+                          "type": file,
+                        },
+                      ),
+                    );
+                  },
+                ).toList()
+              ]),
+        );
+        workspace.add(
+          NodeWorkspace(
+            key: "workspace: widget_design",
+            label: "widget_design",
+            // subview: ExplorerView(),
+            children: nodesFromPath,
+          ),
+        );
+        workspace.add(
+          NodeWorkspace(
+            key: "workspace: preview",
+            label: "preview",
+            // subview: ExplorerView(),
+            children: nodesFromPathPreview,
+          ),
+        );
+
+        /// init TreeViewController
+        _treeViewController = TreeViewController(
+          children: workspace,
+          selectedKey: _selectedNode,
+        );
+        dynamicWidgetHelperPre(designPath, "widget_design");
+        dynamicWidgetHelperPre(previewPath, "preview", insert: true);
+        setState(() {});
+      });
       // var t = "Add Workspace";
       // workspace.add(
       //   NodeWorkspaceAdd(
@@ -150,23 +222,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
       //     label: t,
       //   ),
       // );
-
-      workspace.add(
-        NodeWorkspace(
-          key: "workspace: workspace 1",
-          label: "widget_design",
-          // subview: ExplorerView(),
-          children: nodesFromPath,
-        ),
-      );
-
-      /// init TreeViewController
-      _treeViewController = TreeViewController(
-        children: workspace,
-        selectedKey: _selectedNode,
-      );
-      dynamicWidgetHelper(demoPath);
-      setState(() {});
     });
     super.initState();
   }
