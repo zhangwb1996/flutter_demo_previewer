@@ -69,6 +69,13 @@ String strDirGenerateRegisterFlag = 'lib/tools/json_dynamic_widget/generated';
 /// register.dart
 void dynamicWidgetHelper(String path) {
   try {
+    /// only pre branch
+    var p1 = Directory.current.path.split(RegExp(r'\\|/'));
+    var p2 = path.split(RegExp(r'\\|/'));
+    p1.removeLast();
+    p2.removeAt(0);
+    path = [...p1, ...p2].join("/");
+
     /// [dartFiles]
     Iterable<File> dartFiles = Directory(path)
         .listSync(recursive: true)
