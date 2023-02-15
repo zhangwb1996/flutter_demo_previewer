@@ -12,5 +12,10 @@ void register(JsonWidgetRegistry registry) {
     AnimatedAlignViewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedAlignViewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AnimatedContainerViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedContainerViewBuilder.fromDynamic),
+  );
   /// BODY
 }

@@ -38,6 +38,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Workspace()),
         ChangeNotifierProvider(
           create: (BuildContext context) => AnimatedAlignModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => AnimatedContainerModel(),
         )
       ],
       child: MaterialApp(
