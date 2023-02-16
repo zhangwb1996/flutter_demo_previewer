@@ -257,5 +257,40 @@ void register(JsonWidgetRegistry registry) {
     CupertinoTimerPickerPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: CupertinoTimerPickerPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AutocompleteBasicPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AutocompleteBasicPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AutocompleteBasicUserPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AutocompleteBasicUserPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RawAutocompleteBasicPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: RawAutocompleteBasicPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RawAutocompleteCustomTypePreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: RawAutocompleteCustomTypePreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RawAutocompleteFormPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: RawAutocompleteFormPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FormPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FormPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TextFormFieldPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: TextFormFieldPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }
