@@ -49,6 +49,10 @@ class MyApp extends StatelessWidget {
           create: (context) => AnimatedOpacityModel(),
           lazy: true,
         ),
+        ChangeNotifierProvider(
+          create: (context) => AlignModel(),
+          lazy: true,
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo Previewer',

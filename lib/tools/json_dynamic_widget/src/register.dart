@@ -347,5 +347,10 @@ void register(JsonWidgetRegistry registry) {
     InteractiveViewerPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: InteractiveViewerPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AlignViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AlignViewBuilder.fromDynamic),
+  );
   /// BODY
 }
