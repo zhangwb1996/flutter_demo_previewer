@@ -292,5 +292,60 @@ void register(JsonWidgetRegistry registry) {
     TextFormFieldPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: TextFormFieldPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AbsorbPointerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AbsorbPointerPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    IgnorePointerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: IgnorePointerPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DismissibleoPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: DismissibleoPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DraggablePreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: DraggablePreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DraggableScrollableSheetPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: DraggableScrollableSheetPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    GestureDetectorPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: GestureDetectorPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    GestureDetectorPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: GestureDetectorPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ListenerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ListenerPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    MouseRegionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: MouseRegionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    NestedGestureDetectorsPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: NestedGestureDetectorsPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    InteractiveViewerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: InteractiveViewerPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }

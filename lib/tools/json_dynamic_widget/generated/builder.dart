@@ -55,3 +55,14 @@ export './builder/preview//input/autocomplete/rawautocompletecustomtypepreview_b
 export './builder/preview//input/autocomplete/rawautocompleteformpreview_builder.dart';
 export './builder/preview//input/form/formpreview_builder.dart';
 export './builder/preview//input/form/textformfieldpreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/absorb_pointer/absorbpointerpreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/absorb_pointer/ignorepointerpreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/dismissibleopreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/draggable/draggablepreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/draggable/draggablescrollablesheetpreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/gesture_detector/gesturedetectorpreview1_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/gesture_detector/gesturedetectorpreview2_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/gesture_detector/listenerpreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/gesture_detector/mouseregionpreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/gesture_detector/nestedgesturedetectorspreview_builder.dart';
+export './builder/preview//interaction_models/touch_interactions/interactiveviewerpreview_builder.dart';
