@@ -352,5 +352,10 @@ void register(JsonWidgetRegistry registry) {
     AlignViewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AlignViewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AspectRatioViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AspectRatioViewBuilder.fromDynamic),
+  );
   /// BODY
 }
