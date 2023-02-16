@@ -72,16 +72,15 @@ String strDirGenerateRegisterFlag = 'lib/tools/json_dynamic_widget/generated';
 ///
 /// register.dart
 ///
-/// [workspace] only for pre branch
-void dynamicWidgetHelperPre(String path, String workspace,
-    {bool insert = false}) {
+
+void dynamicWidgetHelper(String path) {
   try {
     /// only pre branch
-    var p1 = Directory.current.path.split(RegExp(r'\\|/'));
-    var p2 = path.split(RegExp(r'\\|/'));
-    p1.removeLast();
-    p2.removeAt(0);
-    path = [...p1, ...p2].join("/");
+    // var p1 = Directory.current.path.split(RegExp(r'\\|/'));
+    // var p2 = path.split(RegExp(r'\\|/'));
+    // p1.removeLast();
+    // p2.removeAt(0);
+    // path = [...p1, ...p2].join("/");
 
     /// [dartFiles]
     Iterable<File> dartFiles = Directory(path)
@@ -109,15 +108,13 @@ void dynamicWidgetHelperPre(String path, String workspace,
       // fileStructurePathCopy
       fileStructurePathCopy = file.path.replaceAll(path, '');
 
-      /// for pre; Remove the duplicated dir which name is same as the [_builder.dart] file
-      var f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
-      f1.removeLast();
-      if (insert) {
-        f1.insert(f1.length - 2, workspace);
-      } else {
-        f1.insert(f1.length - 1, workspace);
-      }
-      fileStructurePathCopy = f1.join('/');
+      /// Only pre branch;
+      /// Remove the duplicated dir which name is same as the [_builder.dart] file
+      ///
+      // var f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
+      // f1.removeLast();
+      // f1.add(workspace);
+      // fileStructurePathCopy = f1.join('/');
 
       print("fileStructurePathCopy: $fileStructurePathCopy");
 
@@ -206,14 +203,16 @@ void dynamicWidgetHelperPre(String path, String workspace,
   }
 }
 
-void dynamicWidgetHelper(String path) {
+/// [workspace] only for pre branch
+void dynamicWidgetHelperPre(String path, String workspace,
+    {bool insert = false}) {
   try {
     /// only pre branch
-    // var p1 = Directory.current.path.split(RegExp(r'\\|/'));
-    // var p2 = path.split(RegExp(r'\\|/'));
-    // p1.removeLast();
-    // p2.removeAt(0);
-    // path = [...p1, ...p2].join("/");
+    var p1 = Directory.current.path.split(RegExp(r'\\|/'));
+    var p2 = path.split(RegExp(r'\\|/'));
+    p1.removeLast();
+    p2.removeAt(0);
+    path = [...p1, ...p2].join("/");
 
     /// [dartFiles]
     Iterable<File> dartFiles = Directory(path)
@@ -241,13 +240,15 @@ void dynamicWidgetHelper(String path) {
       // fileStructurePathCopy
       fileStructurePathCopy = file.path.replaceAll(path, '');
 
-      /// Only pre branch;
-      /// Remove the duplicated dir which name is same as the [_builder.dart] file
-      ///
-      // var f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
-      // f1.removeLast();
-      // f1.add(workspace);
-      // fileStructurePathCopy = f1.join('/');
+      /// for pre; Remove the duplicated dir which name is same as the [_builder.dart] file
+      var f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
+      f1.removeLast();
+      if (insert) {
+        f1.insert(f1.length - 2, workspace);
+      } else {
+        f1.insert(f1.length - 1, workspace);
+      }
+      fileStructurePathCopy = f1.join('/');
 
       print("fileStructurePathCopy: $fileStructurePathCopy");
 
@@ -277,11 +278,14 @@ void dynamicWidgetHelper(String path) {
           .createSync(recursive: true);
 
       // copy from [temp builder]
-      // import
+      // [on pre branch import is unnecessary]
       // replace [Json2widgetTemp] with [className]
       File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
-          .writeAsStringSync(
-              "import 'file:${file.path.replaceAll(r'\', r'/')}';\n${File("${Directory.current.path}/$strTempBuilder").copySync("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart").readAsStringSync().replaceAll("'Json2widgetTemp'", className)}");
+          .writeAsStringSync(File("${Directory.current.path}/$strTempBuilder")
+              .copySync(
+                  "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
+              .readAsStringSync()
+              .replaceAll("'Json2widgetTemp'", className));
       // replace [NameOfOriginFile] with [fileName]
       File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
           .writeAsStringSync(File(
