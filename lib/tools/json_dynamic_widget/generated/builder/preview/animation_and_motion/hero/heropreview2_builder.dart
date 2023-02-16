@@ -4,19 +4,19 @@ import 'package:child_builder/child_builder.dart';
 import 'package:widget_design/widget.dart';//only for pre branch
 
 /// replace  '[Json2widgetTemp]' with [className]
-/// replace  [rotation_transition_preview.dart] with [fileName]
-class RotationTransitionPreviewBuilder extends JsonWidgetBuilder {
-  const RotationTransitionPreviewBuilder({
+/// replace  [hero_preview_2.dart] with [fileName]
+class HeroPreview2Builder extends JsonWidgetBuilder {
+  const HeroPreview2Builder({
     super.numSupportedChildren = 0,
   });
 
-  static const type = 'rotation_transition_preview.dart';
+  static const type = 'hero_preview_2.dart';
 
-  static RotationTransitionPreviewBuilder fromDynamic(
+  static HeroPreview2Builder fromDynamic(
     dynamic map, {
     JsonWidgetRegistry? registry,
   }) {
-    return const RotationTransitionPreviewBuilder();
+    return const HeroPreview2Builder();
   }
     @override
   Widget buildCustom({
@@ -26,6 +26,6 @@ class RotationTransitionPreviewBuilder extends JsonWidgetBuilder {
     Key? key,
   }) {
     
-    return const RotationTransitionPreview();
+    return const HeroPreview2();
   }
 }

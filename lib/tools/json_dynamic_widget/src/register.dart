@@ -29,6 +29,21 @@ void register(JsonWidgetRegistry registry) {
   );
 
   registry.registerCustomBuilder(
+    AnimatedBuilderPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedBuilderPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AnimatedWidgetPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedWidgetPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TweenAnimationBuilderPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: TweenAnimationBuilderPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
     AnimatedGridPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedGridPreviewBuilder.fromDynamic),
   );
@@ -106,6 +121,21 @@ void register(JsonWidgetRegistry registry) {
   registry.registerCustomBuilder(
     SizeTransitionPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SizeTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DecoratedBoxTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: DecoratedBoxTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    HeroPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: HeroPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    HeroPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: HeroPreview2Builder.fromDynamic),
   );
 
   registry.registerCustomBuilder(
