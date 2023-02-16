@@ -152,5 +152,110 @@ void register(JsonWidgetRegistry registry) {
     StreamBuilderPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: StreamBuilderPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    CupertinoActivityIndicatorPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoActivityIndicatorPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoActionSheetPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoActionSheetPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoAlertDialogPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoAlertDialogPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoButtonPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoButtonPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoContextMenuPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoContextMenuPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoDatePickerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoDatePickerPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoListSectionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoListSectionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoNavigationBarPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoNavigationBarPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoPageScaffoldPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoPageScaffoldPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoPickerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoPickerPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoScrollbarPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoScrollbarPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoSearchTextFieldPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoSearchTextFieldPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoSegmentedControlPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoSegmentedControlPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoSliderPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoSliderPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoSlidingSegmentedControlPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoSlidingSegmentedControlPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoSliverNavigationBarPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoSliverNavigationBarPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoSwitchPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoSwitchPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoTabBarPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoTabBarPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoTabScaffoldPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoTabScaffoldPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoTextFieldPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoTextFieldPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CupertinoTimerPickerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CupertinoTimerPickerPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }
