@@ -67,5 +67,50 @@ void register(JsonWidgetRegistry registry) {
     SliverAnimatedOpacityPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SliverAnimatedOpacityPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AlignTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AlignTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AnimatedPositionedPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedPositionedPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    PositionedTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: PositionedTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RelativePositionedTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: RelativePositionedTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SlideTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SlideTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AnimatedSizePreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedSizePreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScaleTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ScaleTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SizeTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SizeTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RotationTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: RotationTransitionPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }

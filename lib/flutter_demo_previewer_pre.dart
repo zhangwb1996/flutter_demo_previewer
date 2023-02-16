@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-15 10:55:15 pm
+/// Last Modified: Thursday, 2023-02-16 1:32:23 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -488,9 +488,9 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         key,
         newNode.copyWith(),
       );
-      // setState(() {
-      _treeViewController = _treeViewController.copyWith(children: added);
-      // });
+      setState(() {
+        _treeViewController = _treeViewController.copyWith(children: added);
+      });
     });
   }
 

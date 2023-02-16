@@ -47,6 +47,7 @@ String strTempRegisterBody =
 String strTempRegisterFunction =
     'lib/tools/json_dynamic_widget/temp/temp_register_function.dart.bak';
 
+/// 'lib/tools/json_dynamic_widget/generated/builder'
 String strDirGenerateBuilder =
     'lib/tools/json_dynamic_widget/generated/builder';
 String fileStructurePathCopy = "";
@@ -240,14 +241,18 @@ void dynamicWidgetHelperPre(String path, String workspace,
       // fileStructurePathCopy
       fileStructurePathCopy = file.path.replaceAll(path, '');
 
-      /// for pre; Remove the duplicated dir which name is same as the [_builder.dart] file
+      /// for pre;
       var f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
+      // Remove the dir which name is same as the [_builder.dart] file
       f1.removeLast();
-      if (insert) {
-        f1.insert(f1.length - 2, workspace);
-      } else {
-        f1.insert(f1.length - 1, workspace);
-      }
+
+      // if (insert) {
+      //   f1.insert(f1.length - 2, workspace);
+      // } else {
+      //   f1.insert(f1.length - 1, workspace);
+      // }
+      f1.insert(0, '/$workspace');
+
       fileStructurePathCopy = f1.join('/');
 
       print("fileStructurePathCopy: $fileStructurePathCopy");
@@ -277,7 +282,7 @@ void dynamicWidgetHelperPre(String path, String workspace,
       File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
           .createSync(recursive: true);
 
-      // copy from [temp builder]
+      // copy from [temp builder] [_builder.dart]
       // [on pre branch import is unnecessary]
       // replace [Json2widgetTemp] with [className]
       File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
@@ -296,7 +301,7 @@ void dynamicWidgetHelperPre(String path, String workspace,
 
       print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
 
-      // generate bulder.dart
+      // generate bulder.dart to import
       // File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/builder.dart")
       //     .writeAsStringSync(
       //   "export './${className.toLowerCase()}_builder.dart';\n",
