@@ -24,13 +24,18 @@ void register(JsonWidgetRegistry registry) {
   );
 
   registry.registerCustomBuilder(
-    AnimatedListPreviewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: AnimatedListPreviewBuilder.fromDynamic),
+    AnimatedOpacityViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedOpacityViewBuilder.fromDynamic),
   );
 
   registry.registerCustomBuilder(
     AnimatedGridPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedGridPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AnimatedListPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedListPreviewBuilder.fromDynamic),
   );
 
   registry.registerCustomBuilder(
@@ -41,11 +46,6 @@ void register(JsonWidgetRegistry registry) {
   registry.registerCustomBuilder(
     SliverAnimatedListPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SliverAnimatedListPreviewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    AnimatedOpacityViewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: AnimatedOpacityViewBuilder.fromDynamic),
   );
   /// BODY
 }

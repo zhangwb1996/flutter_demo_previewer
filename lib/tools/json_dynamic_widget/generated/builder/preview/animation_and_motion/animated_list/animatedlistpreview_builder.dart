@@ -1,7 +1,8 @@
-import 'file:C:/Users/12700/Documents/FlutterProjects/Src/widget_design/lib/src/preview/animation_and_motion/animated_list/animated_list_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 import 'package:child_builder/child_builder.dart';
+import 'package:widget_design/widget.dart';//only for pre branch
+
 /// replace  '[Json2widgetTemp]' with [className]
 /// replace  [animated_list_preview.dart] with [fileName]
 class AnimatedListPreviewBuilder extends JsonWidgetBuilder {
