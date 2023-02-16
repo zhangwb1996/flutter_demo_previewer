@@ -42,5 +42,10 @@ void register(JsonWidgetRegistry registry) {
     SliverAnimatedListPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SliverAnimatedListPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AnimatedOpacityViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedOpacityViewBuilder.fromDynamic),
+  );
   /// BODY
 }

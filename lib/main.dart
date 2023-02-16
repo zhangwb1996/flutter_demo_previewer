@@ -45,6 +45,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (BuildContext context) => AnimatedCrossFadeModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => AnimatedOpacityModel(),
+          lazy: true,
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo Previewer',
