@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-16 1:32:23 pm
+/// Last Modified: Thursday, 2023-02-16 4:13:10 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -111,7 +111,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       nodesFromPath.add(
         NodeParent(
-            label: designPath,
+            label: designPath.split('/').last,
             key: designPath,
             expanded: isExpanded,
             icon: isExpanded ? Icons.folder_open : Icons.folder,
@@ -152,7 +152,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
       _dirEntryPreview.getDirStrList(_dirEntryPreview).then((value) {
         nodesFromPathPreview.add(
           NodeParent(
-              label: previewPath,
+              label: previewPath.split('/').last,
               key: previewPath,
               expanded: isExpanded,
               icon: isExpanded ? Icons.folder_open : Icons.folder,

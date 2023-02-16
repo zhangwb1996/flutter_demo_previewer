@@ -142,5 +142,15 @@ void register(JsonWidgetRegistry registry) {
     RotationTransitionPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: RotationTransitionPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    FutureBuilderPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FutureBuilderPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    StreamBuilderPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: StreamBuilderPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }
