@@ -5,7 +5,7 @@
 /// Created Date: Friday, 2023-02-03 1:29:18 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-09 11:29:11 am
+/// Last Modified: Thursday, 2023-02-16 12:10:17 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -63,6 +63,7 @@ class DirEntry {
 
         /// remove empty item
         listEntriesCurrentPath.remove("");
+        listEntriesCurrentPath.remove("widget.dart");
       }
 
       // print('listEntriesCurrentPath: $listEntriesCurrentPath');
