@@ -6,7 +6,7 @@
 
 ```bash
 # generate _builder.dart files
-dart ./lib/tools/dir/dynamic_widget_helper.dart
+dart ./lib/tools/dir/dynamic_widget_helper.dart pre
 
 # clean and regenerate all the _builder.dart files
 dart ./lib/tools/dir/dynamic_widget_helper.dart clean
