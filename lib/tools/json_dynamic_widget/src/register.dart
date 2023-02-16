@@ -47,5 +47,25 @@ void register(JsonWidgetRegistry registry) {
     SliverAnimatedListPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SliverAnimatedListPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AnimatedOpacityPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedOpacityPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AnimatedSwitcherPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedSwitcherPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FadeTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FadeTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SliverAnimatedOpacityPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SliverAnimatedOpacityPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }

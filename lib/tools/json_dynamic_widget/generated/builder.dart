@@ -6,3 +6,7 @@ export './builder/preview/animation_and_motion/animated_list/animatedgridpreview
 export './builder/preview/animation_and_motion/animated_list/animatedlistpreview_builder.dart';
 export './builder/preview/animation_and_motion/animated_list/sliveranimatedgridpreview_builder.dart';
 export './builder/preview/animation_and_motion/animated_list/sliveranimatedlistpreview_builder.dart';
+export './builder/preview/animation_and_motion/animated_opacity/animatedopacitypreview_builder.dart';
+export './builder/preview/animation_and_motion/animated_opacity/animatedswitcherpreview_builder.dart';
+export './builder/preview/animation_and_motion/animated_opacity/fadetransitionpreview_builder.dart';
+export './builder/preview/animation_and_motion/animated_opacity/sliveranimatedopacitypreview_builder.dart';
