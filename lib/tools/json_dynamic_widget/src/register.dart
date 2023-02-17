@@ -412,5 +412,20 @@ void register(JsonWidgetRegistry registry) {
     TablePreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: TablePreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    CustomScrollViewPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: CustomScrollViewPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CustomScrollViewPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: CustomScrollViewPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SliverAppBarPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SliverAppBarPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }

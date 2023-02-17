@@ -79,3 +79,6 @@ export './builder/preview//layout/multi_child/gridlistpreview_builder.dart';
 export './builder/preview//layout/multi_child/indexedstackpreview_builder.dart';
 export './builder/preview//layout/multi_child/layoutbuilderpreview_builder.dart';
 export './builder/preview//layout/multi_child/tablepreview_builder.dart';
+export './builder/preview//layout/sliver_widget/customscrollviewpreview1_builder.dart';
+export './builder/preview//layout/sliver_widget/customscrollviewpreview2_builder.dart';
+export './builder/preview//layout/sliver_widget/sliverappbarpreview_builder.dart';
