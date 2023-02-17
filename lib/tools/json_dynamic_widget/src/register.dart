@@ -387,5 +387,30 @@ void register(JsonWidgetRegistry registry) {
     AnimatedPaddingPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedPaddingPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    FlowMenuPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FlowMenuPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    GridListPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: GridListPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    IndexedStackPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: IndexedStackPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    LayoutBuilderPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: LayoutBuilderPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TablePreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: TablePreviewBuilder.fromDynamic),
+  );
   /// BODY
 }

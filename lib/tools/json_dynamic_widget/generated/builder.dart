@@ -74,3 +74,8 @@ export './builder/widget_design//layout/single_child/boxfitview_builder.dart';
 export './builder/widget_design//layout/single_child/fractionallysizedboxview_builder.dart';
 export './builder/preview//layout/single_child/offstagepreview_builder.dart';
 export './builder/preview//animation_and_motion/animatedpaddingpreview_builder.dart';
+export './builder/preview//layout/multi_child/flowmenupreview_builder.dart';
+export './builder/preview//layout/multi_child/gridlistpreview_builder.dart';
+export './builder/preview//layout/multi_child/indexedstackpreview_builder.dart';
+export './builder/preview//layout/multi_child/layoutbuilderpreview_builder.dart';
+export './builder/preview//layout/multi_child/tablepreview_builder.dart';
