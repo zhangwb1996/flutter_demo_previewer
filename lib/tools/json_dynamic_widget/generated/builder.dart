@@ -71,3 +71,4 @@ export './builder/preview//interaction_models/touch_interactions/interactiveview
 export './builder/widget_design//layout/single_child/baselinetextview_builder.dart';
 export './builder/widget_design//layout/single_child/centerview_builder.dart';
 export './builder/widget_design//layout/single_child/boxfitview_builder.dart';
+export './builder/widget_design//layout/single_child/fractionallysizedboxview_builder.dart';

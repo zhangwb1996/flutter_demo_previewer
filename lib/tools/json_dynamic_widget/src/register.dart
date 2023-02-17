@@ -372,5 +372,10 @@ void register(JsonWidgetRegistry registry) {
     BoxFitViewBuilder.type,
     const JsonWidgetBuilderContainer(builder: BoxFitViewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    FractionallySizedBoxViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FractionallySizedBoxViewBuilder.fromDynamic),
+  );
   /// BODY
 }
