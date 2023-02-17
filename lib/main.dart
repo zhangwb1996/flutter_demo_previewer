@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // TODO: restructure with provider
     return MultiProvider(
       providers: [
+        // TODO: restructure with provider
         ChangeNotifierProvider(create: (context) => Workspace()),
         ChangeNotifierProvider(
           create: (BuildContext context) => AnimatedAlignModel(),
