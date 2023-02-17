@@ -61,6 +61,10 @@ class MyApp extends StatelessWidget {
           create: (context) => BaselineModel(),
           lazy: true,
         ),
+        ChangeNotifierProvider(
+          create: (context) => CenterModel(),
+          lazy: true,
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo Previewer',
