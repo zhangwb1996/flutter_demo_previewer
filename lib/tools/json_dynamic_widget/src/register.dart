@@ -427,5 +427,460 @@ void register(JsonWidgetRegistry registry) {
     SliverAppBarPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SliverAppBarPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AppBarPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: AppBarPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AppBarPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: AppBarPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AppBarPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: AppBarPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    BottomNavigationBarPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: BottomNavigationBarPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    BottomNavigationBarPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: BottomNavigationBarPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    BottomNavigationBarPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: BottomNavigationBarPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DrawerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: DrawerPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    NavigationRailPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: NavigationRailPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    NavigationRailPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: NavigationRailPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScaffoldPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: ScaffoldPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScaffoldPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: ScaffoldPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScaffoldPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: ScaffoldPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TabBarPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: TabBarPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DropdownButtonPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: DropdownButtonPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ElevatedButtonPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ElevatedButtonPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FloatingActionButtonPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: FloatingActionButtonPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FloatingActionButtonPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: FloatingActionButtonPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FloatingActionButtonPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: FloatingActionButtonPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FloatingActionButtonPreview4Builder.type,
+    const JsonWidgetBuilderContainer(builder: FloatingActionButtonPreview4Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    IconButtonPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: IconButtonPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    IconButtonPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: IconButtonPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    IconButtonPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: IconButtonPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    IconButtonPreview4Builder.type,
+    const JsonWidgetBuilderContainer(builder: IconButtonPreview4Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    OutlinedButtonPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: OutlinedButtonPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    PopupMenuPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: PopupMenuPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    PopupMenuPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: PopupMenuPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SelectableButtonPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SelectableButtonPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TextButtonPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: TextButtonPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AlertDialogPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: AlertDialogPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AlertDialogPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: AlertDialogPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ExpansionPanelListPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ExpansionPanelListPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ExpansionPanelListRadioPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ExpansionPanelListRadioPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ShowBottomSheetPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ShowBottomSheetPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SnackBarPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: SnackBarPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SnackBarPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: SnackBarPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CardPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: CardPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CardPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: CardPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CardPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: CardPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ActionChipPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ActionChipPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ActionChoicePreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ActionChoicePreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FilterChipPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FilterChipPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    InputChipPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: InputChipPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DataTablePreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: DataTablePreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DataTablePreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: DataTablePreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DividerPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: DividerPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DividerPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: DividerPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CustomListItemPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CustomListItemPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CustomListItemTwoPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CustomListItemTwoPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    LisTilePreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: LisTilePreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    LisTilePreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: LisTilePreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    StepperPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: StepperPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CircularProgressIndicatorPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: CircularProgressIndicatorPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CircularProgressIndicatorPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: CircularProgressIndicatorPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    LinearProgressIndicatorPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: LinearProgressIndicatorPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    LinearProgressIndicatorPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: LinearProgressIndicatorPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RefreshIndicatorPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: RefreshIndicatorPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RefreshIndicatorPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: RefreshIndicatorPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TooltipPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: TooltipPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TooltipPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: TooltipPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TooltipPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: TooltipPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    TooltipPreview4Builder.type,
+    const JsonWidgetBuilderContainer(builder: TooltipPreview4Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CheckboxPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CheckboxPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RadioPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: RadioPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    showDatePickerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: showDatePickerPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SliderPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: SliderPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SliderPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: SliderPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SliderPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: SliderPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SwitchPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: SwitchPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SwitchPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: SwitchPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SwitchPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: SwitchPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ShaderMaskPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ShaderMaskPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    NestedScrollViewPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: NestedScrollViewPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    NestedScrollViewPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: NestedScrollViewPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    NestedScrollViewPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: NestedScrollViewPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RawScrollbarPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: RawScrollbarPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RawScrollbarPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: RawScrollbarPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RawScrollbarPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: RawScrollbarPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    RawScrollbarPreview4Builder.type,
+    const JsonWidgetBuilderContainer(builder: RawScrollbarPreview4Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ReorderableListViewPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: ReorderableListViewPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ReorderableListViewPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: ReorderableListViewPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScrollbarPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: ScrollbarPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScrollbarPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: ScrollbarPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScrollbarPreview3Builder.type,
+    const JsonWidgetBuilderContainer(builder: ScrollbarPreview3Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ScrollbarPreview4Builder.type,
+    const JsonWidgetBuilderContainer(builder: ScrollbarPreview4Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SingleChildScrollViewPreview1Builder.type,
+    const JsonWidgetBuilderContainer(builder: SingleChildScrollViewPreview1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SingleChildScrollViewPreview2Builder.type,
+    const JsonWidgetBuilderContainer(builder: SingleChildScrollViewPreview2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    DefaultTextStyleTransitionPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: DefaultTextStyleTransitionPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SelectableAdapterPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SelectableAdapterPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SelectionAllOrNoneContainerPreivewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SelectionAllOrNoneContainerPreivewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SelectionAreaPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SelectionAreaPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    SelectionContainerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: SelectionContainerPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }
