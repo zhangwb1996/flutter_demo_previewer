@@ -367,5 +367,10 @@ void register(JsonWidgetRegistry registry) {
     CenterViewBuilder.type,
     const JsonWidgetBuilderContainer(builder: CenterViewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    BoxFitViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: BoxFitViewBuilder.fromDynamic),
+  );
   /// BODY
 }

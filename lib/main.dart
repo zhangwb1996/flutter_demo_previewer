@@ -65,6 +65,10 @@ class MyApp extends StatelessWidget {
           create: (context) => CenterModel(),
           lazy: true,
         ),
+        ChangeNotifierProvider(
+          create: (context) => BoxFitModel(),
+          lazy: true,
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo Previewer',
