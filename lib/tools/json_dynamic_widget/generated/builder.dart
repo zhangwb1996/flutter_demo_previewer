@@ -73,3 +73,4 @@ export './builder/widget_design//layout/single_child/centerview_builder.dart';
 export './builder/widget_design//layout/single_child/boxfitview_builder.dart';
 export './builder/widget_design//layout/single_child/fractionallysizedboxview_builder.dart';
 export './builder/preview//layout/single_child/offstagepreview_builder.dart';
+export './builder/preview//animation_and_motion/animatedpaddingpreview_builder.dart';

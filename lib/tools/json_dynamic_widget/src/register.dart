@@ -382,5 +382,10 @@ void register(JsonWidgetRegistry registry) {
     OffstagePreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: OffstagePreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    AnimatedPaddingPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedPaddingPreviewBuilder.fromDynamic),
+  );
   /// BODY
 }
