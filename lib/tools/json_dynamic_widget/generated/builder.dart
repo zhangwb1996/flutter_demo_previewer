@@ -2,6 +2,8 @@ export './builder/widget_design//animation_and_motion/animatedalignview_builder.
 export './builder/widget_design//animation_and_motion/animatedcontainerview_builder.dart';
 export './builder/widget_design//animation_and_motion/animatedcrossfadeview_builder.dart';
 export './builder/widget_design//animation_and_motion/animatedopacityview_builder.dart';
+export './builder/widget_design//layout/single_child/alignview_builder.dart';
+export './builder/widget_design//layout/single_child/aspectratioview_builder.dart';
 export './builder/preview//animation_and_motion/animated_builder/animatedbuilderpreview_builder.dart';
 export './builder/preview//animation_and_motion/animated_builder/animatedwidgetpreview_builder.dart';
 export './builder/preview//animation_and_motion/animated_builder/tweenanimationbuilderpreview_builder.dart';
@@ -66,5 +68,3 @@ export './builder/preview//interaction_models/touch_interactions/gesture_detecto
 export './builder/preview//interaction_models/touch_interactions/gesture_detector/mouseregionpreview_builder.dart';
 export './builder/preview//interaction_models/touch_interactions/gesture_detector/nestedgesturedetectorspreview_builder.dart';
 export './builder/preview//interaction_models/touch_interactions/interactiveviewerpreview_builder.dart';
-export './builder/widget_design//layout/alignview_builder.dart';
-export './builder/widget_design//layout/aspectratioview_builder.dart';

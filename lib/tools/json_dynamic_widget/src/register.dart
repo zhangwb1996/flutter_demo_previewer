@@ -29,6 +29,16 @@ void register(JsonWidgetRegistry registry) {
   );
 
   registry.registerCustomBuilder(
+    AlignViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AlignViewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AspectRatioViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AspectRatioViewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
     AnimatedBuilderPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedBuilderPreviewBuilder.fromDynamic),
   );
@@ -346,16 +356,6 @@ void register(JsonWidgetRegistry registry) {
   registry.registerCustomBuilder(
     InteractiveViewerPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: InteractiveViewerPreviewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    AlignViewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: AlignViewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    AspectRatioViewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: AspectRatioViewBuilder.fromDynamic),
   );
   /// BODY
 }
