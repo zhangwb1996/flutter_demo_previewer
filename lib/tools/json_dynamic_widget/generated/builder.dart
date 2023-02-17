@@ -68,3 +68,4 @@ export './builder/preview//interaction_models/touch_interactions/gesture_detecto
 export './builder/preview//interaction_models/touch_interactions/gesture_detector/mouseregionpreview_builder.dart';
 export './builder/preview//interaction_models/touch_interactions/gesture_detector/nestedgesturedetectorspreview_builder.dart';
 export './builder/preview//interaction_models/touch_interactions/interactiveviewerpreview_builder.dart';
+export './builder/widget_design//layout/single_child/baselinetextview_builder.dart';

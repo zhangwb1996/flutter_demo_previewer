@@ -57,6 +57,10 @@ class MyApp extends StatelessWidget {
           create: (context) => AspectRatioModel(),
           lazy: true,
         ),
+        ChangeNotifierProvider(
+          create: (context) => BaselineModel(),
+          lazy: true,
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo Previewer',
