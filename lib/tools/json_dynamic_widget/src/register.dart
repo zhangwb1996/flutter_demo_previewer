@@ -39,6 +39,26 @@ void register(JsonWidgetRegistry registry) {
   );
 
   registry.registerCustomBuilder(
+    BaselineTextViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: BaselineTextViewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    BoxFitViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: BoxFitViewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    CenterViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CenterViewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    FractionallySizedBoxViewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FractionallySizedBoxViewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
     AnimatedBuilderPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: AnimatedBuilderPreviewBuilder.fromDynamic),
   );
@@ -91,6 +111,11 @@ void register(JsonWidgetRegistry registry) {
   registry.registerCustomBuilder(
     SliverAnimatedOpacityPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SliverAnimatedOpacityPreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    AnimatedPaddingPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: AnimatedPaddingPreviewBuilder.fromDynamic),
   );
 
   registry.registerCustomBuilder(
@@ -359,36 +384,6 @@ void register(JsonWidgetRegistry registry) {
   );
 
   registry.registerCustomBuilder(
-    BaselineTextViewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: BaselineTextViewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    CenterViewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: CenterViewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    BoxFitViewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: BoxFitViewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    FractionallySizedBoxViewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: FractionallySizedBoxViewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    OffstagePreviewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: OffstagePreviewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
-    AnimatedPaddingPreviewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: AnimatedPaddingPreviewBuilder.fromDynamic),
-  );
-
-  registry.registerCustomBuilder(
     FlowMenuPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: FlowMenuPreviewBuilder.fromDynamic),
   );
@@ -411,6 +406,11 @@ void register(JsonWidgetRegistry registry) {
   registry.registerCustomBuilder(
     TablePreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: TablePreviewBuilder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    OffstagePreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: OffstagePreviewBuilder.fromDynamic),
   );
 
   registry.registerCustomBuilder(
