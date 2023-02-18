@@ -89,7 +89,7 @@ void dynamicWidgetHelper(String path) {
         .whereType<File>()
         .where((file) => file.path.endsWith('.dart'));
 
-    print("dartFiles: $dartFiles");
+    // print("dartFiles: $dartFiles");
 
     /// [className]
     String className;
@@ -117,20 +117,20 @@ void dynamicWidgetHelper(String path) {
       // f1.add(workspace);
       // fileStructurePathCopy = f1.join('/');
 
-      print("fileStructurePathCopy: $fileStructurePathCopy");
+      // print("fileStructurePathCopy: $fileStructurePathCopy");
 
       // class name
       className =
           resetClassName(iterableClassName.toString().split(RegExp(r"\s"))[1]);
 
-      print("className: $className");
+      // print("className: $className");
 
       ///
       /// generate [builder] under [strDirGenerateBuilder]
       ///
       //  create file
 
-      print("current dir: ${Directory.current.path}");
+      // print("current dir: ${Directory.current.path}");
 
       if (File(
               "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
@@ -138,8 +138,8 @@ void dynamicWidgetHelper(String path) {
         continue;
       }
 
-      print(
-          "path createing file: ${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart");
+      // print(
+      //     "path createing file: ${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart");
 
       File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
           .createSync(recursive: true);
@@ -158,7 +158,7 @@ void dynamicWidgetHelper(String path) {
               .replaceAll(
                   'NameOfOriginFile', file.path.split(RegExp(r'\\|/')).last));
 
-      print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
+      // print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
 
       // generate bulder.dart
       // File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/builder.dart")
@@ -221,7 +221,7 @@ void dynamicWidgetHelperPre(String path, String workspace,
         .whereType<File>()
         .where((file) => file.path.endsWith('.dart'));
 
-    print("dartFiles: $dartFiles");
+    // print("dartFiles: $dartFiles");
 
     /// [className]
     String className;
@@ -229,6 +229,8 @@ void dynamicWidgetHelperPre(String path, String workspace,
     /// [iterableClassName]
     Iterable<String> iterableClassName;
 
+    var f1 = [];
+    var targetPath = '';
     for (var file in dartFiles) {
       iterableClassName = File(file.path).readAsLinesSync().where((e) {
         return e.startsWith(RegExp('class')) && e.contains("extends");
@@ -242,7 +244,7 @@ void dynamicWidgetHelperPre(String path, String workspace,
       fileStructurePathCopy = file.path.replaceAll(path, '');
 
       /// for pre;
-      var f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
+      f1 = fileStructurePathCopy.split(RegExp(r'\\|/'));
       // Remove the dir which name is same as the [_builder.dart] file
       f1.removeLast();
 
@@ -252,54 +254,49 @@ void dynamicWidgetHelperPre(String path, String workspace,
       //   f1.insert(f1.length - 1, workspace);
       // }
       f1.insert(0, '/$workspace');
-
+      f1.remove('');
       fileStructurePathCopy = f1.join('/');
-
-      print("fileStructurePathCopy: $fileStructurePathCopy");
+      // fileStructurePathCopy.replaceAll("//", '/');
+      // print("fileStructurePathCopy: $fileStructurePathCopy");
 
       // class name
       className =
           resetClassName(iterableClassName.toString().split(RegExp(r"\s"))[1]);
 
-      print("className: $className");
+      // print("className: $className");
 
       ///
       /// generate [builder] under [strDirGenerateBuilder]
       ///
       //  create file
 
-      print("current dir: ${Directory.current.path}");
-
-      if (File(
-              "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
-          .existsSync()) {
+      // print("current dir: ${Directory.current.path}");
+      targetPath =
+          "${Directory.current.path}/$strDirGenerateBuilder$fileStructurePathCopy/${className.toLowerCase()}_builder.dart";
+      if (File(targetPath).existsSync()) {
         continue;
       }
 
-      print(
-          "path createing file: ${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart");
+      // print(
+      //     "path createing file: $targetPath");
 
-      File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
-          .createSync(recursive: true);
+      File(targetPath).createSync(recursive: true);
 
       // copy from [temp builder] [_builder.dart]
       // [on pre branch import is unnecessary]
       // replace [Json2widgetTemp] with [className]
-      File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
-          .writeAsStringSync(File("${Directory.current.path}/$strTempBuilder")
-              .copySync(
-                  "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
+      File(targetPath).writeAsStringSync(
+          File("${Directory.current.path}/$strTempBuilder")
+              .copySync(targetPath)
               .readAsStringSync()
               .replaceAll("'Json2widgetTemp'", className));
       // replace [NameOfOriginFile] with [fileName]
-      File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
-          .writeAsStringSync(File(
-                  "${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/${className.toLowerCase()}_builder.dart")
-              .readAsStringSync()
-              .replaceAll(
-                  'NameOfOriginFile', file.path.split(RegExp(r'\\|/')).last));
+      File(targetPath).writeAsStringSync(File(targetPath)
+          .readAsStringSync()
+          .replaceAll(
+              'NameOfOriginFile', file.path.split(RegExp(r'\\|/')).last));
 
-      print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
+      // print("generated builder: ${file.path.split(RegExp(r'\\|/')).last} ");
 
       // generate bulder.dart to import
       // File("${Directory.current.path}/$strDirGenerateBuilder/$fileStructurePathCopy/builder.dart")
@@ -341,6 +338,8 @@ void dynamicWidgetHelperPre(String path, String workspace,
           .writeAsStringSync(listStrContentRegister.join("\n"));
     }
   } catch (e) {
+    print("exception");
+    print("fileStructurePathCopy: $fileStructurePathCopy");
     print(e);
   }
 }
