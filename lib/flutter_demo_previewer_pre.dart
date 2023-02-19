@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-19 2:24:25 pm
+/// Last Modified: Sunday, 2023-02-19 3:58:51 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -17,10 +17,13 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/src/models/node_workspace_editalbe.dart';
+import 'package:flutter_highlight/themes/github.dart';
+import 'package:highlight/languages/dart.dart';
 
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
 // import 'tools/dir/dynamic_widget_helper.dart';
@@ -343,7 +346,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                         },
                       ),
                     ),
-                    codeBuilder(),
+                    Container(child: codeBuilder()),
                     Expanded(
                       child: previewBuilder(context),
                     ),
@@ -396,32 +399,25 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         debugPrint("isPreview: $isPreview");
 
         if (isPreview) {
-          return Center(
+          return Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: ConstrainedBox(
-                constraints: BoxConstraints.loose(
-                  const Size(double.infinity, double.infinity),
-                ),
-                child: Scrollbar(
-                  controller: controller2,
-                  thumbVisibility: true,
-                  child: SingleChildScrollView(
-                    controller: controller2,
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      child: SelectionArea(
-                        child: Text(
-                          _selectedNode != null
-                              ? codeHelper(_selectedNode!)
-                              : '',
-                        ),
-                      ),
+              child: CodeTheme(
+                data: CodeThemeData(styles: githubTheme),
+                child: SingleChildScrollView(
+                  child: CodeField(
+                    readOnly: true,
+                    controller: CodeController(
+                      text: _selectedNode != null
+                          ? codeHelper(_selectedNode!)
+                          : '', // Initial code
+                      language: dart,
                     ),
                   ),
                 ),
               ),
+
+              // ),
             ),
           );
         } else {
