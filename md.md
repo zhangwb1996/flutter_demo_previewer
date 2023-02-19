@@ -12,3 +12,10 @@ dart ./lib/tools/dir/dynamic_widget_helper.dart pre
 dart ./lib/tools/dir/dynamic_widget_helper.dart clean
 dart ./lib/tools/dir/dynamic_widget_helper.dart pre
 ```
+
+## helper
+
+```bash
+# search_helper
+dart ./lib/tools/dir/search_helper.dart
+```

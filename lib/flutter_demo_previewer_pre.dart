@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-19 3:58:51 pm
+/// Last Modified: Sunday, 2023-02-19 11:34:02 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
+import 'package:flutter_demo_previewer/src/widget.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/src/models/node_workspace_editalbe.dart';
 import 'package:flutter_highlight/themes/github.dart';
@@ -282,79 +283,78 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          height: double.infinity,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                      width: 250,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-                      margin: const EdgeInsets.only(right: 5),
-                      child: Builder(
-                        builder: (context) {
-                          return TreeView(
-                            controller: _treeViewController,
-                            allowParentSelect: _allowParentSelect,
-                            supportParentDoubleTap: _supportParentDoubleTap,
-                            // onNodeDoubleTap: (key) => {
-                            //   debugPrint("node which key is $key DoubleTapped!")
-                            // },
-                            onExpansionChanged: (key, expanded) {
-                              debugPrint(
-                                  "node which key is $key ExpansionChanged! \n expanded=$expanded");
-                              _expandNode(
-                                key,
-                                expanded,
-                              );
-                              if (expanded) _addChildrenNode(key);
-                            },
-                            onNodeTap: (key) {
-                              debugPrint('node which key is $key Tapped!');
-                              setState(() {
-                                if (key == "adding workspace") {
-                                  clickNodeWorkspaceEditable();
-                                } else {
-                                  _selectedNode = key;
-                                  _treeViewController = _treeViewController
-                                      .copyWith(selectedKey: key);
-                                }
-                              });
-                            },
-                            onSubmitted: (key, str) {
-                              debugPrint("onSubmitted");
-                              addNewWorkspace(
-                                "workspace: NodeWorkspaceEditable",
-                                str,
-                              );
-                            },
-                            onAddingWorksapce: (key) {
-                              debugPrint("onAddingWorksapce, key is: $key");
-                              setState(() {
+        child: Stack(
+          children: [
+            const SearchView(),
+            Container(
+              padding: const EdgeInsets.all(20),
+              height: double.infinity,
+              child: Row(
+                children: [
+                  Container(
+                    width: 250,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+                    margin: const EdgeInsets.only(right: 5),
+                    child: Builder(
+                      builder: (context) {
+                        return TreeView(
+                          controller: _treeViewController,
+                          allowParentSelect: _allowParentSelect,
+                          supportParentDoubleTap: _supportParentDoubleTap,
+                          // onNodeDoubleTap: (key) => {
+                          //   debugPrint("node which key is $key DoubleTapped!")
+                          // },
+                          onExpansionChanged: (key, expanded) {
+                            debugPrint(
+                                "node which key is $key ExpansionChanged! \n expanded=$expanded");
+                            _expandNode(
+                              key,
+                              expanded,
+                            );
+                            if (expanded) _addChildrenNode(key);
+                          },
+                          onNodeTap: (key) {
+                            debugPrint('node which key is $key Tapped!');
+                            setState(() {
+                              if (key == "adding workspace") {
+                                clickNodeWorkspaceEditable();
+                              } else {
                                 _selectedNode = key;
-                                _showExplorerView = key;
-                              });
-                            },
-                            theme: treeViewTheme,
-                          );
-                        },
-                      ),
+                                _treeViewController = _treeViewController
+                                    .copyWith(selectedKey: key);
+                              }
+                            });
+                          },
+                          onSubmitted: (key, str) {
+                            debugPrint("onSubmitted");
+                            addNewWorkspace(
+                              "workspace: NodeWorkspaceEditable",
+                              str,
+                            );
+                          },
+                          onAddingWorksapce: (key) {
+                            debugPrint("onAddingWorksapce, key is: $key");
+                            setState(() {
+                              _selectedNode = key;
+                              _showExplorerView = key;
+                            });
+                          },
+                          theme: treeViewTheme,
+                        );
+                      },
                     ),
-                    Container(child: codeBuilder()),
-                    Expanded(
-                      child: previewBuilder(context),
-                    ),
-                  ],
-                ),
+                  ),
+                  Container(child: codeBuilder()),
+                  Expanded(
+                    child: previewBuilder(context),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
