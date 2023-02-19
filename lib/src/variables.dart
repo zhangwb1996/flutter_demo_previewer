@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-09 3:34:29 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-15 10:35:14 pm
+/// Last Modified: Sunday, 2023-02-19 10:00:13 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -33,3 +33,6 @@ final List<NodeBase<dynamic>> workspace = [];
 final List<NodeBase> nodesFromPath = [];
 
 final List<NodeBase> nodesFromPathPreview = [];
+
+String designPath = '';
+String previewPath = '';

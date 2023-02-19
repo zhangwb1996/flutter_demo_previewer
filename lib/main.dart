@@ -15,7 +15,9 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/src/widget.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_design/widget.dart';
@@ -23,6 +25,13 @@ import 'package:widget_design/widget.dart';
 import 'flutter_demo_previewer_pre.dart';
 
 void main() async {
+  if (kDebugMode) {
+    designPath = r'../widget_design/lib/src/views';
+    previewPath = r'../widget_design/lib/src/preview';
+  } else {
+    designPath = r'../widget_design/lib/src/views';
+    previewPath = r'../widget_design/lib/src/preview';
+  }
   runApp(const MyApp());
 }
 
