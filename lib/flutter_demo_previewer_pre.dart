@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-19 9:59:03 am
+/// Last Modified: Sunday, 2023-02-19 2:24:25 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -69,6 +69,10 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
   var registry = JsonWidgetRegistry.instance;
 
   bool isExpanded = false;
+
+  /// Preview node click -> ture: container show
+  /// widget_design node click -> false: container hiden
+  bool isPreview = false;
 
   final Map<ExpanderPosition, Widget> expansionPositionOptions = const {
     ExpanderPosition.start: Text('Start'),
@@ -227,8 +231,12 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     super.initState();
   }
 
+  final ScrollController controller = ScrollController();
+  final ScrollController controller2 = ScrollController();
   @override
   void dispose() {
+    controller.dispose();
+    controller2.dispose();
     super.dispose();
   }
 
@@ -280,12 +288,14 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                 child: Row(
                   children: [
                     Container(
-                        width: 250,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: const EdgeInsets.all(2),
-                        child: Builder(builder: (context) {
+                      width: 250,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+                      margin: const EdgeInsets.only(right: 5),
+                      child: Builder(
+                        builder: (context) {
                           return TreeView(
                             controller: _treeViewController,
                             allowParentSelect: _allowParentSelect,
@@ -296,7 +306,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             onExpansionChanged: (key, expanded) {
                               debugPrint(
                                   "node which key is $key ExpansionChanged! \n expanded=$expanded");
-
                               _expandNode(
                                 key,
                                 expanded,
@@ -324,7 +333,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             },
                             onAddingWorksapce: (key) {
                               debugPrint("onAddingWorksapce, key is: $key");
-
                               setState(() {
                                 _selectedNode = key;
                                 _showExplorerView = key;
@@ -332,40 +340,12 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             },
                             theme: treeViewTheme,
                           );
-                        })),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          debugPrint('Close Keyboard');
-                          FocusScope.of(context).unfocus();
                         },
-                        child: Container(
-                          // padding: const EdgeInsets.only(top: 20),
-                          alignment: Alignment.center,
-                          child: Builder(builder: (context) {
-                            if (_treeViewController
-                                    .getNode(_selectedNode)
-                                    .runtimeType ==
-                                Workspace) {
-                              return _treeViewController
-                                          .getNode(_showExplorerView) ==
-                                      null
-                                  ? const Text("data")
-                                  : _treeViewController
-                                          .getNode(_showExplorerView)!
-                                          .subview ??
-                                      const Text("data");
-                            }
-                            return _treeViewController.getNode(_selectedNode) ==
-                                    null
-                                ? const Text("data")
-                                : _treeViewController
-                                        .getNode(_selectedNode)!
-                                        .subview ??
-                                    const Text("data");
-                          }),
-                        ),
                       ),
+                    ),
+                    codeBuilder(),
+                    Expanded(
+                      child: previewBuilder(context),
                     ),
                   ],
                 ),
@@ -374,6 +354,80 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
           ),
         ),
       ),
+    );
+  }
+
+  GestureDetector previewBuilder(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        debugPrint('Close Keyboard');
+        FocusScope.of(context).unfocus();
+      },
+      child: Container(
+        // padding: const EdgeInsets.only(top: 20),
+        alignment: Alignment.center,
+        child: Builder(builder: (context) {
+          if (_treeViewController.getNode(_selectedNode).runtimeType ==
+              Workspace) {
+            return _treeViewController.getNode(_showExplorerView) == null
+                ? const Text("data")
+                : _treeViewController.getNode(_showExplorerView)!.subview ??
+                    const Text("data");
+          }
+          return _treeViewController.getNode(_selectedNode) == null
+              ? const Text("data")
+              : _treeViewController.getNode(_selectedNode)!.subview ??
+                  const Text("data");
+        }),
+      ),
+    );
+  }
+
+  Widget codeBuilder() {
+    return Builder(
+      builder: (context) {
+        if (_selectedNode == null) {
+          isPreview = false;
+        } else if (_selectedNode!.split('/').contains("preview")) {
+          isPreview = true;
+        } else if (_selectedNode!.split('/').contains("views")) {
+          isPreview = false;
+        }
+        debugPrint("isPreview: $isPreview");
+
+        if (isPreview) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.loose(
+                  const Size(double.infinity, double.infinity),
+                ),
+                child: Scrollbar(
+                  controller: controller2,
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    controller: controller2,
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      controller: controller,
+                      child: SelectionArea(
+                        child: Text(
+                          _selectedNode != null
+                              ? codeHelper(_selectedNode!)
+                              : '',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 
