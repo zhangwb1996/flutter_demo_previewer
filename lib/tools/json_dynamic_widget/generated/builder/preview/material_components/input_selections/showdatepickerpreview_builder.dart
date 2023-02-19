@@ -5,18 +5,18 @@ import 'package:widget_design/widget.dart';//only for pre branch
 
 /// replace  '[Json2widgetTemp]' with [className]
 /// replace  [show_date_picker_preview.dart] with [fileName]
-class showDatePickerPreviewBuilder extends JsonWidgetBuilder {
-  const showDatePickerPreviewBuilder({
+class ShowDatePickerPreviewBuilder extends JsonWidgetBuilder {
+  const ShowDatePickerPreviewBuilder({
     super.numSupportedChildren = 0,
   });
 
   static const type = 'show_date_picker_preview.dart';
 
-  static showDatePickerPreviewBuilder fromDynamic(
+  static ShowDatePickerPreviewBuilder fromDynamic(
     dynamic map, {
     JsonWidgetRegistry? registry,
   }) {
-    return const showDatePickerPreviewBuilder();
+    return const ShowDatePickerPreviewBuilder();
   }
     @override
   Widget buildCustom({
@@ -26,6 +26,6 @@ class showDatePickerPreviewBuilder extends JsonWidgetBuilder {
     Key? key,
   }) {
     
-    return const showDatePickerPreview();
+    return const ShowDatePickerPreview();
   }
 }

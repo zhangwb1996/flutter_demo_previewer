@@ -744,8 +744,8 @@ void register(JsonWidgetRegistry registry) {
   );
 
   registry.registerCustomBuilder(
-    showDatePickerPreviewBuilder.type,
-    const JsonWidgetBuilderContainer(builder: showDatePickerPreviewBuilder.fromDynamic),
+    ShowDatePickerPreviewBuilder.type,
+    const JsonWidgetBuilderContainer(builder: ShowDatePickerPreviewBuilder.fromDynamic),
   );
 
   registry.registerCustomBuilder(

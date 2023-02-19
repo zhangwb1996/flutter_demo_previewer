@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:20:32 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 12:20:53 am
+/// Last Modified: Monday, 2023-02-20 1:25:44 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -72,20 +72,22 @@ class SearchModel extends ChangeNotifier {
       };
 
   /// Moving
-  void movingBox(DragUpdateDetails details) {
+  void movingBox(DragUpdateDetails details, Size size) {
+    // print(_position);
+    // print(size);
     _position = Offset(
         _position.dx + details.delta.dx, _position.dy + details.delta.dy);
     if (_position.dx <= 250) {
       _position = Offset(251, _position.dy);
     }
-    if (_position.dx >= 500) {
-      _position = Offset(500, _position.dy);
+    if (_position.dx >= size.width - 400) {
+      _position = Offset(size.width - 400, _position.dy);
     }
     if (_position.dy <= 0) {
       _position = Offset(_position.dx, 0);
     }
-    if (_position.dy >= 800) {
-      _position = Offset(_position.dx, 0);
+    if (_position.dy >= size.height - 100) {
+      _position = Offset(_position.dx, size.height - 100);
     }
     notifyListeners();
   }

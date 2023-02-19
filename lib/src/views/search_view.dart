@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 12:39:17 am
+/// Last Modified: Monday, 2023-02-20 1:28:11 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -38,32 +38,24 @@ class _SearchViewState extends State<SearchView> {
           left: model.position.dx,
           top: model.position.dy,
           child: GestureDetector(
-            onPanUpdate: (details) => model.movingBox(details),
+            onPanUpdate: (details) =>
+                model.movingBox(details, MediaQuery.of(context).size),
             child: Column(children: [
               Row(
                 children: [
                   // Search bar
-                  Builder(builder: (context) {
-                    if (model.showSearchBar) {
-                      return SizedBox(
-                        width: 300,
-                        child: TextField(
-                          onChanged: (txt) {
-                            // model.strSearch = txt,
-                            model.searchMatchedResult.clear();
-                            for (var e in model.searchResult) {
-                              if (e.contains(txt)) {
-                                model.searchMatchedResult.add(e);
-                              }
-                            }
-                            model.showSearchResult =
-                                model.searchMatchedResult.isNotEmpty;
-                          },
-                        ),
-                      );
-                    }
-                    return Container();
-                  }),
+                  AnimatedContainer(
+                    curve: Curves.easeInCubic,
+                    duration: const Duration(milliseconds: 200),
+                    width: model.showSearchBar ? 300 : 0,
+                    child: TextField(
+                      onChanged: (txt) {
+                        // model.strSearch = txt,
+                        getMatchResult(model, txt);
+                      },
+                    ),
+                  ),
+                  // TODO: put search view always on the top!
                   // Search button
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
@@ -103,7 +95,16 @@ class _SearchViewState extends State<SearchView> {
                       width: 300,
                       child: ListView(
                         children: model.searchMatchedResult
-                            .map((e) => Text(e))
+                            .map((e) => Column(
+                                  children: [
+                                    // TODO: highlight matched string
+                                    Text(
+                                      e,
+                                      // style: ,
+                                    ),
+                                    const Divider(),
+                                  ],
+                                ))
                             .toList(),
                       ),
                     );
@@ -116,5 +117,18 @@ class _SearchViewState extends State<SearchView> {
         ),
       ),
     );
+  }
+
+  void getMatchResult(SearchModel model, String txt) {
+    model.searchMatchedResult.clear();
+    for (var e in model.searchResult) {
+      if (e.contains(txt)) {
+        model.searchMatchedResult.add(e);
+      }
+    }
+    if (txt.isEmpty) {
+      model.searchMatchedResult.clear();
+    }
+    model.showSearchResult = model.searchMatchedResult.isNotEmpty;
   }
 }

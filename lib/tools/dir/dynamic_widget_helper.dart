@@ -200,7 +200,7 @@ void dynamicWidgetHelper(String path) {
           .writeAsStringSync(listStrContentRegister.join("\n"));
     }
   } catch (e) {
-    print(e);
+    // print(e);
   }
 }
 
@@ -338,9 +338,9 @@ void dynamicWidgetHelperPre(String path, String workspace,
           .writeAsStringSync(listStrContentRegister.join("\n"));
     }
   } catch (e) {
-    print("exception");
-    print("fileStructurePathCopy: $fileStructurePathCopy");
-    print(e);
+    // print("exception");
+    // print("fileStructurePathCopy: $fileStructurePathCopy");
+    // print(e);
   }
 }
 
@@ -366,7 +366,7 @@ void clean() {
     File("${Directory.current.path}/$strTempRegisterFunction").copySync(
         "${Directory.current.path}/$strDirGenerateRegister/register.dart");
   } catch (e) {
-    print(e);
+    // print(e);
   }
 }
 
