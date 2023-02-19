@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-16 4:13:10 pm
+/// Last Modified: Sunday, 2023-02-19 9:59:03 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -15,6 +15,7 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
@@ -29,9 +30,6 @@ import 'tools/tree_view/widget.dart';
 
 // String demoPath =
 //     r'C:\Users\12700\Documents\FlutterProjects\Src\widget_design\lib\src\views';
-
-String designPath = r'../widget_design/lib/src/views';
-String previewPath = r'../widget_design/lib/src/preview';
 
 class FlutterDemoPreviewerPre extends StatefulWidget {
   const FlutterDemoPreviewerPre({Key? key, required this.title})
@@ -211,8 +209,11 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
           children: workspace,
           selectedKey: _selectedNode,
         );
-        dynamicWidgetHelperPre(designPath, "widget_design");
-        dynamicWidgetHelperPre(previewPath, "preview", insert: true);
+        if (kDebugMode) {
+          dynamicWidgetHelperPre(designPath, "widget_design");
+          dynamicWidgetHelperPre(previewPath, "preview", insert: true);
+        }
+
         setState(() {});
       });
       // var t = "Add Workspace";
