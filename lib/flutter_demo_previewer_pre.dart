@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 1:28:31 am
+/// Last Modified: Monday, 2023-02-20 10:02:28 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -285,7 +285,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         },
         child: Stack(
           children: [
-            const SearchView(),
             Container(
               padding: const EdgeInsets.all(20),
               height: double.infinity,
@@ -354,6 +353,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                 ],
               ),
             ),
+            const SearchView(),
           ],
         ),
       ),

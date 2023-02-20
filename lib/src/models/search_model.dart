@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:20:32 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 1:25:44 am
+/// Last Modified: Monday, 2023-02-20 10:19:54 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -77,11 +77,17 @@ class SearchModel extends ChangeNotifier {
     // print(size);
     _position = Offset(
         _position.dx + details.delta.dx, _position.dy + details.delta.dy);
-    if (_position.dx <= 250) {
-      _position = Offset(251, _position.dy);
+    if (_position.dx <= 0) {
+      _position = Offset(0, _position.dy);
     }
-    if (_position.dx >= size.width - 400) {
-      _position = Offset(size.width - 400, _position.dy);
+    if (showSearchBar) {
+      if (_position.dx >= size.width - 340) {
+        _position = Offset(size.width - 340, _position.dy);
+      }
+    } else {
+      if (_position.dx >= size.width - 40) {
+        _position = Offset(size.width - 40, _position.dy);
+      }
     }
     if (_position.dy <= 0) {
       _position = Offset(_position.dx, 0);
