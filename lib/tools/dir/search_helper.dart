@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 5:58:42 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 1:32:16 am
+/// Last Modified: Monday, 2023-02-20 10:52:23 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -16,6 +16,8 @@
 ///
 
 import 'dart:io';
+
+import 'package:flutter_demo_previewer/src/flag.dart';
 
 void main(List<String> args) async {
   // print('searchHelper');
@@ -29,7 +31,9 @@ void main(List<String> args) async {
 
 /// Return all file nodes under the preview node
 Future<List<String>> searchHelper(String str) async {
+  // sleep(Duration(seconds: 3));
   try {
+    searching = true;
     // print('searchHelper');
 
     List<String> find = [];

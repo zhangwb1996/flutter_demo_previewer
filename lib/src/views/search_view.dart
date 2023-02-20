@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 1:28:11 am
+/// Last Modified: Monday, 2023-02-20 10:49:17 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -15,11 +15,15 @@
 /// ----------	---	---------------------------------------------------------
 ///
 
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/widget.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
 import 'package:provider/provider.dart';
+
+import '../flag.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -64,8 +68,11 @@ class _SearchViewState extends State<SearchView> {
                       debugPrint(model.showSearchResult.toString());
                       model.searchMatchedResult.clear();
                       model.showSearchBar = !model.showSearchBar;
-                      if (model.showSearchBar) {
-                        model.searchResult = await searchHelper(previewPath);
+                      if (model.showSearchBar && !searching) {
+                        await Isolate.run(() async {
+                          await searchHelper(previewPath)
+                              .whenComplete(() => {searching = false});
+                        });
                       }
                     },
                     child: Container(
