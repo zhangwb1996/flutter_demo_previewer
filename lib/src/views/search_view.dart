@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 10:49:17 am
+/// Last Modified: Monday, 2023-02-20 11:11:05 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -19,7 +19,6 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/widget.dart';
-import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
 import 'package:provider/provider.dart';
 
@@ -55,6 +54,7 @@ class _SearchViewState extends State<SearchView> {
                     child: TextField(
                       onChanged: (txt) {
                         // model.strSearch = txt,
+                        model.strSearch = txt;
                         getMatchResult(model, txt);
                       },
                     ),
@@ -69,10 +69,13 @@ class _SearchViewState extends State<SearchView> {
                       model.searchMatchedResult.clear();
                       model.showSearchBar = !model.showSearchBar;
                       if (model.showSearchBar && !searching) {
-                        await Isolate.run(() async {
-                          await searchHelper(previewPath)
+                        model.searchResult = await Isolate.run(() async {
+                          return await searchHelper(searchPath)
                               .whenComplete(() => {searching = false});
                         });
+                        if (model.strSearch.isNotEmpty) {
+                          getMatchResult(model, model.strSearch);
+                        }
                       }
                     },
                     child: Container(

@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 5:58:42 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 10:52:23 am
+/// Last Modified: Monday, 2023-02-20 11:11:49 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -34,11 +34,13 @@ Future<List<String>> searchHelper(String str) async {
   // sleep(Duration(seconds: 3));
   try {
     searching = true;
-    // print('searchHelper');
+    // print(str);
 
     List<String> find = [];
-    await for (var entity
-        in Directory(str).list(recursive: true).where((e) => e is File)) {
+    await for (var entity in Directory(str)
+        .list(recursive: true)
+        .where((e) => e is File)
+        .where((e) => e.path.endsWith(".dart"))) {
       find.add(entity.path);
     }
     return find;

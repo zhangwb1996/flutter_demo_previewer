@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:20:32 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 10:19:54 am
+/// Last Modified: Monday, 2023-02-20 11:10:55 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -65,7 +65,7 @@ class SearchModel extends ChangeNotifier {
       };
 
   /// Your input while searching
-  get strSearch => _strSearch;
+  String get strSearch => _strSearch;
   set strSearch(value) => {
         _strSearch = value,
         notifyListeners(),
