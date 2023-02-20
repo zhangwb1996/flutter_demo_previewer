@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 3:29:07 pm
+/// Last Modified: Monday, 2023-02-20 11:37:26 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -31,9 +31,9 @@ class SearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => SearchModel(),
-      // TODO: Need to be improved
+      // [·]TODO: Need to be improved
       child: Selector<SearchModel, Offset>(
-        selector: (p0, p1) => p1.position,
+        selector: (_, m) => m.position,
         builder: (context, pos, child) => Positioned(
           left: pos.dx,
           top: pos.dy,
@@ -81,54 +81,67 @@ class SearchView extends StatelessWidget {
                 ),
               ],
             ),
-            // TODO: click and navigate by result entity
+            // [ ]TODO: click and navigate by result entity
+            // [ ]TODO: Opacity
             // Search result
             if (!model.showSearchBar || model.strSearch.isEmpty)
               Container()
             else
               child!,
           ]),
-          child: Selector<SearchModel, String>(
-            selector: (_, p1) => p1.strSearch,
-            builder: (context, txt, child) {
-              return FutureBuilder<List<String>>(
-                future: getMatchResult(txt),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    child = SizedBox(
-                      height: 300,
-                      width: 300,
-                      child: ListView(
-                        children: snapshot.data!
-                            .map((e) => Column(
-                                  children: [
-                                    // TODO: highlight matched string
-                                    Text(
-                                      e,
-                                      // style: ,
-                                    ),
-                                    const Divider(),
-                                  ],
-                                ))
-                            .toList(),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    child = const Text("match none ");
-                  } else {
-                    child = const CircularProgressIndicator();
-                  }
-                  return child ?? Container();
-                },
-              );
-            },
+          child: SizedBox(
+            child: Selector<SearchModel, String>(
+              selector: (_, model) => model.strSearch,
+              builder: (context, txt, child) {
+                // all word
+                if (RegExp(r'\w+').allMatches(txt).isEmpty) {
+                  return Container();
+                }
+                return FutureBuilder<List<String>>(
+                  future: getMatchResult(txt),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      // [ ]TODO: highlight matched string => RichText
+                      return SizedBox(
+                        width: 340,
+                        height: 300,
+                        child: ListView(
+                          children: snapshot.data!
+                              .map(
+                                (e) => TextButton(
+                                  onPressed: () => debugPrint("click"),
+                                  child: SizedBox(
+                                      height: 20,
+                                      width: 340,
+                                      child: Builder(builder: (context) {
+                                        return matchedRichText(e, txt);
+                                      })),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Text("match none ");
+                    } else {
+                      if (searching) {
+                        return const CircularProgressIndicator();
+                      } else {
+                        return const Text('no matched');
+                      }
+                    }
+                  },
+                );
+              },
+              child: null,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Future<List<String>> getMatchResult(String txt) async {
+  Future<List<String>>? getMatchResult(String txt) async {
     List<String> temp = [];
     debugPrint('getMatchResult');
     if (!searching) {
@@ -136,11 +149,42 @@ class SearchView extends StatelessWidget {
       for (var e in await searchHelper(searchPath).whenComplete(() {
         searching = false;
       })) {
-        if (e.contains(txt)) {
+        if (e.toLowerCase().contains(txt.toLowerCase())) {
           temp.add(e);
         }
       }
     }
     return temp;
+  }
+
+  /// [matchedRichText] will mark the **[target]**  which matched within **[origin]**
+  Widget matchedRichText(String origin, String target) {
+    List<String> temp = origin.split(target);
+
+    for (var i = 0; i < temp.length; i++) {
+      if (i % 2 == 1) {
+        temp.insert(i, target);
+      } else {}
+    }
+    debugPrint("matchedRichText: $temp");
+    // Note: [target] is both end, where will add a null item
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(color: Colors.blue),
+        text: ' ',
+        children: temp.map((e) {
+          if (e == target) {
+            return TextSpan(
+              text: e,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  backgroundColor: Colors.grey.shade300,
+                  overflow: TextOverflow.fade),
+            );
+          }
+          return TextSpan(text: e);
+        }).toList(),
+      ),
+    );
   }
 }

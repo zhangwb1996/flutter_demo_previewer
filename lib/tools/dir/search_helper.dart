@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 5:58:42 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 3:25:22 pm
+/// Last Modified: Monday, 2023-02-20 9:54:51 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -40,7 +40,8 @@ Future<List<String>> searchHelper(String str) async {
     await for (var entity in Directory(str)
         .list(recursive: true)
         .where((e) => e is File)
-        .where((e) => e.path.endsWith(".dart"))) {
+        .where((e) => e.path.endsWith(".dart"))
+        .where((e) => e.path.split(RegExp(r'\\|/')).last != "widget.dart")) {
       find.add(entity.path);
     }
     return find;
