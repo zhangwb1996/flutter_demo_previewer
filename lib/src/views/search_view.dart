@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 3:00:05 pm
+/// Last Modified: Monday, 2023-02-20 3:29:07 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -32,10 +32,11 @@ class SearchView extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (BuildContext context) => SearchModel(),
       // TODO: Need to be improved
-      child: Consumer<SearchModel>(
-        builder: (context, model, child) => Positioned(
-          left: model.position.dx,
-          top: model.position.dy,
+      child: Selector<SearchModel, Offset>(
+        selector: (p0, p1) => p1.position,
+        builder: (context, pos, child) => Positioned(
+          left: pos.dx,
+          top: pos.dy,
           child: child!,
         ),
         child: Consumer<SearchModel>(
@@ -80,81 +81,66 @@ class SearchView extends StatelessWidget {
                 ),
               ],
             ),
-            child!,
+            // TODO: click and navigate by result entity
+            // Search result
+            if (!model.showSearchBar || model.strSearch.isEmpty)
+              Container()
+            else
+              child!,
           ]),
-          // TODO: click and navigate by result entity
-          // Search result
-          child: Consumer<SearchModel>(
-            builder: (context, model, child) => !model.showSearchBar ||
-                    model.strSearch.isEmpty
-                ? Container()
-                : FutureBuilder<List<String>>(
-                    future: getMatchResult(model, model.strSearch),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        child = SizedBox(
-                          height: 300,
-                          width: 300,
-                          child: Selector<SearchModel, List<String>>(
-                            selector: (_, model) => model.searchMatchedResult,
-                            builder: (context, matchedResult, _) {
-                              return ListView(
-                                children: matchedResult
-                                    .map((e) => Column(
-                                          children: [
-                                            // TODO: highlight matched string
-                                            Text(
-                                              e,
-                                              // style: ,
-                                            ),
-                                            const Divider(),
-                                          ],
-                                        ))
-                                    .toList(),
-                              );
-                            },
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        child = const Text("match none ");
-                      } else {
-                        child = const CircularProgressIndicator();
-                      }
-                      return child ?? Container();
-                    },
-                  ),
-            child: null,
+          child: Selector<SearchModel, String>(
+            selector: (_, p1) => p1.strSearch,
+            builder: (context, txt, child) {
+              return FutureBuilder<List<String>>(
+                future: getMatchResult(txt),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    child = SizedBox(
+                      height: 300,
+                      width: 300,
+                      child: ListView(
+                        children: snapshot.data!
+                            .map((e) => Column(
+                                  children: [
+                                    // TODO: highlight matched string
+                                    Text(
+                                      e,
+                                      // style: ,
+                                    ),
+                                    const Divider(),
+                                  ],
+                                ))
+                            .toList(),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    child = const Text("match none ");
+                  } else {
+                    child = const CircularProgressIndicator();
+                  }
+                  return child ?? Container();
+                },
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Future<List<String>> getMatchResult(SearchModel model, String txt) async {
-    // if (!searching) {
-    //   model.searchResult = await Isolate.run(() async {
-    //     searching = true;
-    //     return await searchHelper(searchPath).whenComplete(() {
-    //       searching = false;
-    //     });
-    //   });
-    // }
-    // model.searchMatchedResult.clear();
-    // for (var e in model.searchResult) {
-    //   if (e.contains(txt)) {
-    //     model.searchMatchedResult.add(e);
-    //   }
-    // }
+  Future<List<String>> getMatchResult(String txt) async {
+    List<String> temp = [];
+    debugPrint('getMatchResult');
     if (!searching) {
-      model.searchMatchedResult.clear();
+      // model.searchMatchedResult.clear();
       for (var e in await searchHelper(searchPath).whenComplete(() {
         searching = false;
       })) {
         if (e.contains(txt)) {
-          model.searchMatchedResult.add(e);
+          temp.add(e);
         }
       }
     }
-    return model.searchMatchedResult;
+    return temp;
   }
 }
