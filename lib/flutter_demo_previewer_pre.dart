@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 10:02:28 am
+/// Last Modified: Monday, 2023-02-20 2:20:16 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -406,6 +406,11 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                 data: CodeThemeData(styles: githubTheme),
                 child: SingleChildScrollView(
                   child: CodeField(
+                    gutterStyle: const GutterStyle(
+                      textStyle: TextStyle(fontSize: 1),
+                      width: 80,
+                      showLineNumbers: true,
+                    ),
                     readOnly: true,
                     controller: CodeController(
                       text: _selectedNode != null

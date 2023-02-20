@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:20:32 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 11:10:55 am
+/// Last Modified: Monday, 2023-02-20 1:16:26 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -18,8 +18,6 @@ import 'package:flutter/material.dart';
 
 class SearchModel extends ChangeNotifier {
   Offset _position = const Offset(300, 300);
-  bool _showSearchResult = false;
-  // bool _showSearchView = true;
   bool _showSearchBar = false;
   String _strSearch = '';
   List<String> _searchResult = [];
@@ -43,17 +41,6 @@ class SearchModel extends ChangeNotifier {
   Offset get position => _position;
   set position(value) => {
         _position = value,
-        notifyListeners(),
-      };
-
-  // /// Whether the search view show
-  // get showSearchView => _showSearchView;
-  // set showSearchView(value) => _showSearchView = value;
-
-  /// Is [ResultList] shown?
-  get showSearchResult => _showSearchResult;
-  set showSearchResult(showResult) => {
-        _showSearchResult = showResult,
         notifyListeners(),
       };
 

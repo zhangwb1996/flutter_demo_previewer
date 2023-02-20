@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 5:58:42 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 11:11:49 am
+/// Last Modified: Monday, 2023-02-20 2:48:25 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -19,6 +19,8 @@ import 'dart:io';
 
 import 'package:flutter_demo_previewer/src/flag.dart';
 
+// import 'package:flutter_demo_previewer/src/flag.dart';
+
 void main(List<String> args) async {
   // print('searchHelper');
   try {
@@ -31,11 +33,9 @@ void main(List<String> args) async {
 
 /// Return all file nodes under the preview node
 Future<List<String>> searchHelper(String str) async {
-  // sleep(Duration(seconds: 3));
+  //sleep(Duration(seconds: 3));
+  searching = true;
   try {
-    searching = true;
-    // print(str);
-
     List<String> find = [];
     await for (var entity in Directory(str)
         .list(recursive: true)
