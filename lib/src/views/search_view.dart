@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 11:37:26 pm
+/// Last Modified: Tuesday, 2023-02-21 12:40:25 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -20,6 +20,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/widget.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 import 'package:provider/provider.dart';
 
 import '../flag.dart';
@@ -105,20 +106,28 @@ class SearchView extends StatelessWidget {
                       return SizedBox(
                         width: 340,
                         height: 300,
-                        child: ListView(
-                          children: snapshot.data!
-                              .map(
-                                (e) => TextButton(
-                                  onPressed: () => debugPrint("click"),
-                                  child: SizedBox(
-                                      height: 20,
-                                      width: 340,
-                                      child: Builder(builder: (context) {
-                                        return matchedRichText(e, txt);
-                                      })),
-                                ),
-                              )
-                              .toList(),
+                        child: Consumer<TreeViewController>(
+                          builder: (context, node, child) =>
+                              Builder(builder: (context) {
+                            return ListView(
+                              children: snapshot.data!
+                                  .map(
+                                    (e) => TextButton(
+                                      onPressed: () => {
+                                        debugPrint("search result clicked"),
+                                        node.setSelectedKey = e
+                                      },
+                                      child: SizedBox(
+                                          height: 20,
+                                          width: 340,
+                                          child: Builder(builder: (context) {
+                                            return matchedRichText(e, txt);
+                                          })),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          }),
                         ),
                       );
                     } else if (snapshot.hasError) {
@@ -166,7 +175,7 @@ class SearchView extends StatelessWidget {
         temp.insert(i, target);
       } else {}
     }
-    debugPrint("matchedRichText: $temp");
+    // debugPrint("matchedRichText: $temp");
     // Note: [target] is both end, where will add a null item
     return RichText(
       text: TextSpan(

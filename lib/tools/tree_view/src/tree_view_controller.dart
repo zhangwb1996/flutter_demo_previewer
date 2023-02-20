@@ -17,6 +17,7 @@
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
 /// Defines the insertion mode adding a new [NodeBase] to the [TreeView].
@@ -47,12 +48,17 @@ enum InsertMode {
 /// List<Node> newChildren = controller.updateNode(node.key, updatedNode);
 /// controller = TreeViewController(children: newChildren);
 /// ```
-class TreeViewController<N extends NodeBase> {
+class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// The data for the [TreeView].
   final List<N> children;
 
   /// The key of the select node in the [TreeView].
-  final String? selectedKey;
+  String? selectedKey;
+  get getSelectedKey => selectedKey;
+  set setSelectedKey(final selectedKey) => {
+        this.selectedKey = selectedKey,
+        notifyListeners(),
+      };
 
   TreeViewController({
     this.children = const [],
@@ -63,6 +69,8 @@ class TreeViewController<N extends NodeBase> {
   /// replaced with the new values.
   TreeViewController copyWith<T>(
       {List<NodeBase<T>>? children, String? selectedKey}) {
+    notifyListeners();
+
     return TreeViewController(
       children: children ?? this.children,
       selectedKey: selectedKey ?? this.selectedKey,
@@ -104,6 +112,7 @@ class TreeViewController<N extends NodeBase> {
           return const NodeError(key: "NodeError", label: "Node Error....");
       }
     }).toList();
+    notifyListeners();
     return TreeViewController(
       children: treeData,
       selectedKey: selectedKey,
@@ -131,6 +140,7 @@ class TreeViewController<N extends NodeBase> {
   }) {
     List<NodeBase> data =
         addNode<T>(key, newNode, parent: parent, mode: mode, index: index);
+    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -151,6 +161,7 @@ class TreeViewController<N extends NodeBase> {
   /// ```
   TreeViewController withUpdateNode<T>(String key, N newNode, {N? parent}) {
     List<NodeBase>? data = updateNode<T>(key, newNode, parent: parent);
+    notifyListeners();
     return TreeViewController(
       children: data!,
       selectedKey: selectedKey,
@@ -171,6 +182,7 @@ class TreeViewController<N extends NodeBase> {
   /// ```
   TreeViewController withDeleteNode<T>(String key, {N? parent}) {
     List<NodeBase> data = deleteNode<T>(key, parent: parent);
+    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -191,6 +203,7 @@ class TreeViewController<N extends NodeBase> {
   /// ```
   TreeViewController withToggleNode<T>(String key, {N? parent}) {
     List<NodeBase> data = toggleNode<T>(key, parent: parent)!;
+    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -211,6 +224,7 @@ class TreeViewController<N extends NodeBase> {
   /// ```
   TreeViewController withExpandToNode(String key) {
     List<NodeBase> data = expandToNode(key);
+    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -231,6 +245,7 @@ class TreeViewController<N extends NodeBase> {
   /// ```
   TreeViewController withCollapseToNode(String key) {
     List<NodeBase> data = collapseToNode(key);
+    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -251,6 +266,7 @@ class TreeViewController<N extends NodeBase> {
   /// ```
   TreeViewController withExpandAll({N? parent}) {
     List<NodeBase> data = expandAll(parent: parent);
+    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -271,6 +287,7 @@ class TreeViewController<N extends NodeBase> {
   /// ```
   TreeViewController withCollapseAll({N? parent}) {
     List<NodeBase> data = collapseAll(parent: parent);
+    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -318,6 +335,7 @@ class TreeViewController<N extends NodeBase> {
         break;
       }
     }
+    notifyListeners();
     return found;
   }
 
@@ -606,6 +624,7 @@ class TreeViewController<N extends NodeBase> {
     // debugPrint("updateNode: parent is > $parent}");
     List<NodeBase>? currentChildren =
         parent == null ? children : (parent as NodeBaseExpandable).children;
+    notifyListeners();
     return currentChildren?.map((child) {
       if (child.key == key) {
         return newNode;
