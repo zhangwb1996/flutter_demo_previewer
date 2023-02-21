@@ -23,6 +23,7 @@ import 'package:provider/provider.dart';
 import 'package:widget_design/widget.dart';
 
 import 'flutter_demo_previewer_pre.dart';
+import 'tools/tree_view/src/tree_view_controller.dart';
 
 void main() async {
   if (kDebugMode) {
@@ -80,6 +81,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => FractionallySizedBoxModel(),
+          lazy: true,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TreeViewController(),
           lazy: true,
         ),
       ],
