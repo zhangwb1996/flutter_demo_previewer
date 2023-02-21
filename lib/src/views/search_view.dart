@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 9:30:41 am
+/// Last Modified: Tuesday, 2023-02-21 9:38:34 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -33,7 +33,7 @@ class SearchView extends StatelessWidget {
       create: (BuildContext context) => SearchModel(),
       // [·]TODO: Need to be improved
       child: Selector<SearchModel, Offset>(
-        selector: (_, m) => m.position,
+        selector: (_, m) => m.getPosition(MediaQuery.of(context).size),
         builder: (context, pos, child) => Positioned(
           left: pos.dx,
           top: pos.dy,
