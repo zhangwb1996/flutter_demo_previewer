@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:20:32 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 10:01:50 am
+/// Last Modified: Tuesday, 2023-02-21 10:42:27 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -22,6 +22,13 @@ class SearchModel extends ChangeNotifier {
   String _strSearch = '';
   List<String> _searchResult = [];
   List<String> _searchMatchedResult = [];
+  bool _isHovered = false;
+
+  get isHovered => _isHovered;
+  set isHovered(value) => {
+        _isHovered = value,
+        notifyListeners(),
+      };
 
   /// Matched result
   List<String> get searchMatchedResult => _searchMatchedResult;

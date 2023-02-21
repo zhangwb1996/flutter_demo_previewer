@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 9:38:34 am
+/// Last Modified: Tuesday, 2023-02-21 11:08:52 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -45,8 +45,10 @@ class SearchView extends StatelessWidget {
               children: [
                 // Search bar
                 AnimatedContainer(
-                  curve: Curves.easeInCubic,
-                  duration: const Duration(milliseconds: 200),
+                  curve: model.showSearchBar
+                      ? Curves.easeInOutSine
+                      : Curves.easeInOutSine,
+                  duration: const Duration(milliseconds: 300),
                   width: model.showSearchBar ? 300 : 0,
                   child: TextField(
                     onChanged: (txt) {
@@ -63,25 +65,45 @@ class SearchView extends StatelessWidget {
                     debugPrint('search tapped!');
                     model.showSearchBar = !model.showSearchBar;
                   },
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 5.0,
-                            spreadRadius: 1.0,
-                            color: Colors.grey)
-                      ],
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
+                  child: InkWell(
+                    child: MouseRegion(
+                      onEnter: (event) => model.isHovered = true,
+                      onExit: (event) => model.isHovered = false,
+                      child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              model.isHovered
+                                  ? BoxShadow(
+                                      blurRadius: 5,
+                                      spreadRadius: 0.3,
+                                      color: Colors.blue.shade600,
+                                    )
+                                  : BoxShadow(
+                                      blurRadius: 1,
+                                      spreadRadius: 0.1,
+                                      color: Colors.blue.shade100,
+                                    )
+                            ],
+                            shape: BoxShape.circle,
+                            color: model.showSearchBar || model.isHovered
+                                ? Colors.blue.shade400
+                                : Colors.blue.shade100,
+                          ),
+                          child: Icon(
+                            Icons.search,
+                            color: model.showSearchBar || model.isHovered
+                                ? Colors.white
+                                : Colors.grey,
+                            // weight: model.isHovered ? 8 : 1,
+                          )),
                     ),
-                    child: const Icon(Icons.search),
                   ),
                 ),
               ],
             ),
-            // [ ]TODO: click and navigate by result entity
+            // [ ]TODO: navigate by clicking result entity
             // [ ]TODO: Opacity
             // Search result
             if (!model.showSearchBar || model.strSearch.isEmpty)
@@ -103,6 +125,7 @@ class SearchView extends StatelessWidget {
                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                       // [·]TODO: highlight matched string => RichText
                       return Container(
+                        padding: const EdgeInsets.only(right: 40),
                         constraints: const BoxConstraints(
                           maxWidth: 340,
                           maxHeight: 300,
@@ -111,6 +134,15 @@ class SearchView extends StatelessWidget {
                           children: snapshot.data!
                               .map(
                                 (e) => TextButton(
+                                  style: ButtonStyle(
+                                    // Note: The argument type 'EdgeInsets' can't be assigned to the
+                                    // parameter type 'MaterialStateProperty<EdgeInsetsGeometry?>?'
+                                    padding: MaterialStateProperty.all(
+                                      const EdgeInsets.symmetric(
+                                        horizontal: 0.0,
+                                      ),
+                                    ),
+                                  ),
                                   onPressed: () => debugPrint("click"),
                                   child: Container(
                                     constraints: const BoxConstraints(
@@ -173,12 +205,13 @@ class SearchView extends StatelessWidget {
     // Note: [target] is both end, where will add a null item
     // Note: Solved: textspan sometimes show blank instead of a whole string.
     return RichText(
+      // textAlign: TextAlign.justify,
       overflow: TextOverflow.clip,
       softWrap: false,
       maxLines: 1,
       text: TextSpan(
         style: const TextStyle(color: Colors.blue),
-        text: ' ',
+        text: '',
         children: temp.map((e) {
           if (e == target) {
             return TextSpan(
@@ -186,7 +219,6 @@ class SearchView extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 backgroundColor: Colors.grey.shade300,
-                // overflow: TextOverflow.fade,
               ),
             );
           }
