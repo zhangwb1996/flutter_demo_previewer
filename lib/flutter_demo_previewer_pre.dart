@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 9:58:17 pm
+/// Last Modified: Tuesday, 2023-02-21 10:11:30 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -243,9 +243,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
       // );
     });
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   Provider.of<SearchHelperModel>(context, listen: false).setSelectedKey("");
-    // });
   }
 
   @override
@@ -253,11 +250,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     super.dispose();
   }
 
-  // String helper.selectedKey = '';
-
   @override
   Widget build(BuildContext context) {
-    // helper.selectedKey = context.watch<SearchHelperModel>().selectedKey;
     // theme
     treeViewTheme = TreeViewTheme(
       labelOverflow: TextOverflow.clip,
@@ -399,6 +393,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
           l.add(parent[i]);
           s = l.join('/');
           if (_treeViewController.getNode(s) == null) {
+            // branch: pre-searching-navigation-01:call setState will occur: setState() or markNeedsBuild() called during build
             if (s.endsWith(".dart")) {
               // setState(() {
               _treeViewController = _treeViewController.copyWith(

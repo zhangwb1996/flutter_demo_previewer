@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 9:45:02 pm
+/// Last Modified: Tuesday, 2023-02-21 10:09:16 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -104,7 +104,8 @@ class SearchView extends StatelessWidget {
                 ),
               ],
             ),
-            // [ ]TODO: navigate by clicking result entity
+            // [·]TODO: navigate by clicking result entity
+            // branch: pre-searching-navigation-01: if node existed, clicking will navigate to relative view
             // [ ]TODO: Opacity
             // Search result
             if (!model.showSearchBar || model.strSearch.isEmpty)
