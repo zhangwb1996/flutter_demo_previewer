@@ -51,10 +51,11 @@ class NodeParent<T> extends NodeBaseExpandable {
   }
 
   /// Creates a [NodeParent] from a string value. It generates a unique key.
-  factory NodeParent.custom(String key, String label) {
+  factory NodeParent.custom(String key, String label, bool expanded) {
     return NodeParent<T>(
       key: key,
       label: label,
+      expanded: expanded,
     );
   }
 

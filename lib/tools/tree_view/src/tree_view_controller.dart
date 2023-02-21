@@ -48,7 +48,7 @@ enum InsertMode {
 /// List<Node> newChildren = controller.updateNode(node.key, updatedNode);
 /// controller = TreeViewController(children: newChildren);
 /// ```
-class TreeViewController<N extends NodeBase> extends ChangeNotifier {
+class TreeViewController<N extends NodeBase> {
   /// The data for the [TreeView].
   final List<N> children;
 
@@ -607,7 +607,7 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
     // debugPrint("updateNode: parent is > $parent}");
     List<NodeBase>? currentChildren =
         parent == null ? children : (parent as NodeBaseExpandable).children;
-    notifyListeners();
+
     return currentChildren?.map((child) {
       if (child.key == key) {
         return newNode;
