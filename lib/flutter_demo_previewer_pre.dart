@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 11:34:49 pm
+/// Last Modified: Tuesday, 2023-02-21 11:58:22 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -18,6 +18,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
+import 'package:flutter_demo_previewer/src/flag.dart';
 // import 'package:flutter_demo_previewer/src/flag.dart';
 // import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
@@ -112,6 +113,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
   final bool _supportParentDoubleTap = false;
 
   late TreeViewTheme treeViewTheme;
+
   @override
   void initState() {
     register(registry);
@@ -252,6 +254,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
 
   @override
   Widget build(BuildContext context) {
+    // nodeParentTapped = false;
     // theme
     treeViewTheme = TreeViewTheme(
       labelOverflow: TextOverflow.clip,
@@ -325,10 +328,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             onExpansionChanged: (key, expanded) {
                               debugPrint(
                                   "node which key is $key ExpansionChanged! \n expanded=$expanded");
-                              _expandNode(
-                                key,
-                                expanded,
-                              );
+                              nodeParentTapped = true;
+                              _expandNode(key, expanded);
                               if (expanded) _addChildrenNode(key);
                             },
                             onNodeTap: (key) {
@@ -464,6 +465,9 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
 
   // TreeViewController searching(SearchHelperModel helper) {
   void searching(SearchHelperModel helper) {
+    if (nodeParentTapped) {
+      return;
+    }
     // add node if getNode(model.getSelectedKey) return null
     List<String> parent = helper.selectedKey.split("/");
     if (parent.length <= 5) {
@@ -498,19 +502,41 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                 ));
             // });
           }
-        } else {}
+        } else if (_treeViewController.getNode(s).runtimeType == NodeParent) {
+          searchingExpandNode(l.join('/'));
+        }
       } else {
+        searchingExpandNode('workspace: preview');
+        searchingExpandNode(l.join('/'));
+      }
+    }
+    // return treeViewController;
+  }
+
+  void searchingExpandNode(String s) {
+    switch (_treeViewController.getNode(s)!.runtimeType) {
+      case NodeParent:
         _treeViewController = _treeViewController.copyWith(
           children: _treeViewController.updateNode(
-            l.join('/'),
-            (_treeViewController.getNode(l.join('/'))! as NodeParent).copyWith(
+            s,
+            (_treeViewController.getNode(s)! as NodeParent).copyWith(
               expanded: true,
             ),
           ),
         );
-      }
+        break;
+      case NodeWorkspace:
+        _treeViewController = _treeViewController.copyWith(
+          children: _treeViewController.updateNode(
+            s,
+            (_treeViewController.getNode(s)! as NodeWorkspace).copyWith(
+              expanded: true,
+            ),
+          ),
+        );
+        break;
+      default:
     }
-    // return treeViewController;
   }
 
   void clickNodeWorkspaceEditable() {
