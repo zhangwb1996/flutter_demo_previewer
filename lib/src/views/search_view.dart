@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 11:08:52 am
+/// Last Modified: Tuesday, 2023-02-21 3:28:51 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -20,6 +20,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/widget.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
+import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 import 'package:provider/provider.dart';
 
 import '../flag.dart';
@@ -123,37 +124,46 @@ class SearchView extends StatelessWidget {
                   future: getMatchResult(txt),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      // [·]TODO: highlight matched string => RichText
+                      // [ ]TODO: highlight matched string => RichText
                       return Container(
                         padding: const EdgeInsets.only(right: 40),
                         constraints: const BoxConstraints(
                           maxWidth: 340,
                           maxHeight: 300,
                         ),
-                        child: ListView(
-                          children: snapshot.data!
-                              .map(
-                                (e) => TextButton(
-                                  style: ButtonStyle(
-                                    // Note: The argument type 'EdgeInsets' can't be assigned to the
-                                    // parameter type 'MaterialStateProperty<EdgeInsetsGeometry?>?'
-                                    padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(
-                                        horizontal: 0.0,
+                        child: Consumer<TreeViewController>(
+                          builder: (context, node, child) =>
+                              Builder(builder: (context) {
+                            return ListView(
+                              children: snapshot.data!
+                                  .map(
+                                    (e) => TextButton(
+                                      style: ButtonStyle(
+                                        // Note: The argument type 'EdgeInsets' can't be assigned to the
+                                        // parameter type 'MaterialStateProperty<EdgeInsetsGeometry?>?'
+                                        padding: MaterialStateProperty.all(
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 0.0,
+                                          ),
+                                        ),
                                       ),
+                                      onPressed: () => {
+                                        debugPrint("search result clicked"),
+                                        node.setSelectedKey = e
+                                      },
+                                      child: Container(
+                                          constraints: const BoxConstraints(
+                                            maxWidth: 340,
+                                            maxHeight: 20,
+                                          ),
+                                          child: Builder(builder: (context) {
+                                            return matchedRichText(e, txt);
+                                          })),
                                     ),
-                                  ),
-                                  onPressed: () => debugPrint("click"),
-                                  child: Container(
-                                    constraints: const BoxConstraints(
-                                      maxWidth: 340,
-                                      maxHeight: 20,
-                                    ),
-                                    child: matchedRichText(e, txt),
-                                  ),
-                                ),
-                              )
-                              .toList(),
+                                  )
+                                  .toList(),
+                            );
+                          }),
                         ),
                       );
                     } else if (snapshot.hasError) {
@@ -201,7 +211,7 @@ class SearchView extends StatelessWidget {
         temp.insert(i, target);
       } else {}
     }
-    debugPrint("matchedRichText: $temp");
+    // debugPrint("matchedRichText: $temp");
     // Note: [target] is both end, where will add a null item
     // Note: Solved: textspan sometimes show blank instead of a whole string.
     return RichText(

@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 11:16:37 am
+/// Last Modified: Tuesday, 2023-02-21 3:29:59 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -18,6 +18,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
+import 'package:flutter_demo_previewer/src/flag.dart';
 // import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/src/widget.dart';
@@ -27,6 +28,7 @@ import 'package:flutter_highlight/themes/github.dart';
 import 'package:highlight/languages/dart.dart';
 
 import 'package:json_dynamic_widget/json_dynamic_widget.dart';
+import 'package:provider/provider.dart';
 // import 'tools/dir/dynamic_widget_helper.dart';
 import 'tools/json_dynamic_widget/widget.dart';
 import 'tools/explorer_view/widget.dart';
@@ -46,7 +48,7 @@ class FlutterDemoPreviewerPre extends StatefulWidget {
 }
 
 class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
-  String? _selectedNode;
+  // String? _selectedNode;
   String? _showExplorerView;
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
@@ -215,7 +217,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         /// init TreeViewController
         _treeViewController = TreeViewController(
           children: workspace,
-          selectedKey: _selectedNode,
+          // selectedKey: _selectedNode,
+          selectedKey: context.read<TreeViewController>().getSelectedKey ?? '',
         );
         if (kDebugMode) {
           dynamicWidgetHelperPre(designPath, "widget_design");
@@ -235,12 +238,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     super.initState();
   }
 
-  final ScrollController controller = ScrollController();
-  final ScrollController controller2 = ScrollController();
   @override
   void dispose() {
-    controller.dispose();
-    controller2.dispose();
     super.dispose();
   }
 
@@ -297,53 +296,55 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                     ),
                     padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
                     margin: const EdgeInsets.only(right: 5),
-                    child: Builder(
-                      builder: (context) {
-                        return TreeView(
-                          controller: _treeViewController,
-                          allowParentSelect: _allowParentSelect,
-                          supportParentDoubleTap: _supportParentDoubleTap,
-                          // onNodeDoubleTap: (key) => {
-                          //   debugPrint("node which key is $key DoubleTapped!")
-                          // },
-                          onExpansionChanged: (key, expanded) {
-                            debugPrint(
-                                "node which key is $key ExpansionChanged! \n expanded=$expanded");
-                            _expandNode(
-                              key,
-                              expanded,
-                            );
-                            if (expanded) _addChildrenNode(key);
-                          },
-                          onNodeTap: (key) {
-                            debugPrint('node which key is $key Tapped!');
-                            setState(() {
-                              if (key == "adding workspace") {
-                                clickNodeWorkspaceEditable();
-                              } else {
-                                _selectedNode = key;
-                                _treeViewController = _treeViewController
-                                    .copyWith(selectedKey: key);
-                              }
-                            });
-                          },
-                          onSubmitted: (key, str) {
-                            debugPrint("onSubmitted");
-                            addNewWorkspace(
-                              "workspace: NodeWorkspaceEditable",
-                              str,
-                            );
-                          },
-                          onAddingWorksapce: (key) {
-                            debugPrint("onAddingWorksapce, key is: $key");
-                            setState(() {
-                              _selectedNode = key;
-                              _showExplorerView = key;
-                            });
-                          },
-                          theme: treeViewTheme,
-                        );
-                      },
+                    child: Consumer<TreeViewController>(
+                      builder: (context, model, child) => Builder(
+                        builder: (context) {
+                          return TreeView(
+                            controller: _treeViewController,
+                            allowParentSelect: _allowParentSelect,
+                            supportParentDoubleTap: _supportParentDoubleTap,
+                            // onNodeDoubleTap: (key) => {
+                            //   debugPrint("node which key is $key DoubleTapped!")
+                            // },
+                            onExpansionChanged: (key, expanded) {
+                              debugPrint(
+                                  "node which key is $key ExpansionChanged! \n expanded=$expanded");
+                              _expandNode(
+                                key,
+                                expanded,
+                              );
+                              if (expanded) _addChildrenNode(key);
+                            },
+                            onNodeTap: (key) {
+                              debugPrint('node which key is $key Tapped!');
+                              setState(() {
+                                if (key == "adding workspace") {
+                                  clickNodeWorkspaceEditable();
+                                } else {
+                                  model.setSelectedKey = key;
+                                  _treeViewController = _treeViewController
+                                      .copyWith(selectedKey: key);
+                                }
+                              });
+                            },
+                            onSubmitted: (key, str) {
+                              debugPrint("onSubmitted");
+                              addNewWorkspace(
+                                "workspace: NodeWorkspaceEditable",
+                                str,
+                              );
+                            },
+                            onAddingWorksapce: (key) {
+                              debugPrint("onAddingWorksapce, key is: $key");
+                              setState(() {
+                                model.setSelectedKey = key;
+                                _showExplorerView = key;
+                              });
+                            },
+                            theme: treeViewTheme,
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Container(child: codeBuilder()),
@@ -366,70 +367,84 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         debugPrint('Close Keyboard');
         FocusScope.of(context).unfocus();
       },
-      child: Container(
-        // padding: const EdgeInsets.only(top: 20),
-        alignment: Alignment.center,
-        child: Builder(builder: (context) {
-          if (_treeViewController.getNode(_selectedNode).runtimeType ==
-              Workspace) {
-            return _treeViewController.getNode(_showExplorerView) == null
-                ? const Text("data")
-                : _treeViewController.getNode(_showExplorerView)!.subview ??
-                    const Text("data");
-          }
-          return _treeViewController.getNode(_selectedNode) == null
-              ? const Text("data")
-              : _treeViewController.getNode(_selectedNode)!.subview ??
-                  const Text("data");
+      child: Consumer<TreeViewController>(
+        builder: (context, model, child) => Builder(builder: (context) {
+          debugPrint("flutter_demo_previewer_pre: previewBuilder");
+
+          return Container(
+            // padding: const EdgeInsets.only(top: 20),
+            alignment: Alignment.center,
+            child: Builder(builder: (context) {
+              debugPrint(
+                  "flutter_demo_previewer_pre: previewBuilder: ${model.getSelectedKey}");
+              if (_treeViewController
+                      .getNode(model.getSelectedKey)
+                      .runtimeType ==
+                  Workspace) {
+                return _treeViewController.getNode(_showExplorerView) == null
+                    ? const Text("data")
+                    : _treeViewController.getNode(_showExplorerView)!.subview ??
+                        const Text("data");
+              }
+              return _treeViewController.getNode(model.getSelectedKey) == null
+                  ? const Text("data")
+                  : _treeViewController
+                          .getNode(model.getSelectedKey)!
+                          .subview ??
+                      const Text("data");
+            }),
+          );
         }),
       ),
     );
   }
 
   Widget codeBuilder() {
-    return Builder(
-      builder: (context) {
-        if (_selectedNode == null) {
-          isPreview = false;
-        } else if (_selectedNode!.split('/').contains("preview")) {
-          isPreview = true;
-        } else if (_selectedNode!.split('/').contains("views")) {
-          isPreview = false;
-        }
-        debugPrint("isPreview: $isPreview");
+    return Consumer<TreeViewController>(
+      builder: (context, model, child) => Builder(
+        builder: (context) {
+          if (model.getSelectedKey == null) {
+            isPreview = false;
+          } else if (model.getSelectedKey!.split('/').contains("preview")) {
+            isPreview = true;
+          } else if (model.getSelectedKey!.split('/').contains("views")) {
+            isPreview = false;
+          }
+          debugPrint("isPreview: $isPreview");
 
-        if (isPreview) {
-          return Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: CodeTheme(
-                data: CodeThemeData(styles: githubTheme),
-                child: SingleChildScrollView(
-                  child: CodeField(
-                    gutterStyle: const GutterStyle(
-                      textStyle: TextStyle(fontSize: 1),
-                      width: 80,
-                      showLineNumbers: true,
-                    ),
-                    readOnly: true,
-                    controller: CodeController(
-                      text: _selectedNode != null &&
-                              codeHelper(_selectedNode!).isNotEmpty
-                          ? codeHelper(_selectedNode!)
-                          : null, // Initial code
-                      language: dart,
+          if (isPreview) {
+            return Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: CodeTheme(
+                  data: CodeThemeData(styles: githubTheme),
+                  child: SingleChildScrollView(
+                    child: CodeField(
+                      gutterStyle: const GutterStyle(
+                        textStyle: TextStyle(fontSize: 1),
+                        width: 80,
+                        showLineNumbers: true,
+                      ),
+                      readOnly: true,
+                      controller: CodeController(
+                        text: model.getSelectedKey != null &&
+                                codeHelper(model.getSelectedKey!).isNotEmpty
+                            ? codeHelper(model.getSelectedKey!)
+                            : null, // Initial code
+                        language: dart,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // ),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
+                // ),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 

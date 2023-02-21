@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-15 1:20:51 am
+/// Last Modified: Monday, 2023-02-20 11:50:58 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -16,7 +16,7 @@
 ///
 
 import 'package:flutter/material.dart';
-import 'package:flutter_demo_previewer/src/models/workspace.dart';
+import 'package:flutter_demo_previewer/src/models/workspace_model.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/src/models/node_workspace_editalbe.dart';
 
