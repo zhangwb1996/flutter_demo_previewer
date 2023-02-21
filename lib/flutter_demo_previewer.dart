@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 11:50:58 pm
+/// Last Modified: Tuesday, 2023-02-21 7:40:30 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -43,7 +43,7 @@ class FlutterDemoPreviewerState extends State<FlutterDemoPreviewer> {
   String? _showExplorerView;
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
-    selectedKey: null,
+    selectedKey: '',
   );
 
   /// initial data of node
@@ -159,7 +159,7 @@ class FlutterDemoPreviewerState extends State<FlutterDemoPreviewer> {
       /// init TreeViewController
       _treeViewController = TreeViewController(
         children: workspace,
-        selectedKey: _selectedNode,
+        selectedKey: _selectedNode ?? '',
       );
       setState(() {});
     });

@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 3:28:51 pm
+/// Last Modified: Tuesday, 2023-02-21 9:45:02 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -131,7 +131,7 @@ class SearchView extends StatelessWidget {
                           maxWidth: 340,
                           maxHeight: 300,
                         ),
-                        child: Consumer<TreeViewController>(
+                        child: Consumer<SearchHelperModel>(
                           builder: (context, node, child) =>
                               Builder(builder: (context) {
                             return ListView(
@@ -147,9 +147,10 @@ class SearchView extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      onPressed: () => {
-                                        debugPrint("search result clicked"),
-                                        node.setSelectedKey = e
+                                      onPressed: () {
+                                        debugPrint("search result clicked");
+                                        node.selectedKey =
+                                            e.replaceAll(RegExp(r"\\|/"), '/');
                                       },
                                       child: Container(
                                           constraints: const BoxConstraints(

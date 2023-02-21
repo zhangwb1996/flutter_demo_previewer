@@ -50,6 +50,14 @@ class NodeParent<T> extends NodeBaseExpandable {
     );
   }
 
+  /// Creates a [NodeParent] from a string value. It generates a unique key.
+  factory NodeParent.custom(String key, String label) {
+    return NodeParent<T>(
+      key: key,
+      label: label,
+    );
+  }
+
   /// Creates a [NodeParent] from a Map<String, dynamic> map. The map
   /// should contain a "label" value. If the key value is
   /// missing, it generates a unique key.

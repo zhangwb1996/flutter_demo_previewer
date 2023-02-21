@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-20 11:51:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 12:20:13 am
+/// Last Modified: Tuesday, 2023-02-21 6:21:40 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -34,6 +34,6 @@ class NodeModel extends ChangeNotifier {
       };
   TreeViewController _treeViewController = TreeViewController(
     children: [],
-    selectedKey: null,
+    selectedKey: '',
   );
 }

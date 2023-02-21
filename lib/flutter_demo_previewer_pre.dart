@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 3:29:59 pm
+/// Last Modified: Tuesday, 2023-02-21 9:58:17 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -18,7 +18,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
-import 'package:flutter_demo_previewer/src/flag.dart';
+// import 'package:flutter_demo_previewer/src/flag.dart';
 // import 'package:flutter_demo_previewer/src/models/workspace.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/src/widget.dart';
@@ -34,8 +34,8 @@ import 'tools/json_dynamic_widget/widget.dart';
 import 'tools/explorer_view/widget.dart';
 import 'tools/tree_view/widget.dart';
 
-// String demoPath =
-//     r'C:\Users\12700\Documents\FlutterProjects\Src\widget_design\lib\src\views';
+String demoPath =
+    r'C:\Users\12700\Documents\FlutterProjects\Src\widget_design\lib\src\views';
 
 class FlutterDemoPreviewerPre extends StatefulWidget {
   const FlutterDemoPreviewerPre({Key? key, required this.title})
@@ -48,11 +48,12 @@ class FlutterDemoPreviewerPre extends StatefulWidget {
 }
 
 class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
+// class FlutterDemoPreviewerPre extends StatelessWidget {
   // String? _selectedNode;
   String? _showExplorerView;
   late TreeViewController _treeViewController = TreeViewController(
     children: [],
-    selectedKey: null,
+    selectedKey: '',
   );
 
   /// initial data of node
@@ -128,7 +129,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
               ..._dirEntry.listStrNameCurrentDirs.map((dir) {
                 return NodeParent(
                   label: dir,
-                  key: "${_dirEntry.absolutelyCurrentPath}/$dir",
+                  key: ("${_dirEntry.absolutelyCurrentPath}/$dir")
+                      .replaceAll(RegExp(r"\\|/"), '/'),
                   expanded: isExpanded,
                   icon: isExpanded ? Icons.folder_open : Icons.folder,
                   children: const [],
@@ -139,14 +141,16 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                 (file) {
                   return NodeChild(
                     label: file,
-                    key: "${_dirEntry.absolutelyCurrentPath}/$file",
+                    key: ("${_dirEntry.absolutelyCurrentPath}/$file")
+                        .replaceAll(RegExp(r"\\|/"), '/'),
                     iconColor: Colors.green.shade300,
                     selectedIconColor: Colors.white,
                     icon: Icons.insert_drive_file,
                     // nameSubview: file,
                     subview: Json2Widget(
                       key: Key(
-                          "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file"),
+                          ("Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file"
+                              .replaceAll(RegExp(r"\\|/"), '/'))),
                       jsonData: {
                         "type": file,
                       },
@@ -169,7 +173,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                 ..._dirEntry.listStrNameCurrentDirs.map((dir) {
                   return NodeParent(
                     label: dir,
-                    key: "${_dirEntry.absolutelyCurrentPath}/$dir",
+                    key: ("${_dirEntry.absolutelyCurrentPath}/$dir")
+                        .replaceAll(RegExp(r"\\|/"), '/'),
                     expanded: isExpanded,
                     icon: isExpanded ? Icons.folder_open : Icons.folder,
                     children: const [],
@@ -180,14 +185,16 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                   (file) {
                     return NodeChild(
                       label: file,
-                      key: "${_dirEntry.absolutelyCurrentPath}/$file",
+                      key: ("${_dirEntry.absolutelyCurrentPath}/$file")
+                          .replaceAll(RegExp(r"\\|/"), '/'),
                       iconColor: Colors.green.shade300,
                       selectedIconColor: Colors.white,
                       icon: Icons.insert_drive_file,
                       // nameSubview: file,
                       subview: Json2Widget(
                         key: Key(
-                            "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file"),
+                            ("Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file")
+                                .replaceAll(RegExp(r"\\|/"), '/')),
                         jsonData: {
                           "type": file,
                         },
@@ -218,7 +225,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         _treeViewController = TreeViewController(
           children: workspace,
           // selectedKey: _selectedNode,
-          selectedKey: context.read<TreeViewController>().getSelectedKey ?? '',
+          selectedKey: '',
         );
         if (kDebugMode) {
           dynamicWidgetHelperPre(designPath, "widget_design");
@@ -236,6 +243,9 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
       // );
     });
     super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Provider.of<SearchHelperModel>(context, listen: false).setSelectedKey("");
+    // });
   }
 
   @override
@@ -243,8 +253,11 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     super.dispose();
   }
 
+  // String helper.selectedKey = '';
+
   @override
   Widget build(BuildContext context) {
+    // helper.selectedKey = context.watch<SearchHelperModel>().selectedKey;
     // theme
     treeViewTheme = TreeViewTheme(
       labelOverflow: TextOverflow.clip,
@@ -284,28 +297,26 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         },
         child: Stack(
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              height: double.infinity,
-              child: Row(
-                children: [
-                  Container(
-                    width: 250,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-                    margin: const EdgeInsets.only(right: 5),
-                    child: Consumer<TreeViewController>(
-                      builder: (context, model, child) => Builder(
+            Consumer<SearchHelperModel>(
+              builder: (context, helper, child) => Container(
+                padding: const EdgeInsets.all(20),
+                height: double.infinity,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 250,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+                      margin: const EdgeInsets.only(right: 5),
+                      child: Builder(
                         builder: (context) {
+                          debugPrint("flutter_demo_previewer_pre: builder");
                           return TreeView(
                             controller: _treeViewController,
                             allowParentSelect: _allowParentSelect,
                             supportParentDoubleTap: _supportParentDoubleTap,
-                            // onNodeDoubleTap: (key) => {
-                            //   debugPrint("node which key is $key DoubleTapped!")
-                            // },
                             onExpansionChanged: (key, expanded) {
                               debugPrint(
                                   "node which key is $key ExpansionChanged! \n expanded=$expanded");
@@ -321,9 +332,10 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                                 if (key == "adding workspace") {
                                   clickNodeWorkspaceEditable();
                                 } else {
-                                  model.setSelectedKey = key;
-                                  _treeViewController = _treeViewController
-                                      .copyWith(selectedKey: key);
+                                  helper.selectedKey = key;
+                                  _treeViewController =
+                                      _treeViewController.copyWith(
+                                          selectedKey: helper.selectedKey);
                                 }
                               });
                             },
@@ -337,8 +349,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             onAddingWorksapce: (key) {
                               debugPrint("onAddingWorksapce, key is: $key");
                               setState(() {
-                                model.setSelectedKey = key;
                                 _showExplorerView = key;
+                                helper.selectedKey = key;
                               });
                             },
                             theme: treeViewTheme,
@@ -346,12 +358,12 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                         },
                       ),
                     ),
-                  ),
-                  Container(child: codeBuilder()),
-                  Expanded(
-                    child: previewBuilder(context),
-                  ),
-                ],
+                    Container(child: codeBuilder(helper)),
+                    Expanded(
+                      child: previewBuilder(context, helper),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SearchView(),
@@ -361,90 +373,119 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     );
   }
 
-  GestureDetector previewBuilder(BuildContext context) {
+  GestureDetector previewBuilder(
+      BuildContext context, SearchHelperModel helper) {
     return GestureDetector(
       onTap: () {
         debugPrint('Close Keyboard');
         FocusScope.of(context).unfocus();
       },
-      child: Consumer<TreeViewController>(
-        builder: (context, model, child) => Builder(builder: (context) {
-          debugPrint("flutter_demo_previewer_pre: previewBuilder");
+      child: Builder(builder: (context) {
+        // print
+        debugPrint(
+          '''flutter_demo_previewer_pre: previewBuilder
+     key: $helper.selectedKey
+     node: ${_treeViewController.getNode(helper.selectedKey)}''',
+        );
 
-          return Container(
-            // padding: const EdgeInsets.only(top: 20),
-            alignment: Alignment.center,
-            child: Builder(builder: (context) {
-              debugPrint(
-                  "flutter_demo_previewer_pre: previewBuilder: ${model.getSelectedKey}");
-              if (_treeViewController
-                      .getNode(model.getSelectedKey)
-                      .runtimeType ==
-                  Workspace) {
-                return _treeViewController.getNode(_showExplorerView) == null
-                    ? const Text("data")
-                    : _treeViewController.getNode(_showExplorerView)!.subview ??
-                        const Text("data");
-              }
-              return _treeViewController.getNode(model.getSelectedKey) == null
+        // add node if getNode(model.getSelectedKey) return null
+        List<String> parent = helper.selectedKey.split("/");
+        if (parent.length <= 5) {
+          return Container();
+        }
+        String s = '';
+        List<String> l = parent.sublist(0, 5);
+        for (var i = 5; i < parent.length; i++) {
+          l.add(parent[i]);
+          s = l.join('/');
+          if (_treeViewController.getNode(s) == null) {
+            if (s.endsWith(".dart")) {
+              // setState(() {
+              _treeViewController = _treeViewController.copyWith(
+                  selectedKey: helper.selectedKey,
+                  children: _treeViewController.addNode(
+                    s,
+                    NodeChild.custom(s, l.last),
+                  ));
+              // });
+            } else {
+              // setState(() {
+              _treeViewController = _treeViewController.copyWith(
+                  selectedKey: helper.selectedKey,
+                  children: _treeViewController.addNode(
+                    s,
+                    NodeParent.custom(s, l.last),
+                  ));
+              // });
+            }
+          }
+        }
+
+        //teturn
+        return Container(
+          alignment: Alignment.center,
+          child: Builder(builder: (context) {
+            if (_treeViewController.getNode(helper.selectedKey).runtimeType ==
+                Workspace) {
+              return _treeViewController.getNode(_showExplorerView) == null
                   ? const Text("data")
-                  : _treeViewController
-                          .getNode(model.getSelectedKey)!
-                          .subview ??
+                  : _treeViewController.getNode(_showExplorerView)!.subview ??
                       const Text("data");
-            }),
-          );
-        }),
-      ),
+            }
+            return _treeViewController.getNode(helper.selectedKey) == null
+                ? const Text("data")
+                : _treeViewController.getNode(helper.selectedKey)!.subview ??
+                    const Text("data");
+          }),
+        );
+      }),
     );
   }
 
-  Widget codeBuilder() {
-    return Consumer<TreeViewController>(
-      builder: (context, model, child) => Builder(
-        builder: (context) {
-          if (model.getSelectedKey == null) {
-            isPreview = false;
-          } else if (model.getSelectedKey!.split('/').contains("preview")) {
-            isPreview = true;
-          } else if (model.getSelectedKey!.split('/').contains("views")) {
-            isPreview = false;
-          }
-          debugPrint("isPreview: $isPreview");
+  Widget codeBuilder(SearchHelperModel helper) {
+    return Builder(
+      builder: (context) {
+        if (helper.selectedKey.split('/').contains("preview")) {
+          isPreview = true;
+        } else if (helper.selectedKey.split('/').contains("views")) {
+          isPreview = false;
+        }
+        debugPrint("isPreview: $isPreview");
 
-          if (isPreview) {
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: CodeTheme(
-                  data: CodeThemeData(styles: githubTheme),
-                  child: SingleChildScrollView(
-                    child: CodeField(
-                      gutterStyle: const GutterStyle(
-                        textStyle: TextStyle(fontSize: 1),
-                        width: 80,
-                        showLineNumbers: true,
-                      ),
-                      readOnly: true,
-                      controller: CodeController(
-                        text: model.getSelectedKey != null &&
-                                codeHelper(model.getSelectedKey!).isNotEmpty
-                            ? codeHelper(model.getSelectedKey!)
-                            : null, // Initial code
-                        language: dart,
-                      ),
+        if (isPreview &&
+            (codeHelper(helper.selectedKey).isNotEmpty ||
+                !helper.selectedKey.contains('workspace:'))) {
+          return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: CodeTheme(
+                data: CodeThemeData(styles: githubTheme),
+                child: SingleChildScrollView(
+                  child: CodeField(
+                    gutterStyle: const GutterStyle(
+                      textStyle: TextStyle(fontSize: 1),
+                      width: 80,
+                      showLineNumbers: true,
+                    ),
+                    readOnly: true,
+                    controller: CodeController(
+                      text: codeHelper(helper.selectedKey).isNotEmpty &&
+                              !helper.selectedKey.contains('workspace:')
+                          ? codeHelper(helper.selectedKey)
+                          : '', // Initial code
+                      language: dart,
                     ),
                   ),
                 ),
-
-                // ),
               ),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+
+              // ),
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 
@@ -516,9 +557,16 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
       dirChildren.clear();
       dirChildren.addAll([
         ..._dirEntryChildren.listStrNameCurrentDirs.map((dir) {
+          // [ ]TODO: if node exsited, do something like continue;
+          if (_treeViewController
+                  .getNode("${_dirEntryChildren.absolutelyCurrentPath}/$dir") ==
+              null) {
+            // return null;
+          }
           return NodeParent(
             label: dir,
-            key: "${_dirEntryChildren.absolutelyCurrentPath}/$dir",
+            key: ("${_dirEntryChildren.absolutelyCurrentPath}/$dir")
+                .replaceAll(RegExp(r"\\|/"), '/'),
             expanded: isExpanded,
             icon: isExpanded ? Icons.folder_open : Icons.folder,
             children: const [],
@@ -526,16 +574,24 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         }).toList(),
         ..._dirEntryChildren.listStrNameCurrentFiles!.map(
           (file) {
+            // [ ]TODO: if node exsited, do something like continue;
+            if (_treeViewController.getNode(
+                    "${_dirEntryChildren.absolutelyCurrentPath}/$file") ==
+                null) {
+              // return null;
+            }
             return NodeChild(
               label: file,
-              key: "${_dirEntryChildren.absolutelyCurrentPath}/$file",
+              key: ("${_dirEntryChildren.absolutelyCurrentPath}/$file")
+                  .replaceAll(RegExp(r"\\|/"), '/'),
               iconColor: Colors.green.shade300,
               selectedIconColor: Colors.white,
               icon: Icons.insert_drive_file,
               // nameSubview: file,
               subview: Json2Widget(
                 key: Key(
-                    "Json2Widget: ${_dirEntryChildren.absolutelyCurrentPath}/$file"),
+                    ("Json2Widget: ${_dirEntryChildren.absolutelyCurrentPath}/$file")
+                        .replaceAll(RegExp(r"\\|/"), '/')),
                 jsonData: {
                   "type": file,
                 },

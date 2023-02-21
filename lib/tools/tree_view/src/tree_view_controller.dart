@@ -53,24 +53,17 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   final List<N> children;
 
   /// The key of the select node in the [TreeView].
-  String? selectedKey;
-  get getSelectedKey => selectedKey;
-  set setSelectedKey(final selectedKey) => {
-        this.selectedKey = selectedKey,
-        notifyListeners(),
-      };
+  String selectedKey;
 
   TreeViewController({
     this.children = const [],
-    this.selectedKey,
+    this.selectedKey = '',
   });
 
   /// Creates a copy of this controller but with the given fields
   /// replaced with the new values.
   TreeViewController copyWith<T>(
       {List<NodeBase<T>>? children, String? selectedKey}) {
-    notifyListeners();
-
     return TreeViewController(
       children: children ?? this.children,
       selectedKey: selectedKey ?? this.selectedKey,
@@ -112,7 +105,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
           return const NodeError(key: "NodeError", label: "Node Error....");
       }
     }).toList();
-    notifyListeners();
     return TreeViewController(
       children: treeData,
       selectedKey: selectedKey,
@@ -140,7 +132,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   }) {
     List<NodeBase> data =
         addNode<T>(key, newNode, parent: parent, mode: mode, index: index);
-    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -161,7 +152,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// ```
   TreeViewController withUpdateNode<T>(String key, N newNode, {N? parent}) {
     List<NodeBase>? data = updateNode<T>(key, newNode, parent: parent);
-    notifyListeners();
     return TreeViewController(
       children: data!,
       selectedKey: selectedKey,
@@ -182,7 +172,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// ```
   TreeViewController withDeleteNode<T>(String key, {N? parent}) {
     List<NodeBase> data = deleteNode<T>(key, parent: parent);
-    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -203,7 +192,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// ```
   TreeViewController withToggleNode<T>(String key, {N? parent}) {
     List<NodeBase> data = toggleNode<T>(key, parent: parent)!;
-    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -224,7 +212,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// ```
   TreeViewController withExpandToNode(String key) {
     List<NodeBase> data = expandToNode(key);
-    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -245,7 +232,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// ```
   TreeViewController withCollapseToNode(String key) {
     List<NodeBase> data = collapseToNode(key);
-    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -266,7 +252,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// ```
   TreeViewController withExpandAll({N? parent}) {
     List<NodeBase> data = expandAll(parent: parent);
-    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -287,7 +272,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
   /// ```
   TreeViewController withCollapseAll({N? parent}) {
     List<NodeBase> data = collapseAll(parent: parent);
-    notifyListeners();
     return TreeViewController(
       children: data,
       selectedKey: selectedKey,
@@ -335,7 +319,6 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
         break;
       }
     }
-    notifyListeners();
     return found;
   }
 
@@ -706,7 +689,7 @@ class TreeViewController<N extends NodeBase> extends ChangeNotifier {
 
   /// Get the current selected node. Returns null if there is no selectedKey
   NodeBase? get selectedNode {
-    return selectedKey!.isEmpty ? null : getNode(selectedKey!);
+    return selectedKey.isEmpty ? null : getNode(selectedKey);
   }
 
   /// Map representation of this object

@@ -51,6 +51,14 @@ class NodeChild<T> extends NodeBase {
     );
   }
 
+  /// Creates a [NodeChild] from a string value. It generates a unique key.
+  factory NodeChild.custom(String key, String label) {
+    return NodeChild<T>(
+      key: key,
+      label: label,
+    );
+  }
+
   /// Creates a [NodeChild] from a Map<String, dynamic> map. The map
   /// should contain a "label" value. If the key value is
   /// missing, it generates a unique key.

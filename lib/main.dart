@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
           lazy: true,
         ),
         ChangeNotifierProvider(
-          create: (context) => TreeViewController(),
+          create: (context) => SearchHelperModel(),
           lazy: true,
         ),
       ],

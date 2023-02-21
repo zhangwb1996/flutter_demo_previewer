@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 5:58:42 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 9:54:51 pm
+/// Last Modified: Tuesday, 2023-02-21 4:09:32 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -42,7 +42,7 @@ Future<List<String>> searchHelper(String str) async {
         .where((e) => e is File)
         .where((e) => e.path.endsWith(".dart"))
         .where((e) => e.path.split(RegExp(r'\\|/')).last != "widget.dart")) {
-      find.add(entity.path);
+      find.add(entity.path.replaceAll(RegExp(r"\\|/"), '/'));
     }
     return find;
   } catch (e) {
