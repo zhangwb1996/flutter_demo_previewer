@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:20:32 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 9:38:14 am
+/// Last Modified: Tuesday, 2023-02-21 10:01:50 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -39,25 +39,7 @@ class SearchModel extends ChangeNotifier {
 
   /// Position
   Offset getPosition(Size size) {
-    if (_position.dx <= 0) {
-      _position = Offset(0, _position.dy);
-    }
-    if (showSearchBar) {
-      if (_position.dx >= size.width - 340) {
-        _position = Offset(size.width - 340, _position.dy);
-      }
-    } else {
-      if (_position.dx >= size.width - 40) {
-        _position = Offset(size.width - 40, _position.dy);
-      }
-    }
-    if (_position.dy <= 0) {
-      _position = Offset(_position.dx, 0);
-    }
-    if (_position.dy >= size.height - 100) {
-      _position = Offset(_position.dx, size.height - 100);
-    }
-    return _position;
+    return checkPositon(size);
   }
 
   set position(value) => {
@@ -81,10 +63,14 @@ class SearchModel extends ChangeNotifier {
 
   /// Moving
   void movingBox(DragUpdateDetails details, Size size) {
-    print(_position);
+    // print(_position);
     // print(size);
     _position = Offset(
         _position.dx + details.delta.dx, _position.dy + details.delta.dy);
+    notifyListeners();
+  }
+
+  Offset checkPositon(Size size) {
     if (_position.dx <= 0) {
       _position = Offset(0, _position.dy);
     }
@@ -103,6 +89,6 @@ class SearchModel extends ChangeNotifier {
     if (_position.dy >= size.height - 100) {
       _position = Offset(_position.dx, size.height - 100);
     }
-    notifyListeners();
+    return _position;
   }
 }
