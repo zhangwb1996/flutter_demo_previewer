@@ -5,7 +5,7 @@
 /// Created Date: Friday, 2023-02-03 1:29:18 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-16 12:10:17 pm
+/// Last Modified: Tuesday, 2023-02-21 1:26:17 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -49,10 +49,12 @@ class DirEntry {
       var path = "";
       var subPath = "";
       List<String> listEntriesCurrentPath = [];
-
+      if (File(absolutelyCurrentPath).existsSync()) {
+        return [];
+      }
       await for (var entity in Directory(absolutelyCurrentPath)
           .list(recursive: false, followLinks: true)) {
-        path = entity.path.toString();
+        path = entity.path;
 
         /// cut the absolutelyCurrentPath from  the absolute path of entry
         subPath = path.substring(path.lastIndexOf(absolutelyCurrentPath) +
