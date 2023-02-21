@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Monday, 2023-02-20 2:20:16 pm
+/// Last Modified: Tuesday, 2023-02-21 11:16:37 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -413,9 +413,10 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                     ),
                     readOnly: true,
                     controller: CodeController(
-                      text: _selectedNode != null
+                      text: _selectedNode != null &&
+                              codeHelper(_selectedNode!).isNotEmpty
                           ? codeHelper(_selectedNode!)
-                          : '', // Initial code
+                          : null, // Initial code
                       language: dart,
                     ),
                   ),
