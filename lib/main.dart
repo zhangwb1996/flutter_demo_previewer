@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // TODO: restructure with provider
+        // [ ]TODO: restructure with provider
         ChangeNotifierProvider(create: (context) => Workspace()),
         ChangeNotifierProvider(
           create: (BuildContext context) => AnimatedAlignModel(),
