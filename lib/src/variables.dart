@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-09 3:34:29 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Sunday, 2023-02-19 10:00:13 am
+/// Last Modified: Wednesday, 2023-02-22 11:05:10 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -17,21 +17,9 @@
 
 import '../tools/tree_view/widget.dart';
 
-///
-/// used when node expanded
-///
-/// all data of children
-///
-/// key: current path of this node
-///
-/// List: children of this node
-// final Map<String, List<NodeBase<dynamic>>> dirChildren = {};
 final List<NodeBase<dynamic>> dirChildren = [];
-
 final List<NodeBase<dynamic>> workspace = [];
-
 final List<NodeBase> nodesFromPath = [];
-
 final List<NodeBase> nodesFromPathPreview = [];
 
 String designPath = '';

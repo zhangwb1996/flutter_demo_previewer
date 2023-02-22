@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 11:59:18 pm
+/// Last Modified: Wednesday, 2023-02-22 11:10:56 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -20,10 +20,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/widget.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
-import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 import 'package:provider/provider.dart';
 
-import '../flag.dart';
+import '../common.dart';
 
 class SearchView extends StatelessWidget {
   const SearchView({super.key});
@@ -147,13 +146,12 @@ class SearchView extends StatelessWidget {
                                         ),
                                       ),
                                       // [·]TODO: navigate by clicking result entity
-                                      // branch: pre-searching-navigation-01: if node existed, clicking will navigate to relative view
+                                      // [·]branch: pre-searching-navigation-01: if node existed, clicking will navigate to relative view
                                       // [ ]TODO: Opacity
                                       onPressed: () {
                                         debugPrint("search result clicked");
                                         nodeParentTapped = false;
-                                        node.selectedKey =
-                                            e.replaceAll(RegExp(r"\\|/"), '/');
+                                        node.selectedKey = pathSeparator(e);
                                       },
                                       child: Container(
                                           constraints: const BoxConstraints(

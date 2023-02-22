@@ -17,7 +17,6 @@
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/tools/tree_view/widget.dart';
 
 /// Defines the insertion mode adding a new [NodeBase] to the [TreeView].
