@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-22 11:10:56 am
+/// Last Modified: Wednesday, 2023-02-22 7:57:13 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -114,7 +114,7 @@ class SearchView extends StatelessWidget {
             child: Selector<SearchModel, String>(
               selector: (_, model) => model.strSearch,
               builder: (context, txt, child) {
-                // all word
+                // Note: all word
                 if (RegExp(r'\w+').allMatches(txt).isEmpty) {
                   return Container();
                 }
@@ -122,7 +122,8 @@ class SearchView extends StatelessWidget {
                   future: getMatchResult(txt),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      // [ ]TODO: highlight matched string => RichText
+                      // [·]TODO: highlight matched string => RichText
+                      // [ ]TODO: Opacity
                       return Container(
                         padding: const EdgeInsets.only(right: 40),
                         constraints: const BoxConstraints(
@@ -147,7 +148,6 @@ class SearchView extends StatelessWidget {
                                       ),
                                       // [·]TODO: navigate by clicking result entity
                                       // [·]branch: pre-searching-navigation-01: if node existed, clicking will navigate to relative view
-                                      // [ ]TODO: Opacity
                                       onPressed: () {
                                         debugPrint("search result clicked");
                                         nodeParentTapped = false;
@@ -206,16 +206,35 @@ class SearchView extends StatelessWidget {
 
   /// [matchedRichText] will mark the **[target]**  which matched within **[origin]**
   Widget matchedRichText(String origin, String target) {
-    List<String> temp = origin.split(target);
+    // [·]TODO: Highlight 'AniM' in animation
+    List<String> listTarget = [];
+    Iterable<Match> matches =
+        (RegExp(target, caseSensitive: false)).allMatches(origin, 0);
+    for (Match m in matches) {
+      listTarget.add(m[0]!);
+    }
 
+    List<String> temp = origin.split(RegExp(target, caseSensitive: false));
+    int index = 0;
     for (var i = 0; i < temp.length; i++) {
       if (i % 2 == 1) {
-        temp.insert(i, target);
+        temp.insert(i, listTarget[index]);
+        index++;
       } else {}
     }
-    // debugPrint("matchedRichText: $temp");
+    // Note: hide redundant string
+    var listWidth = 48;
+    if (temp[0].length + target.length + temp[2].indexOf("/") > listWidth) {
+      index = temp[0].indexOf('/', temp[0].indexOf('/') + 1);
+      temp[0] =
+          temp[0].replaceRange(index + 1, temp[0].lastIndexOf("/"), '...');
+    }
+    index = 0;
+    debugPrint("matchedRichText: listTarget: $listTarget");
+    debugPrint("matchedRichText: origin: $temp");
     // Note: [target] is both end, where will add a null item
     // Note: Solved: textspan sometimes show blank instead of a whole string.
+    // [·]TODO: hide redundant string
     return RichText(
       // textAlign: TextAlign.justify,
       overflow: TextOverflow.clip,
@@ -225,7 +244,7 @@ class SearchView extends StatelessWidget {
         style: const TextStyle(color: Colors.blue),
         text: '',
         children: temp.map((e) {
-          if (e == target) {
+          if (RegExp(target, caseSensitive: false).hasMatch(e)) {
             return TextSpan(
               text: e,
               style: TextStyle(
