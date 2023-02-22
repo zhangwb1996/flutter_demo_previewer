@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-22 7:57:13 pm
+/// Last Modified: Wednesday, 2023-02-22 8:06:32 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -222,16 +222,27 @@ class SearchView extends StatelessWidget {
         index++;
       } else {}
     }
-    // Note: hide redundant string
-    var listWidth = 48;
-    if (temp[0].length + target.length + temp[2].indexOf("/") > listWidth) {
-      index = temp[0].indexOf('/', temp[0].indexOf('/') + 1);
-      temp[0] =
-          temp[0].replaceRange(index + 1, temp[0].lastIndexOf("/"), '...');
-    }
-    index = 0;
     debugPrint("matchedRichText: listTarget: $listTarget");
     debugPrint("matchedRichText: origin: $temp");
+    // Note: hide redundant string
+    var listWidth = 46;
+    // if (temp.length > 1) {
+    //   if (temp[0].length + target.length > listWidth) {
+    //     index = temp[0].indexOf('/', temp[0].indexOf('/') + 1);
+    //     temp[0] =
+    //         temp[0].replaceRange(index + 1, temp[0].lastIndexOf("/"), '...');
+    //   }
+    // }
+    if (temp.length > 2) {
+      if (temp[0].length + target.length + temp[2].indexOf("/") > listWidth) {
+        index = temp[0].indexOf('/', temp[0].indexOf('/') + 1);
+        temp[0] =
+            temp[0].replaceRange(index + 1, temp[0].lastIndexOf("/"), '...');
+      }
+    }
+
+    index = 0;
+
     // Note: [target] is both end, where will add a null item
     // Note: Solved: textspan sometimes show blank instead of a whole string.
     // [·]TODO: hide redundant string
