@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-22 2:05:03 pm
+/// Last Modified: Wednesday, 2023-02-22 2:26:17 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -353,9 +353,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                               debugPrint("onAddingWorksapce, key is: $key");
                               // setState(() {
                               _showExplorerView = key;
-                              helper.selectedKey = '';
-                              // _treeViewController = _treeViewController
-                              //     .copyWith(selectedKey: key);
+                              // helper.selectedKey = '';
+                              helper.selectedKey = key;
                               // });
                             },
                             theme: treeViewTheme,
@@ -451,8 +450,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                   ),
                 ),
               ),
-
-              // ),
             ),
           );
         } else {

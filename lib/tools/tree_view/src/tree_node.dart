@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-02 11:14:33 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-22 10:48:36 am
+/// Last Modified: Wednesday, 2023-02-22 2:20:55 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -225,7 +225,8 @@ class TreeNodeState extends State<TreeNode>
     TreeView? treeView = TreeView.of(context);
     assert(treeView != null, 'TreeView must exist in context');
     TreeViewTheme theme = treeView!.theme;
-    bool isSelected = treeView.controller.selectedKey == widget.node.key;
+    bool isSelected = treeView.controller.selectedKey == widget.node.key &&
+        !treeView.controller.selectedKey.contains("workspace");
     return Container(
       alignment: Alignment.center,
       width:
@@ -246,7 +247,8 @@ class TreeNodeState extends State<TreeNode>
     TreeView? treeView = TreeView.of(context);
     assert(treeView != null, 'TreeView must exist in context');
     TreeViewTheme theme = treeView!.theme;
-    bool isSelected = treeView.controller.selectedKey == widget.node.key;
+    bool isSelected = treeView.controller.selectedKey == widget.node.key &&
+        !treeView.controller.selectedKey.contains("workspace");
     final icon = _buildNodeIcon();
     switch (widget.node.runtimeType) {
       case NodeWorkspaceAdd:
@@ -404,7 +406,8 @@ class TreeNodeState extends State<TreeNode>
     TreeView? treeView = TreeView.of(context);
     assert(treeView != null, 'TreeView must exist in context');
     TreeViewTheme theme = treeView!.theme;
-    bool isSelected = treeView.controller.selectedKey == widget.node.key;
+    bool isSelected = treeView.controller.selectedKey == widget.node.key &&
+        !treeView.controller.selectedKey.contains("workspace");
     bool canSelectParent = treeView.allowParentSelect;
     final arrowContainer = _buildNodeExpander();
     final labelContainer = treeView.nodeBuilder != null
