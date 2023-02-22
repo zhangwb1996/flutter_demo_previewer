@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-22 11:11:48 am
+/// Last Modified: Wednesday, 2023-02-22 2:05:03 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -351,10 +351,12 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             },
                             onAddingWorksapce: (key) {
                               debugPrint("onAddingWorksapce, key is: $key");
-                              setState(() {
-                                _showExplorerView = key;
-                                // helper.selectedKey = key;
-                              });
+                              // setState(() {
+                              _showExplorerView = key;
+                              helper.selectedKey = '';
+                              // _treeViewController = _treeViewController
+                              //     .copyWith(selectedKey: key);
+                              // });
                             },
                             theme: treeViewTheme,
                           );
