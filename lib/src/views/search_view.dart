@@ -5,7 +5,7 @@
 /// Created Date: Sunday, 2023-02-19 9:28:52 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-22 8:06:32 pm
+/// Last Modified: Thursday, 2023-02-23 12:37:47 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -17,6 +17,7 @@
 
 import 'dart:async';
 
+import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/models/widget.dart';
 import 'package:flutter_demo_previewer/tools/dir/widget.dart';
@@ -123,14 +124,17 @@ class SearchView extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                       // [·]TODO: highlight matched string => RichText
-                      // [ ]TODO: Opacity
+                      // [·]TODO: Blur
                       return Container(
                         padding: const EdgeInsets.only(right: 40),
                         constraints: const BoxConstraints(
                           maxWidth: 340,
                           maxHeight: 300,
                         ),
-                        child: Consumer<SearchHelperModel>(
+                        // color: Colors.grey.shade500,
+                      ).blurred(
+                        colorOpacity: 0.5,
+                        overlay: Consumer<SearchHelperModel>(
                           builder: (context, node, child) =>
                               Builder(builder: (context) {
                             return ListView(
@@ -154,13 +158,12 @@ class SearchView extends StatelessWidget {
                                         node.selectedKey = pathSeparator(e);
                                       },
                                       child: Container(
-                                          constraints: const BoxConstraints(
-                                            maxWidth: 340,
-                                            maxHeight: 20,
-                                          ),
-                                          child: Builder(builder: (context) {
-                                            return matchedRichText(e, txt);
-                                          })),
+                                        constraints: const BoxConstraints(
+                                          maxWidth: 340,
+                                          maxHeight: 20,
+                                        ),
+                                        child: matchedRichText(e, txt),
+                                      ),
                                     ),
                                   )
                                   .toList(),
@@ -222,17 +225,10 @@ class SearchView extends StatelessWidget {
         index++;
       } else {}
     }
-    debugPrint("matchedRichText: listTarget: $listTarget");
-    debugPrint("matchedRichText: origin: $temp");
+    // debugPrint("matchedRichText: listTarget: $listTarget");
+    // debugPrint("matchedRichText: origin: $temp");
     // Note: hide redundant string
     var listWidth = 46;
-    // if (temp.length > 1) {
-    //   if (temp[0].length + target.length > listWidth) {
-    //     index = temp[0].indexOf('/', temp[0].indexOf('/') + 1);
-    //     temp[0] =
-    //         temp[0].replaceRange(index + 1, temp[0].lastIndexOf("/"), '...');
-    //   }
-    // }
     if (temp.length > 2) {
       if (temp[0].length + target.length + temp[2].indexOf("/") > listWidth) {
         index = temp[0].indexOf('/', temp[0].indexOf('/') + 1);
@@ -240,9 +236,7 @@ class SearchView extends StatelessWidget {
             temp[0].replaceRange(index + 1, temp[0].lastIndexOf("/"), '...');
       }
     }
-
     index = 0;
-
     // Note: [target] is both end, where will add a null item
     // Note: Solved: textspan sometimes show blank instead of a whole string.
     // [·]TODO: hide redundant string
@@ -252,16 +246,19 @@ class SearchView extends StatelessWidget {
       softWrap: false,
       maxLines: 1,
       text: TextSpan(
-        style: const TextStyle(color: Colors.blue),
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w400,
+        ),
         text: '',
         children: temp.map((e) {
           if (RegExp(target, caseSensitive: false).hasMatch(e)) {
             return TextSpan(
               text: e,
               style: TextStyle(
-                fontWeight: FontWeight.w600,
-                backgroundColor: Colors.grey.shade300,
-              ),
+                  fontWeight: FontWeight.w900,
+                  backgroundColor: Colors.grey.shade100,
+                  color: Colors.black54),
             );
           }
           return TextSpan(text: e);
