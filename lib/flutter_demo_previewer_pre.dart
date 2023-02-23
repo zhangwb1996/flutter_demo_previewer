@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Wednesday, 2023-02-22 2:26:17 pm
+/// Last Modified: Thursday, 2023-02-23 3:15:54 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -119,6 +119,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     register(registry);
 
     // initial data
+    //[ ]TODO: data to json file or other
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       nodesFromPath.add(
         NodeParent(
@@ -292,18 +293,13 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         child: Stack(
           children: [
             Consumer<SearchHelperModel>(
-              builder: (context, helper, child) => Container(
-                padding: const EdgeInsets.all(20),
+              builder: (context, helper, child) => SizedBox(
                 height: double.infinity,
                 child: Row(
                   children: [
-                    Container(
-                      width: 250,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-                      margin: const EdgeInsets.only(right: 5),
+                    SizedBox(
+                      width: helper.divider.pos!.dx,
+                      // margin: const EdgeInsets.only(right: 2),
                       child: Builder(
                         builder: (context) {
                           debugPrint("flutter_demo_previewer_pre: tree");
@@ -317,7 +313,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             debugPrint(
                                 "flutter_demo_previewer_pre: tree: ${(_treeViewController.getNode('../widget_design/lib/src/preview')! as NodeParent).expanded}");
                           }
-
                           return TreeView(
                             controller: _treeViewController,
                             allowParentSelect: _allowParentSelect,
@@ -360,6 +355,35 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             theme: treeViewTheme,
                           );
                         },
+                      ),
+                    ),
+                    //[·]TODO: resizable
+                    GestureDetector(
+                      onPanUpdate: (details) => {
+                        helper.divider.isHovered = true,
+                        helper.divider.pos = Offset(
+                          details.delta.dx + helper.divider.pos!.dx,
+                          helper.divider.pos!.dy,
+                        ),
+                        debugPrint("${helper.divider.pos}")
+                      },
+                      onPanCancel: () => helper.divider.isHovered = false,
+                      onPanEnd: (d) => helper.divider.isHovered = false,
+                      child: MouseRegion(
+                        onEnter: (v) => helper.divider.isHovered = true,
+                        onExit: (v) => helper.divider.isHovered = false,
+                        cursor: helper.divider.isHovered
+                            ? SystemMouseCursors.resizeColumn
+                            : SystemMouseCursors.alias,
+                        child: VerticalDivider(
+                          width: 1,
+                          thickness: helper.divider.isHovered ? 3 : 1,
+                          // indent: 2,
+                          // endIndent: 2,
+                          color: helper.divider.isHovered
+                              ? Colors.blue
+                              : Colors.black12,
+                        ),
                       ),
                     ),
                     Container(child: codeBuilder(helper)),

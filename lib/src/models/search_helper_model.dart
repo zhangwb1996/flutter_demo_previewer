@@ -5,7 +5,7 @@
 /// Created Date: Tuesday, 2023-02-21 5:05:01 pm
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Tuesday, 2023-02-21 9:50:11 pm
+/// Last Modified: Thursday, 2023-02-23 2:49:59 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -16,10 +16,20 @@
 ///
 import 'package:flutter/material.dart';
 
+import '../widget.dart';
+
 class SearchHelperModel extends ChangeNotifier {
   String _selectedKey = '';
-  String get selectedKey => _selectedKey;
+  DividerModel _divider = DividerModel();
 
+  DividerModel get divider => _divider;
+  set divider(DividerModel value) => {
+        _divider = value,
+        debugPrint("SearchHelperModel.divider"),
+        notifyListeners(),
+      };
+
+  String get selectedKey => _selectedKey;
   set selectedKey(String value) {
     _selectedKey = value;
     notifyListeners();

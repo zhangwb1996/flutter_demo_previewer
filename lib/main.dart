@@ -83,7 +83,17 @@ class MyApp extends StatelessWidget {
           lazy: true,
         ),
         ChangeNotifierProvider(
+          create: (context) => DividerModel(),
+          lazy: true,
+        ),
+        // Note:
+        ChangeNotifierProxyProvider<DividerModel, SearchHelperModel>(
           create: (context) => SearchHelperModel(),
+          update: (context, divider, helper) {
+            if (helper == null) throw ArgumentError.notNull('helper');
+            helper.divider = divider;
+            return helper;
+          },
           lazy: true,
         ),
       ],
