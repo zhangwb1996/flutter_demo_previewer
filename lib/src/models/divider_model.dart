@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-23 11:47:00 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-23 5:34:15 pm
+/// Last Modified: Thursday, 2023-02-23 6:26:45 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----"ctrl+k ctrl+l"
 /// Copyright (c) 2023
@@ -22,11 +22,20 @@ class DividerModel extends ChangeNotifier with EquatableMixin {
   Offset? _pos;
   double _thickness = 1;
   bool _isHovered = false;
+  bool _isResizing = false;
+
   final double? maxWidth;
   final double? maxHeight;
   final double? minWidth;
   final double? minHeight;
 
+  /// whether [isResizing]
+  bool get isResizing => _isResizing;
+  set isResizing(bool value) => {
+        _isResizing = value,
+      };
+
+  /// whether [isHovered]
   bool get isHovered => _isHovered;
   set isHovered(bool isHovered) => {
         _isHovered = isHovered,

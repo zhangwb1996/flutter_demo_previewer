@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-23 5:37:05 pm
+/// Last Modified: Thursday, 2023-02-23 10:37:11 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -119,7 +119,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
     register(registry);
 
     // initial data
-    //[ ]TODO: data to json file or other
+    // [ ]TODO: data to json file or other
     _dirEntry.getDirStrList(_dirEntry).then((value) {
       nodesFromPath.add(
         NodeParent(
@@ -192,6 +192,7 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                       selectedIconColor: Colors.white,
                       icon: Icons.insert_drive_file,
                       // nameSubview: file,
+                      // [ ]TODO: add a floating button clicking navigate some view or web page
                       subview: Json2Widget(
                         key: Key(pathSeparator(
                             "Json2Widget: ${_dirEntryPreview.absolutelyCurrentPath}/$file")),
@@ -286,88 +287,104 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         title: Text(widget.title),
         elevation: 0,
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Stack(
-          children: [
-            Consumer<SearchHelperModel>(
-              builder: (context, helper, child) => Row(
-                children: [
-                  //[·]TODO: resizable
+      body: Stack(
+        children: [
+          Consumer<SearchHelperModel>(
+            builder: (context, helper, child) => Row(
+              children: [
+                //[·]TODO: resizable
 
-                  ChangeNotifierProvider(
-                    create: (context) =>
-                        DividerModel(maxWidth: 500, minWidth: 100),
-                    lazy: true,
-                    child: Consumer<DividerModel>(
-                      builder: (context, divider, child) => MouseRegion(
-                        onHover: (PointerEvent v) => {
-                          if ((v.position.dx - divider.pos!.dx).abs() < 5)
-                            {
-                              divider.isHovered = true,
-                              // debugPrint("hovered"),
-                            }
-                          else
-                            {
-                              divider.isHovered = false,
-                            },
-                          // debugPrint("hovered: ${v.position.dx}"),
-                        },
-                        onExit: (event) => divider.isHovered = false,
-                        cursor: divider.isHovered
-                            ? SystemMouseCursors.resizeColumn
-                            : SystemMouseCursors.alias,
-                        child: GestureDetector(
-                          onPanUpdate: (details) {
-                            divider.isHovered = true;
-                            if (divider.maxWidth != null &&
-                                divider.pos!.dx > divider.maxWidth!) {
-                              divider.pos = Offset(
-                                500,
-                                divider.pos!.dy,
-                              );
-                            } else if (divider.minWidth != null &&
-                                divider.pos!.dx < divider.minWidth!) {
-                              divider.pos = Offset(
-                                100,
-                                divider.pos!.dy,
-                              );
-                            } else {
-                              divider.pos = Offset(
-                                details.delta.dx + divider.pos!.dx,
-                                divider.pos!.dy,
-                              );
-                            }
+                ChangeNotifierProvider(
+                  create: (context) =>
+                      DividerModel(maxWidth: 500, minWidth: 112),
+                  lazy: true,
+                  child: Consumer<DividerModel>(
+                    builder: (context, divider, child) => MouseRegion(
+                      onHover: (PointerEvent v) => {
+                        if ((v.position.dx - divider.pos!.dx).abs() < 5)
+                          {
+                            divider.isHovered = true,
+                            // debugPrint("hovered"),
+                          }
+                        else
+                          {
+                            divider.isHovered = false,
                           },
-                          onPanCancel: () => divider.isHovered = false,
-                          onPanEnd: (d) => divider.isHovered = false,
-                          child: Builder(builder: (context) {
-                            divider.pos ??= const Offset(250, 0);
-                            return Container(
-                              width: divider.pos!.dx,
-                              decoration: divider.isHovered
-                                  ? const BoxDecoration(
-                                      border: Border(
-                                        right: BorderSide(
-                                          color: Colors.blue,
-                                          width: 5,
-                                        ),
-                                      ),
-                                    )
-                                  : const BoxDecoration(
-                                      border: Border(
-                                        right: BorderSide(
-                                          width: 0.2,
-                                        ),
+                        // debugPrint("hovered: ${divider.isHovered}"),
+                      },
+                      onExit: (v) => {
+                        if (!divider.isResizing)
+                          {
+                            divider.isHovered = false,
+                          }
+                      },
+                      cursor: divider.isHovered
+                          ? SystemMouseCursors.resizeColumn
+                          : SystemMouseCursors.alias,
+                      child: GestureDetector(
+                        onPanUpdate: (details) {
+                          // debugPrint("onPanUpdate: ${divider.isHovered}");
+                          divider.isResizing = true;
+                          if (!divider.isHovered) {
+                            return;
+                          }
+                          if (divider.maxWidth != null &&
+                              divider.pos!.dx > divider.maxWidth!) {
+                            divider.pos = Offset(
+                              divider.maxWidth!,
+                              divider.pos!.dy,
+                            );
+                          } else if (divider.minWidth != null &&
+                              divider.pos!.dx < divider.minWidth!) {
+                            divider.pos = Offset(
+                              divider.minWidth!,
+                              divider.pos!.dy,
+                            );
+                          } else {
+                            divider.pos = Offset(
+                              details.delta.dx + divider.pos!.dx,
+                              divider.pos!.dy,
+                            );
+                          }
+                        },
+                        onPanCancel: () => {
+                          divider.isHovered = false,
+                          divider.isResizing = false,
+                        },
+                        onPanEnd: (d) => {
+                          divider.isHovered = false,
+                          divider.isResizing = false,
+                        },
+                        child: Builder(builder: (context) {
+                          divider.pos ??= const Offset(250, 0);
+                          return Container(
+                            width: divider.pos!.dx,
+                            decoration: divider.isHovered
+                                ? const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                        color: Colors.blue,
+                                        width: 5,
                                       ),
                                     ),
-                              child: child,
-                            );
-                          }),
-                        ),
+                                  )
+                                : const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                        width: 0.2,
+                                      ),
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        }),
                       ),
+                    ),
+                    child: GestureDetector(
+                      // Note: tab, ←↑↓→
+                      onTap: () {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
                       child: Builder(
                         builder: (context) {
                           debugPrint("flutter_demo_previewer_pre: tree");
@@ -426,16 +443,16 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                       ),
                     ),
                   ),
-                  Container(child: codeBuilder(helper)),
-                  Expanded(
-                    child: previewBuilder(context, helper),
-                  ),
-                ],
-              ),
+                ),
+                Container(child: codeBuilder(helper)),
+                Expanded(
+                  child: previewBuilder(context, helper),
+                ),
+              ],
             ),
-            const SearchView(),
-          ],
-        ),
+          ),
+          const SearchView(),
+        ],
       ),
     );
   }
