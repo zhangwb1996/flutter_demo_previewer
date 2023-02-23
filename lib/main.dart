@@ -86,16 +86,20 @@ class MyApp extends StatelessWidget {
           create: (context) => DividerModel(),
           lazy: true,
         ),
-        // Note:
-        ChangeNotifierProxyProvider<DividerModel, SearchHelperModel>(
+        ChangeNotifierProvider(
           create: (context) => SearchHelperModel(),
-          update: (context, divider, helper) {
-            if (helper == null) throw ArgumentError.notNull('helper');
-            helper.divider = divider;
-            return helper;
-          },
           lazy: true,
         ),
+        // // Note: ChangeNotifierProxyProvider
+        // ChangeNotifierProxyProvider<DividerModel, SearchHelperModel>(
+        //   create: (context) => SearchHelperModel(),
+        //   update: (context, divider, helper) {
+        //     if (helper == null) throw ArgumentError.notNull('helper');
+        //     helper.divider = divider;
+        //     return helper;
+        //   },
+        //   lazy: true,
+        // ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo Previewer',

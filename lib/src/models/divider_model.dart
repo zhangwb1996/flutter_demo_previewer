@@ -5,7 +5,7 @@
 /// Created Date: Thursday, 2023-02-23 11:47:00 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-23 3:10:45 pm
+/// Last Modified: Thursday, 2023-02-23 4:51:54 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -19,7 +19,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class DividerModel extends ChangeNotifier with EquatableMixin {
-  Offset? _pos = const Offset(250, 0);
+  Offset? _pos;
   double _thickness = 1;
   bool _isHovered = false;
 
@@ -31,10 +31,13 @@ class DividerModel extends ChangeNotifier with EquatableMixin {
 
   /// [position] of this [Divider]
   Offset? get pos => _pos;
-  set pos(Offset? value) => {
-        _pos = value,
-        notifyListeners(),
-      };
+  set pos(Offset? value) {
+    var p = _pos;
+    _pos = value;
+    if (p != null) {
+      notifyListeners();
+    }
+  }
 
   /// [thickness] of this [Divider]
   double get thickness => _thickness;

@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-23 3:15:54 pm
+/// Last Modified: Thursday, 2023-02-23 4:52:17 pm
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -293,105 +293,123 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
         child: Stack(
           children: [
             Consumer<SearchHelperModel>(
-              builder: (context, helper, child) => SizedBox(
-                height: double.infinity,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: helper.divider.pos!.dx,
-                      // margin: const EdgeInsets.only(right: 2),
-                      child: Builder(
-                        builder: (context) {
-                          debugPrint("flutter_demo_previewer_pre: tree");
-                          // setState(() {
-                          searching(helper);
-                          // });
-                          _treeViewController = _treeViewController.copyWith(
-                            selectedKey: helper.selectedKey,
-                          );
-                          if (_treeViewController.children.isNotEmpty) {
-                            debugPrint(
-                                "flutter_demo_previewer_pre: tree: ${(_treeViewController.getNode('../widget_design/lib/src/preview')! as NodeParent).expanded}");
+              builder: (context, helper, child) => Row(
+                children: [
+                  //[·]TODO: resizable
+                  Consumer<DividerModel>(
+                    builder: (context, divider, child) => MouseRegion(
+                      onHover: (PointerEvent v) => {
+                        if ((v.position.dx - divider.pos!.dx).abs() < 5)
+                          {
+                            divider.isHovered = true,
+                            // debugPrint("hovered"),
                           }
-                          return TreeView(
-                            controller: _treeViewController,
-                            allowParentSelect: _allowParentSelect,
-                            supportParentDoubleTap: _supportParentDoubleTap,
-                            onExpansionChanged: (key, expanded) {
-                              debugPrint(
-                                  "node which key is $key ExpansionChanged! \n expanded=$expanded");
-                              nodeParentTapped = true;
-                              _expandNode(key, expanded);
-                              if (expanded) _addChildrenNode(key);
-                            },
-                            onNodeTap: (key) {
-                              debugPrint('node which key is $key Tapped!');
-                              setState(() {
-                                if (key == "adding workspace") {
-                                  clickNodeWorkspaceEditable();
-                                } else {
-                                  helper.selectedKey = key;
-                                  _treeViewController =
-                                      _treeViewController.copyWith(
-                                          selectedKey: helper.selectedKey);
-                                }
-                              });
-                            },
-                            onSubmitted: (key, str) {
-                              debugPrint("onSubmitted");
-                              addNewWorkspace(
-                                "workspace: NodeWorkspaceEditable",
-                                str,
-                              );
-                            },
-                            onAddingWorksapce: (key) {
-                              debugPrint("onAddingWorksapce, key is: $key");
-                              // setState(() {
-                              _showExplorerView = key;
-                              // helper.selectedKey = '';
-                              helper.selectedKey = key;
-                              // });
-                            },
-                            theme: treeViewTheme,
+                        else
+                          {
+                            divider.isHovered = false,
+                          },
+                        // debugPrint("hovered: ${v.position.dx}"),
+                      },
+                      onExit: (event) => divider.isHovered = false,
+                      cursor: divider.isHovered
+                          ? SystemMouseCursors.resizeColumn
+                          : SystemMouseCursors.alias,
+                      child: GestureDetector(
+                        onPanUpdate: (details) {
+                          divider.isHovered = true;
+                          divider.pos = Offset(
+                            details.delta.dx + divider.pos!.dx,
+                            divider.pos!.dy,
                           );
                         },
+                        onPanCancel: () => divider.isHovered = false,
+                        onPanEnd: (d) => divider.isHovered = false,
+                        child: Builder(builder: (context) {
+                          divider.pos ??= const Offset(250, 0);
+                          return Container(
+                            width: divider.pos!.dx,
+                            decoration: divider.isHovered
+                                ? const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                        color: Colors.blue,
+                                        width: 5,
+                                      ),
+                                    ),
+                                  )
+                                : const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                        width: 0.2,
+                                      ),
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        }),
                       ),
                     ),
-                    //[·]TODO: resizable
-                    GestureDetector(
-                      onPanUpdate: (details) => {
-                        helper.divider.isHovered = true,
-                        helper.divider.pos = Offset(
-                          details.delta.dx + helper.divider.pos!.dx,
-                          helper.divider.pos!.dy,
-                        ),
-                        debugPrint("${helper.divider.pos}")
+                    child: Builder(
+                      builder: (context) {
+                        debugPrint("flutter_demo_previewer_pre: tree");
+                        // setState(() {
+                        searching(helper);
+                        // });
+                        _treeViewController = _treeViewController.copyWith(
+                          selectedKey: helper.selectedKey,
+                        );
+                        if (_treeViewController.children.isNotEmpty) {
+                          debugPrint(
+                              "flutter_demo_previewer_pre: tree: ${(_treeViewController.getNode('../widget_design/lib/src/preview')! as NodeParent).expanded}");
+                        }
+                        return TreeView(
+                          controller: _treeViewController,
+                          allowParentSelect: _allowParentSelect,
+                          supportParentDoubleTap: _supportParentDoubleTap,
+                          onExpansionChanged: (key, expanded) {
+                            debugPrint(
+                                "node which key is $key ExpansionChanged! \n expanded=$expanded");
+                            nodeParentTapped = true;
+                            _expandNode(key, expanded);
+                            if (expanded) _addChildrenNode(key);
+                          },
+                          onNodeTap: (key) {
+                            debugPrint('node which key is $key Tapped!');
+                            setState(() {
+                              if (key == "adding workspace") {
+                                clickNodeWorkspaceEditable();
+                              } else {
+                                helper.selectedKey = key;
+                                _treeViewController = _treeViewController
+                                    .copyWith(selectedKey: helper.selectedKey);
+                              }
+                            });
+                          },
+                          onSubmitted: (key, str) {
+                            debugPrint("onSubmitted");
+                            addNewWorkspace(
+                              "workspace: NodeWorkspaceEditable",
+                              str,
+                            );
+                          },
+                          onAddingWorksapce: (key) {
+                            debugPrint("onAddingWorksapce, key is: $key");
+                            // setState(() {
+                            _showExplorerView = key;
+                            // helper.selectedKey = '';
+                            helper.selectedKey = key;
+                            // });
+                          },
+                          theme: treeViewTheme,
+                        );
                       },
-                      onPanCancel: () => helper.divider.isHovered = false,
-                      onPanEnd: (d) => helper.divider.isHovered = false,
-                      child: MouseRegion(
-                        onEnter: (v) => helper.divider.isHovered = true,
-                        onExit: (v) => helper.divider.isHovered = false,
-                        cursor: helper.divider.isHovered
-                            ? SystemMouseCursors.resizeColumn
-                            : SystemMouseCursors.alias,
-                        child: VerticalDivider(
-                          width: 1,
-                          thickness: helper.divider.isHovered ? 3 : 1,
-                          // indent: 2,
-                          // endIndent: 2,
-                          color: helper.divider.isHovered
-                              ? Colors.blue
-                              : Colors.black12,
-                        ),
-                      ),
                     ),
-                    Container(child: codeBuilder(helper)),
-                    Expanded(
-                      child: previewBuilder(context, helper),
-                    ),
-                  ],
-                ),
+                  ),
+                  Container(child: codeBuilder(helper)),
+                  Expanded(
+                    child: previewBuilder(context, helper),
+                  ),
+                ],
               ),
             ),
             const SearchView(),
