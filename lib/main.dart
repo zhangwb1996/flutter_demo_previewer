@@ -82,10 +82,7 @@ class MyApp extends StatelessWidget {
           create: (context) => FractionallySizedBoxModel(),
           lazy: true,
         ),
-        ChangeNotifierProvider(
-          create: (context) => DividerModel(),
-          lazy: true,
-        ),
+
         ChangeNotifierProvider(
           create: (context) => SearchHelperModel(),
           lazy: true,
