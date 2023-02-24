@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Thursday, 2023-02-23 10:37:11 pm
+/// Last Modified: Friday, 2023-02-24 10:58:10 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -300,18 +300,8 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                   lazy: true,
                   child: Consumer<DividerModel>(
                     builder: (context, divider, child) => MouseRegion(
-                      onHover: (PointerEvent v) => {
-                        if ((v.position.dx - divider.pos!.dx).abs() < 5)
-                          {
-                            divider.isHovered = true,
-                            // debugPrint("hovered"),
-                          }
-                        else
-                          {
-                            divider.isHovered = false,
-                          },
-                        // debugPrint("hovered: ${divider.isHovered}"),
-                      },
+                      onHover: (PointerEvent v) => divider.isHovered =
+                          (v.position.dx - divider.size!.dx).abs() < 5,
                       onExit: (v) => {
                         if (!divider.isResizing)
                           {
@@ -329,21 +319,24 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                             return;
                           }
                           if (divider.maxWidth != null &&
-                              divider.pos!.dx > divider.maxWidth!) {
-                            divider.pos = Offset(
+                              // divider.pos!.dx > divider.maxWidth!
+                              details.localPosition.dx > divider.maxWidth!) {
+                            divider.size = Offset(
                               divider.maxWidth!,
-                              divider.pos!.dy,
+                              divider.size!.dy,
                             );
                           } else if (divider.minWidth != null &&
-                              divider.pos!.dx < divider.minWidth!) {
-                            divider.pos = Offset(
+                              // divider.pos!.dx < divider.minWidth!
+                              details.localPosition.dx < divider.minWidth!) {
+                            divider.size = Offset(
                               divider.minWidth!,
-                              divider.pos!.dy,
+                              divider.size!.dy,
                             );
                           } else {
-                            divider.pos = Offset(
-                              details.delta.dx + divider.pos!.dx,
-                              divider.pos!.dy,
+                            divider.size = Offset(
+                              // details.delta.dx + divider.pos!.dx,
+                              details.localPosition.dx,
+                              divider.size!.dy,
                             );
                           }
                         },
@@ -356,9 +349,9 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
                           divider.isResizing = false,
                         },
                         child: Builder(builder: (context) {
-                          divider.pos ??= const Offset(250, 0);
+                          divider.size ??= const Offset(250, 0);
                           return Container(
-                            width: divider.pos!.dx,
+                            width: divider.size!.dx,
                             decoration: divider.isHovered
                                 ? const BoxDecoration(
                                     border: Border(
