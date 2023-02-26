@@ -20,9 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo_previewer/src/variables.dart';
 import 'package:flutter_demo_previewer/src/widget.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_design/widget.dart';
 
-import 'flutter_demo_previewer_pre.dart';
+import 'flutter_demo_previewer_alpha.dart';
 
 void main() async {
   if (kDebugMode) {
@@ -46,44 +45,6 @@ class MyApp extends StatelessWidget {
         // [ ]TODO: restructure with provider
         ChangeNotifierProvider(create: (context) => Workspace()),
         ChangeNotifierProvider(
-          create: (BuildContext context) => AnimatedAlignModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (BuildContext context) => AnimatedContainerModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (BuildContext context) => AnimatedCrossFadeModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => AnimatedOpacityModel(),
-          lazy: true,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => AlignModel(),
-          lazy: true,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => AspectRatioModel(),
-          lazy: true,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => BaselineModel(),
-          lazy: true,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => CenterModel(),
-          lazy: true,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => BoxFitModel(),
-          lazy: true,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => FractionallySizedBoxModel(),
-          lazy: true,
-        ),
-
-        ChangeNotifierProvider(
           create: (context) => SearchHelperModel(),
           lazy: true,
         ),
@@ -101,7 +62,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo Previewer',
         // home: const FlutterDemoPreviewer(title: 'Flutter Demo Previewer'),
-        home: const FlutterDemoPreviewerPre(title: 'Flutter Demo Previewer'),
+        home: const FlutterDemoPreviewerAlpha(title: 'Flutter Demo Previewer'),
         theme: ThemeData().copyWith(
             // accentColor: Colors.deepPurple,
             // hoverColor: Colors.red.shade100,
