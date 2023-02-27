@@ -5,7 +5,7 @@
 /// Created Date: Monday, 2023-02-06 12:39:19 am
 /// Author: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
-/// Last Modified: Friday, 2023-02-24 10:58:10 am
+/// Last Modified: Monday, 2023-02-27 11:57:38 am
 /// Modified By: Wenbo Zhang (zhangwb1996@outlook.com)
 /// -----
 /// Copyright (c) 2023
@@ -120,130 +120,132 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
 
     // initial data
     // [ ]TODO: data to json file or other
-    _dirEntry.getDirStrList(_dirEntry).then((value) {
-      nodesFromPath.add(
-        NodeParent(
-            label: designPath.split('/').last,
-            key: designPath,
-            expanded: isExpanded,
-            icon: isExpanded ? Icons.folder_open : Icons.folder,
-            children: [
-              // dir
-              ..._dirEntry.listStrNameCurrentDirs.map((dir) {
-                return NodeParent(
-                  label: dir,
-                  key: pathSeparator("${_dirEntry.absolutelyCurrentPath}/$dir"),
-                  expanded: isExpanded,
-                  icon: isExpanded ? Icons.folder_open : Icons.folder,
-                  children: const [],
-                );
-              }).toList(),
-              // file
-              ..._dirEntry.listStrNameCurrentFiles!.map(
-                (file) {
-                  return NodeChild(
-                    label: file,
-                    key: pathSeparator(
-                        "${_dirEntry.absolutelyCurrentPath}/$file"),
-                    iconColor: Colors.green.shade300,
-                    selectedIconColor: Colors.white,
-                    icon: Icons.insert_drive_file,
-                    // nameSubview: file,
-                    subview: Json2Widget(
-                      key: Key(pathSeparator(
-                          "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file")),
-                      jsonData: {
-                        "type": file,
-                      },
-                    ),
-                  );
-                },
-              ).toList()
-            ]),
-      );
+    initTreeData();
+    // var t = "Add Workspace";
+    // workspace.add(
+    //   NodeWorkspaceAdd(
+    //     key: "adding workspace",
+    //     label: t,
+    //   ),
+    // );
 
-      _dirEntryPreview.getDirStrList(_dirEntryPreview).then((value) {
-        nodesFromPathPreview.add(
-          NodeParent(
-              label: previewPath.split('/').last,
-              key: previewPath,
-              expanded: isExpanded,
-              icon: isExpanded ? Icons.folder_open : Icons.folder,
-              children: [
-                // dir
-                ..._dirEntryPreview.listStrNameCurrentDirs.map((dir) {
-                  return NodeParent(
-                    label: dir,
-                    key: pathSeparator(
-                        "${_dirEntryPreview.absolutelyCurrentPath}/$dir"),
-                    expanded: isExpanded,
-                    icon: isExpanded ? Icons.folder_open : Icons.folder,
-                    children: const [],
-                  );
-                }).toList(),
-                // file
-                ..._dirEntryPreview.listStrNameCurrentFiles!.map(
-                  (file) {
-                    return NodeChild(
-                      label: file,
-                      key: pathSeparator(
-                          "${_dirEntryPreview.absolutelyCurrentPath}/$file"),
-                      iconColor: Colors.green.shade300,
-                      selectedIconColor: Colors.white,
-                      icon: Icons.insert_drive_file,
-                      // nameSubview: file,
-                      // [ ]TODO: add a floating button clicking navigate some view or web page
-                      subview: Json2Widget(
-                        key: Key(pathSeparator(
-                            "Json2Widget: ${_dirEntryPreview.absolutelyCurrentPath}/$file")),
-                        jsonData: {
-                          "type": file,
-                        },
-                      ),
-                    );
-                  },
-                ).toList()
-              ]),
-        );
-        workspace.add(
-          NodeWorkspace(
-            key: "workspace: widget_design",
-            label: "widget_design",
-            // subview: ExplorerView(),
-            children: nodesFromPath,
-          ),
-        );
-        workspace.add(
-          NodeWorkspace(
-            key: "workspace: preview",
-            label: "preview",
-            // subview: ExplorerView(),
-            children: nodesFromPathPreview,
-          ),
-        );
-
-        /// init TreeViewController
-        _treeViewController = TreeViewController(
-          children: workspace,
-          // selectedKey: _selectedNode,
-          selectedKey: '',
-        );
-        if (kDebugMode) {
-          dynamicWidgetHelperPre(designPath, "widget_design");
-          dynamicWidgetHelperPre(previewPath, "preview", insert: true);
-        }
-
-        setState(() {});
-      });
-      // var t = "Add Workspace";
-      // workspace.add(
-      //   NodeWorkspaceAdd(
-      //     key: "adding workspace",
-      //     label: t,
-      //   ),
-      // );
-    });
     super.initState();
+  }
+
+  void initTreeData() async {
+    await _dirEntry.getDirStrList(_dirEntry);
+    nodesFromPath.add(
+      NodeParent(
+          label: designPath.split('/').last,
+          key: designPath,
+          expanded: isExpanded,
+          icon: isExpanded ? Icons.folder_open : Icons.folder,
+          children: [
+            // dir
+            ..._dirEntry.listStrNameCurrentDirs.map((dir) {
+              return NodeParent(
+                label: dir,
+                key: pathSeparator("${_dirEntry.absolutelyCurrentPath}/$dir"),
+                expanded: isExpanded,
+                icon: isExpanded ? Icons.folder_open : Icons.folder,
+                children: const [],
+              );
+            }).toList(),
+            // file
+            ..._dirEntry.listStrNameCurrentFiles!.map(
+              (file) {
+                return NodeChild(
+                  label: file,
+                  key:
+                      pathSeparator("${_dirEntry.absolutelyCurrentPath}/$file"),
+                  iconColor: Colors.green.shade300,
+                  selectedIconColor: Colors.white,
+                  icon: Icons.insert_drive_file,
+                  // nameSubview: file,
+                  subview: Json2Widget(
+                    key: Key(pathSeparator(
+                        "Json2Widget: ${_dirEntry.absolutelyCurrentPath}/$file")),
+                    jsonData: {
+                      "type": file,
+                    },
+                  ),
+                );
+              },
+            ).toList()
+          ]),
+    );
+    workspace.add(
+      NodeWorkspace(
+        key: "workspace: widget_design",
+        label: "widget_design",
+        // subview: ExplorerView(),
+        children: nodesFromPath,
+      ),
+    );
+
+    await _dirEntryPreview.getDirStrList(_dirEntryPreview);
+    nodesFromPathPreview.add(
+      NodeParent(
+          label: previewPath.split('/').last,
+          key: previewPath,
+          expanded: isExpanded,
+          icon: isExpanded ? Icons.folder_open : Icons.folder,
+          children: [
+            // dir
+            ..._dirEntryPreview.listStrNameCurrentDirs.map((dir) {
+              return NodeParent(
+                label: dir,
+                key: pathSeparator(
+                    "${_dirEntryPreview.absolutelyCurrentPath}/$dir"),
+                expanded: isExpanded,
+                icon: isExpanded ? Icons.folder_open : Icons.folder,
+                children: const [],
+              );
+            }).toList(),
+            // file
+            ..._dirEntryPreview.listStrNameCurrentFiles!.map(
+              (file) {
+                return NodeChild(
+                  label: file,
+                  key: pathSeparator(
+                      "${_dirEntryPreview.absolutelyCurrentPath}/$file"),
+                  iconColor: Colors.green.shade300,
+                  selectedIconColor: Colors.white,
+                  icon: Icons.insert_drive_file,
+                  // nameSubview: file,
+                  // [ ]TODO: add a floating button clicking navigate some view or web page
+                  subview: Json2Widget(
+                    key: Key(pathSeparator(
+                        "Json2Widget: ${_dirEntryPreview.absolutelyCurrentPath}/$file")),
+                    jsonData: {
+                      "type": file,
+                    },
+                  ),
+                );
+              },
+            ).toList()
+          ]),
+    );
+    workspace.add(
+      NodeWorkspace(
+        key: "workspace: preview",
+        label: "preview",
+        // subview: ExplorerView(),
+        children: nodesFromPathPreview,
+      ),
+    );
+
+    /// init TreeViewController
+    _treeViewController = TreeViewController(
+      children: workspace,
+      selectedKey: '',
+    );
+    if (kDebugMode) {
+      dynamicWidgetHelperPre(designPath, "widget_design");
+      dynamicWidgetHelperPre(previewPath, "preview", insert: true);
+    }
+
+    setState(() {});
   }
 
   @override
@@ -293,7 +295,6 @@ class FlutterDemoPreviewerPreState extends State<FlutterDemoPreviewerPre> {
             builder: (context, helper, child) => Row(
               children: [
                 //[·]TODO: resizable
-
                 ChangeNotifierProvider(
                   create: (context) =>
                       DividerModel(maxWidth: 500, minWidth: 112),
