@@ -897,5 +897,15 @@ void register(JsonWidgetRegistry registry) {
     ContextMenuBuilder3Builder.type,
     const JsonWidgetBuilderContainer(builder: ContextMenuBuilder3Builder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    ShowModalBottomSheet1Builder.type,
+    const JsonWidgetBuilderContainer(builder: ShowModalBottomSheet1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ShowModalBottomSheet2Builder.type,
+    const JsonWidgetBuilderContainer(builder: ShowModalBottomSheet2Builder.fromDynamic),
+  );
   /// BODY
 }

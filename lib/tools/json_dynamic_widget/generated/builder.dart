@@ -176,3 +176,5 @@ export './builder/preview/text/selectable_region/selectioncontainerpreview_build
 export './builder/preview/toolbar/contextmenubuilder1_builder.dart';
 export './builder/preview/toolbar/contextmenubuilder2_builder.dart';
 export './builder/preview/toolbar/contextmenubuilder3_builder.dart';
+export './builder/preview/extras/show_modal_bottom_sheet/showmodalbottomsheet1_builder.dart';
+export './builder/preview/extras/show_modal_bottom_sheet/showmodalbottomsheet2_builder.dart';
