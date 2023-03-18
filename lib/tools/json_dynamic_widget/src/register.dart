@@ -882,5 +882,20 @@ void register(JsonWidgetRegistry registry) {
     SelectionContainerPreviewBuilder.type,
     const JsonWidgetBuilderContainer(builder: SelectionContainerPreviewBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    ContextMenuBuilder1Builder.type,
+    const JsonWidgetBuilderContainer(builder: ContextMenuBuilder1Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ContextMenuBuilder2Builder.type,
+    const JsonWidgetBuilderContainer(builder: ContextMenuBuilder2Builder.fromDynamic),
+  );
+
+  registry.registerCustomBuilder(
+    ContextMenuBuilder3Builder.type,
+    const JsonWidgetBuilderContainer(builder: ContextMenuBuilder3Builder.fromDynamic),
+  );
   /// BODY
 }
