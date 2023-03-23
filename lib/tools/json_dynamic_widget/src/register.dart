@@ -907,5 +907,10 @@ void register(JsonWidgetRegistry registry) {
     ShowModalBottomSheet2Builder.type,
     const JsonWidgetBuilderContainer(builder: ShowModalBottomSheet2Builder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    FocusScopePreviewerBuilder.type,
+    const JsonWidgetBuilderContainer(builder: FocusScopePreviewerBuilder.fromDynamic),
+  );
   /// BODY
 }
