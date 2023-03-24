@@ -912,5 +912,10 @@ void register(JsonWidgetRegistry registry) {
     FocusScopePreviewerBuilder.type,
     const JsonWidgetBuilderContainer(builder: FocusScopePreviewerBuilder.fromDynamic),
   );
+
+  registry.registerCustomBuilder(
+    CopyableTextFieldBuilder.type,
+    const JsonWidgetBuilderContainer(builder: CopyableTextFieldBuilder.fromDynamic),
+  );
   /// BODY
 }

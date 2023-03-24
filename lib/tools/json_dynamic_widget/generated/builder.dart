@@ -179,3 +179,4 @@ export './builder/preview/toolbar/contextmenubuilder3_builder.dart';
 export './builder/preview/extras/show_modal_bottom_sheet/showmodalbottomsheet1_builder.dart';
 export './builder/preview/extras/show_modal_bottom_sheet/showmodalbottomsheet2_builder.dart';
 export './builder/preview/extras/focus/focusscopepreviewer_builder.dart';
+export './builder/preview/advanced_ui/action_shortcuts/copyabletextfield_builder.dart';
